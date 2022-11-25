@@ -17,7 +17,7 @@ const props = withDefaults(
 <template>
   <header class="main-header">
     <router-link to="/">
-      <img src="../assets/svg/easyCVworkLogo.svg">
+      <img src="@/assets/svg/easyCVworkLogo.svg">
     </router-link>
 
     <router-link :to='props.hrefUrl' class="sign-in"> {{ label }} </router-link>

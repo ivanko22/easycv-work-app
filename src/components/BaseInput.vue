@@ -31,6 +31,9 @@
 
 <script setup lang="ts">
 import { defineProps, withDefaults, defineEmits, ref } from 'vue'
+import eyeOpen from '../assets/svg/eyeOpen.svg'
+import eyeClose from '../assets/svg/eyeClose.svg'
+
 
 const props = withDefaults(
   defineProps<{
@@ -51,7 +54,7 @@ const isValidInput = ref(true)
 const activeInput = ref(false)
 const message = ref('')
 const isPasswordOpen = ref(false)
-const eyeIcon = ref([require('../assets/svg/eyeClose.svg'), require('../assets/svg/eyeOpen.svg')])
+const eyeIcon = ref([eyeOpen, eyeClose])
 const eyeIconIndex = ref(0)
 
 const doneTyping = () => {
