@@ -31,8 +31,8 @@
 
 <script setup lang="ts">
 import { defineProps, withDefaults, defineEmits, ref } from 'vue'
-import eyeOpen from '../assets/svg/eyeOpen.svg'
-import eyeClose from '../assets/svg/eyeClose.svg'
+import eyeOpen from '@/assets/svg/eyeOpen.svg'
+import eyeClose from '@/assets/svg/eyeClose.svg'
 
 
 const props = withDefaults(

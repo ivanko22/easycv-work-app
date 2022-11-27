@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineProps, withDefaults } from 'vue'
+import axios from "axios";
 
 const props = withDefaults(
   defineProps<{
@@ -12,6 +13,12 @@ const props = withDefaults(
   }
 )
 
+const handleLogout = () => {
+  if(props.hrefUrl === '/logout'){
+    axios.get("http://localhost:8000/api/logout")
+  }
+}
+
 </script>
 
 <template>
@@ -20,7 +27,7 @@ const props = withDefaults(
       <img src="@/assets/svg/easyCVworkLogo.svg">
     </router-link>
 
-    <router-link :to='props.hrefUrl' class="sign-in"> {{ label }} </router-link>
+    <router-link @click="handleLogout" :to='props.hrefUrl' class="sign-in"> {{ label }} </router-link>
 
   </header>
 </template>

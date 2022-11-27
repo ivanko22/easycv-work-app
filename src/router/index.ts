@@ -5,7 +5,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: 'Home',
     component: () => import(/* webpackChunkName: "sign up" */ '@/pages/WizzardView.vue'),
-    alias: '/logout'
+    // alias: '/logout'
   },
   {
     path: '/sign-up',
@@ -19,6 +19,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/sign-in',
     name: 'Sign In',
     component: () => import(/* webpackChunkName: "sign in" */ '@/pages/SignIn.vue')
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: () => import(/* webpackChunkName: "logged in" */ '@/pages/WizzardView.vue'),
   },
   {
     path: '/logged-in',

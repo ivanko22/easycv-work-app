@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import HeaderMain from '../components/HeaderMain.vue'
-import MainContainer from '@/components/ContainerMain.vue'
+import HeaderMain from "@/components/HeaderMain.vue";
+import MainContainer from "@/components/ContainerMain.vue";
 </script>
 
 <template>
@@ -8,5 +8,4 @@ import MainContainer from '@/components/ContainerMain.vue'
   <MainContainer />
 </template>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>
