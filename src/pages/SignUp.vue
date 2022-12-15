@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import axios from "axios";
-// import router from "@/router";
+import router from "@/router";
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseInput from "@/components/BaseInput.vue";
 import BaseButton from "@/components/BaseButton.vue";
@@ -93,7 +93,7 @@ const onSubmit = () => {
     .post("http://localhost:8000/api/user", sendCreateUser)
 
     .then((response) => {
-      console.log("create user");
+      // console.log("create user");
       switch (response.data) {
         case "User with this email already exists":
           toasterType.value = "warning";
@@ -107,12 +107,13 @@ const onSubmit = () => {
       }
 
       if (typeof response.data !== "string") {
-        axios
-          .post("http://localhost:8000/api/cv", sendFirstCV)
-          .then((response) => {
-            console.log("new user cv", response);
-          });
-        // router.push("/logged-in");
+        // console.log('response user created', response)
+        // axios
+        //   .post("http://localhost:8000/api/cv", sendFirstCV)
+        //   .then((response) => {
+        //     console.log("new user cv", response);
+        //   });
+        router.push("/logged-in");
       }
     });
 };

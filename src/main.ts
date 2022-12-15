@@ -3,6 +3,10 @@ import App from "./App.vue";
 import router from "./router";
 // import "./assets/css/main.scss";
 
+import axios from "axios";
+
+axios.defaults.baseURL = "http://localhost:8000";
+
 // const cors = require("cors");
 // const corsOptions = {
 //   origin: "http://localhost:8000",

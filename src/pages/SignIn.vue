@@ -49,7 +49,7 @@ const onSubmit = () => {
   toasterMessage.value = "";
 
   axios
-    .post("http://localhost:8000/api/login", {
+    .post("/api/login", {
       email: emailValue.value,
       password: passwordValue.value,
     })

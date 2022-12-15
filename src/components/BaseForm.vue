@@ -151,24 +151,22 @@ const onClickAway = (event: any) => {
 }
 
 const showHideForm = (arg) => {
-  console.log('arg', arg)
+  // console.log('arg', arg)
   isShowForm.value = arg
   isPrimaryBtnActive.value = !isPrimaryBtnActive.value
   // isShowForm.value = !isShowForm.value
   // console.log('isShowForm.value', isShowForm.value)
 }
 
-// 2022-09-07
-
 // get ID of main CV
-axios.get('api/user')
+axios.get('/api/user')
   .then((response) => {
-    // console.log('response.data user from form', response.data.cvs[0])
+    console.log('response.data user from form', response)
     mainUserCvId.value = response.data.cvs[0]
   })
 
 // get main CV
-const getMainCv = () => axios.get('api/cv')
+const getMainCv = () => axios.get('/api/cv')
   .then((response) => {
     // jobs.value.push(response.data.cvs[0])
     jobs.value = response.data.cvs[0]
@@ -237,7 +235,7 @@ const onSubmit = () => {
   //     removeEmployment ([String], optional): Used to remove employment records from a CV. Should be a list of the `_id` properties from each employment that is to be removed.
   // }
 
-  axios.put('api/cv', sendData)
+  axios.put('http://localhost:8000/api/cv', sendData)
 
     .then((response) => {
       // console.log('response.data from form', response.data)
