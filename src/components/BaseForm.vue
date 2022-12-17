@@ -235,7 +235,7 @@ const onSubmit = () => {
   //     removeEmployment ([String], optional): Used to remove employment records from a CV. Should be a list of the `_id` properties from each employment that is to be removed.
   // }
 
-  axios.put('http://localhost:8000/api/cv', sendData)
+  axios.put('/api/cv', sendData)
 
     .then((response) => {
       // console.log('response.data from form', response.data)

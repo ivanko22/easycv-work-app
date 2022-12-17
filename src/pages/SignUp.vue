@@ -90,10 +90,9 @@ const onSubmit = () => {
   };
 
   axios
-    .post("http://localhost:8000/api/user", sendCreateUser)
+    .post("/api/user", sendCreateUser)
 
     .then((response) => {
-      // console.log("create user");
       switch (response.data) {
         case "User with this email already exists":
           toasterType.value = "warning";
@@ -101,18 +100,20 @@ const onSubmit = () => {
           isShowToaster.value = true;
           break;
         case "ERROR: unable to create new user":
+          console.log("response.data", response.data);
+
           toasterType.value = "error";
           toasterMessage.value = "ERROR: unable to create new user";
           isShowToaster.value = true;
       }
 
       if (typeof response.data !== "string") {
-        // console.log('response user created', response)
-        // axios
-        //   .post("http://localhost:8000/api/cv", sendFirstCV)
-        //   .then((response) => {
-        //     console.log("new user cv", response);
-        //   });
+        console.log("response user created", response);
+
+        let token = response.data.jwt;
+        localStorage.setItem("user", token);
+
+        console.log("token", token);
         router.push("/logged-in");
       }
     });
