@@ -71,10 +71,10 @@ const onSubmit = () => {
       }
 
       if (typeof response.data !== "string") {
-        // let token = response.data.data.token;
-        // localStorage.setItem("user", token);
+        let token = response.data.jwt;
+        localStorage.setItem("user", token);
 
-        console.log("response.data", response.data);
+        console.log("response.data", response.data, token);
 
         router.push("/logged-in");
       }

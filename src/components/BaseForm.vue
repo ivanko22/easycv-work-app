@@ -150,8 +150,14 @@ const onClickAway = (event: any) => {
   // isDropdownOpen.value = false
 }
 
+const config = {
+  headers:{
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${localStorage.getItem("user")}`
+  }
+};
+
 const showHideForm = (arg) => {
-  // console.log('arg', arg)
   isShowForm.value = arg
   isPrimaryBtnActive.value = !isPrimaryBtnActive.value
   // isShowForm.value = !isShowForm.value
@@ -159,19 +165,16 @@ const showHideForm = (arg) => {
 }
 
 // get ID of main CV
-axios.get('/api/user')
+axios.get('/api/user', config)
   .then((response) => {
     console.log('response.data user from form', response)
     mainUserCvId.value = response.data.cvs[0]
   })
 
 // get main CV
-const getMainCv = () => axios.get('/api/cv')
+const getMainCv = () => axios.get('/api/cv', config)
   .then((response) => {
-    // jobs.value.push(response.data.cvs[0])
     jobs.value = response.data.cvs[0]
-
-    // console.log('jobs.value', jobs.value, jobs.value.workHistory)
   })
 
 getMainCv()
@@ -217,29 +220,9 @@ const onSubmit = () => {
   endDateLabel.value = 'Select Date'
   startDateLabel.value = 'Select Date'
 
-  // console.log('sendData', sendData)
-
-  //   {
-  //     cv (String): id of CV to update
-  //     jobTitle (String, optional): job title for CV
-  //     jobCategory (String, optional): job category for CV
-  //     experience (Number, optional): years of experience in position
-  //     skills ([String], optional): skill applicable to CV
-  //     newEmployment (Optional): [{
-  //         employer (String): name of the employer
-  //         newEmployer (Boolean): true (For future use)
-  //         startDate (Date): Date of start of employment
-  //         endDate (Date, optional): Date of end of employment
-  //         description (String): Description of job responsiblities
-  //     }]
-  //     removeEmployment ([String], optional): Used to remove employment records from a CV. Should be a list of the `_id` properties from each employment that is to be removed.
-  // }
-
-  axios.put('/api/cv', sendData)
+  axios.put('/api/cv', sendData, config)
 
     .then((response) => {
-      // console.log('response.data from form', response.data)
-      // console.log('jobs.value', jobs.value)
 
       if (typeof (response.data) !== 'string') {
         isShowForm.value = false
