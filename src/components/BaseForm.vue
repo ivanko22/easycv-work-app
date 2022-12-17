@@ -15,10 +15,6 @@ provide('selectedPeriod', computed(() => selectedPeriod.value))
 
 const jobs = ref([])
 
-// if (window.localStorage.getItem('Jobs') !== null) {
-//   jobsChild.value = JSON.parse(window.localStorage.getItem('Jobs'));
-// }
-
 const isFormValid = ref(false)
 const addJobForm = ref()
 const isJobValid = ref(false)
@@ -69,13 +65,11 @@ const onChildValidation = (isValueValid, label, inputValue) => {
   if (label === 'Start Date') {
     isStartDateValid.value = isValueValid
     startDateValue.value = inputValue
-    // console.log('inputValue', inputValue)
   }
 
   if (label === 'End Date') {
     isEndDateValid.value = isValueValid
     endDateValue.value = inputValue
-    // console.log('inputValue', inputValue)
   }
 
   if (label === 'Description') {
@@ -93,7 +87,6 @@ const onChildValidation = (isValueValid, label, inputValue) => {
     } else {
       isEndDateValid.value = true
     }
-    // console.log('startDateValue', startDateValue.value, isStartDateValid.value)
   }
 
   isJobValid.value = jobValdiation()
@@ -108,7 +101,6 @@ const jobValdiation = () => {
         isEndDateValid.value &&
         isDescriptonValid.value
   ) {
-    // console.log('isStartDateValid.value', isStartDateValid.value)
 
     return true
   } else {
@@ -228,14 +220,9 @@ const onSubmit = () => {
         isShowForm.value = false
         getMainCv()
         updateListOfJob()
-        // console.log('something jobs.value', jobs, jobs.value, jobs.value[0])
         router.push('/step-two')
       }
 
-      // jobs.value.push({
-      //   company: employerValue.value,
-      //   period: startDateValue.value + ' - ' + endDateValue.value
-      // })
     })
 }
 
