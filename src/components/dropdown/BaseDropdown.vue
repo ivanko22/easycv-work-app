@@ -9,7 +9,6 @@
       class="dropdown"
       @click="openYearsOrMonthsDropdown(['monthDropdown', 'monthDropdown'])"
     >
-      <!-- <p class="dropdown">{{ currentValue }}</p> -->
       <slot/>
       <img class="dropdown-icon" src="@/assets/svg/dropdown.svg"/>
 
@@ -76,10 +75,8 @@ const dateValidation = (date) => {
   if (date.length === 10) {
     isDateValid.value = true
     isShowLabel.value = true
-    // console.log('isDateValid.value', isDateValid.value)
   } else {
     isDateValid.value = false
-    // console.log('isDateValid.value', isDateValid.value, date.length)
   }
 }
 

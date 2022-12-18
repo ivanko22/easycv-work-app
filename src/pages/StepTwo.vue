@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, isProxy, toRaw, withCtx } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 
 import HeaderMain from "@/components/HeaderMain.vue";
@@ -8,7 +8,6 @@ import BaseToaster from "@/components/BaseToaster.vue";
 import BaseWizzard from "@/components/wizzard/BaseWizzard.vue";
 // import BaseJob from '@/components/dropdown/BaseJob.vue'
 import BaseForm from "@/components/BaseForm.vue";
-import BaseSecondaryButton from "@/components/BaseSecondaryButton.vue";
 
 const isShowToaster = ref(false);
 const toasterType = ref();
@@ -21,7 +20,7 @@ const isJobValid = ref(true);
 
 const mainUserCvId = ref();
 
-// const jobs = ref([])
+const jobs = ref([]);
 
 // const showHideForm = () => {
 //   isShowForm.value = !isShowForm.value
@@ -38,20 +37,16 @@ const mainUserCvId = ref();
 // get main CV
 const getMainCv = () =>
   axios.get("api/cv").then((response) => {
-    // console.log('response.data step 2', response.data, response.data.cvs[0])
     jobs.value.push(response.data.cvs[0]);
-    // console.log('jobs.value', jobs.value)
-
-    // console.log('jobs', jobs.value[0])
   });
 
 getMainCv();
 
-const getListOfJob = (jobList) => {
-  // console.log('jobList', jobList, jobList._rawValue[0])
-  // console.log('jobList[0]', jobList[0])
-  // console.log('typeof (jobList)', typeof (jobList))
-};
+// const getListOfJob = (jobList) => {
+// console.log('jobList', jobList, jobList._rawValue[0])
+// console.log('jobList[0]', jobList[0])
+// console.log('typeof (jobList)', typeof (jobList))
+// };
 
 const primaryBtnStatus = (status) => {
   console.log(status, "primaryBtnStatus");

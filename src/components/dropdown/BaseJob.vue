@@ -14,7 +14,6 @@
 
 <script setup lang="ts">
 import { defineProps, ref } from 'vue'
-import BaseForm from '../BaseForm.vue'
 
 defineProps<{
   jobTitle?: string

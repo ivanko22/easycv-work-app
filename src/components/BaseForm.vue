@@ -3,7 +3,6 @@ import { defineEmits, ref, provide, computed } from 'vue'
 import router from '@/router'
 import axios from 'axios'
 import BaseInput from '@/components/BaseInput.vue'
-import BaseButton from '@/components/BaseButton.vue'
 import BaseDropdown from '@/components/dropdown/BaseDropdown.vue'
 import BaseSecondaryButton from '@/components/BaseSecondaryButton.vue'
 import BaseJob from './dropdown/BaseJob.vue'
@@ -90,7 +89,7 @@ const onChildValidation = (isValueValid, label, inputValue) => {
   }
 
   isJobValid.value = jobValdiation()
-  // console.log('isFormValid.value', isFormValid.value, inputValue, label)
+
 }
 
 const jobValdiation = () => {
@@ -123,7 +122,6 @@ const jobValdiation = () => {
 // }
 
 const childDate = (date, label, isDateValid, dropdownLabel) => {
-  // console.log('date, label, isDateValid, dropdownLabel', date, label, isDateValid, dropdownLabel)
   if (label === 'Start Date') {
     isStartDateValid.value = isDateValid
     startDateLabel.value = dropdownLabel
@@ -133,7 +131,6 @@ const childDate = (date, label, isDateValid, dropdownLabel) => {
     endDateLabel.value = dropdownLabel
     endDateValue.value = date
   }
-  // console.log('date, startDateValue.value', date, label, startDateValue.value)
 }
 
 const onClickAway = (event: any) => {
@@ -152,8 +149,6 @@ const config = {
 const showHideForm = (arg) => {
   isShowForm.value = arg
   isPrimaryBtnActive.value = !isPrimaryBtnActive.value
-  // isShowForm.value = !isShowForm.value
-  // console.log('isShowForm.value', isShowForm.value)
 }
 
 // get ID of main CV
@@ -178,7 +173,6 @@ const formatMonth = (month) => {
 }
 
 const dateFormatation = (date) => {
-  // console.log('date', date)
   const startDate = new Date(date[0])
   const endDate = new Date(date[1])
 
@@ -187,8 +181,6 @@ const dateFormatation = (date) => {
 }
 
 const onSubmit = () => {
-  //   isShowToaster.value = false
-
   const sendData = {
     cv: mainUserCvId.value,
     jobTitle: jobPositionValue.value,

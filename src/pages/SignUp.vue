@@ -73,47 +73,18 @@ const onSubmit = () => {
     password: passwordValue.value,
   };
 
-  const sendFirstCV = {
-    jobTitle: "jobPositionValue.value",
-    jobCategory: "jobCategoryValue.value",
-    experience: 0,
-    skills: "skillsValue.value",
-    workHistory: [
-      {
-        employer: "employerValue.value",
-        newEmployer: false,
-        startDate: "2020-06-01",
-        endDate: "",
-        description: "descriptionValue.value",
-      },
-    ],
-  };
-
   axios
     .post("/api/user", sendCreateUser)
 
     .then((response) => {
-      switch (response.data) {
-        case "User with this email already exists":
-          toasterType.value = "warning";
-          toasterMessage.value = "User with this email already exists";
-          isShowToaster.value = true;
-          break;
-        case "ERROR: unable to create new user":
-          console.log("response.data", response.data);
-
-          toasterType.value = "error";
-          toasterMessage.value = "ERROR: unable to create new user";
-          isShowToaster.value = true;
-      }
-
-      if (typeof response.data !== "string") {
-        console.log("response user created", response);
-
+      if (typeof response.data === "string") {
+        toasterType.value = "error";
+        toasterMessage.value = response.data;
+        isShowToaster.value = true;
+      } else {
         let token = response.data.jwt;
         localStorage.setItem("user", token);
 
-        console.log("token", token);
         router.push("/logged-in");
       }
     });

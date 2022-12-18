@@ -73,7 +73,6 @@ const notFocus = () => {
 }
 
 const inputValidation = (inputValue) => {
-  // console.log(inputValue, inputValue)
 
   if (props.type === 'email') {
     // eslint-disable-next-line no-useless-escape
@@ -99,7 +98,6 @@ const inputValidation = (inputValue) => {
   }
 
   if (props.type === 'date') {
-    // console.log('This is date type', typeof (inputValue), inputValue)
 
     if (inputValue.length > 8) {
       isValidInput.value = true

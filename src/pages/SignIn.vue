@@ -6,7 +6,6 @@ import HeaderMain from "@/components/HeaderMain.vue";
 import BaseInput from "@/components/BaseInput.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
-// import VueJwtDecode from "vue-jwt-decode";
 
 const isShowToaster = ref(false);
 const toasterType = ref();
@@ -80,16 +79,6 @@ const onSubmit = () => {
       }
     });
 };
-
-// try {
-//         let response = await this.$http.post("/auth/login", this.login);
-//         let token = response.data.data.token;
-//         localStorage.setItem("user", token);
-//         // navigate to a protected resource 
-//         this.$router.push("/me");
-//       } catch (err) {
-//         console.log(err.response);
-//       }
 </script>
 
 <template>
