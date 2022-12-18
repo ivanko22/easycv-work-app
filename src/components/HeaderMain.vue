@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { defineProps, withDefaults } from 'vue'
-import axios from "axios";
 
 const props = withDefaults(
   defineProps<{
@@ -15,7 +14,7 @@ const props = withDefaults(
 
 const handleLogout = () => {
   if(props.hrefUrl === '/logout'){
-    axios.get("http://localhost:8000/api/logout")
+    localStorage.removeItem("user")
   }
 }
 
