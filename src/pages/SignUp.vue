@@ -77,6 +77,8 @@ const onSubmit = () => {
     .post("/api/user", sendCreateUser)
 
     .then((response) => {
+      console.log("create user response", response);
+
       if (typeof response.data === "string") {
         toasterType.value = "error";
         toasterMessage.value = response.data;
