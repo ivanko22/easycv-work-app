@@ -85,7 +85,7 @@ const onSubmit = () => {
         let token = response.data.jwt;
         localStorage.setItem("user", token);
 
-        router.push("/logged-in");ma
+        router.push("/logged-in");
       }
     });
 };

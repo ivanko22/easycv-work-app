@@ -60,7 +60,7 @@ const primaryBtnStatus = (status) => {
     :type="toasterType"
     :message="toasterMessage"
   />
-  <header-main label="Log Out" hrefUrl="api/logout" />
+  <header-main label="Sign Out" hrefUrl="/logout" />
 
   <div class="stepTwoForm">
     <h1 class="title-tell-us">Tell Us About Yourself</h1>
