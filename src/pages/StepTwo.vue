@@ -37,6 +37,7 @@ const jobs = ref([]);
 // get main CV
 const getMainCv = () =>
   axios.get("api/cv").then((response) => {
+    console.log("response api/cv", response);
     jobs.value.push(response.data.cvs[0]);
   });
 

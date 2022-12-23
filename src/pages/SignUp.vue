@@ -77,8 +77,6 @@ const onSubmit = () => {
     .post("/api/user", sendCreateUser)
 
     .then((response) => {
-      console.log("create user response", response);
-
       if (typeof response.data === "string") {
         toasterType.value = "error";
         toasterMessage.value = response.data;
@@ -87,7 +85,7 @@ const onSubmit = () => {
         let token = response.data.jwt;
         localStorage.setItem("user", token);
 
-        router.push("/logged-in");
+        router.push("/logged-in");ma
       }
     });
 };
