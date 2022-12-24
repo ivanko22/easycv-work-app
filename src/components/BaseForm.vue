@@ -259,6 +259,7 @@ const updateListOfJob = () => {
     :jobTitle="job.position"
     :companyName="job.employer.name"
     :workPeriod="dateFormatation([job.startDate, job.endDate])"
+    :jobDescription="job.description"
   />
 
   <BaseSecondaryButton

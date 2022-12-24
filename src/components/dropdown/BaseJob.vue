@@ -1,14 +1,19 @@
 <template>
-    <div class="jobContainer">
+    <div @click="openCloseJobAcc" class="jobContainer">
+        <div class="jobHeader">
+            <div class="companyPosition">
+                <p class="jobPosition">{{ jobTitle }}</p>
+                <p class="company"> {{ companyName }} </p>
+            </div>
 
-    <div class="companyPosition">
-        <p class="jobPosition">{{ jobTitle }}</p>
-        <p class="company"> {{ companyName }} </p>
-    </div>
+            <p class="date"> {{ workPeriod }} </p>
+            <img :class="{ rotateIconUp: isBaseJobOpen }" src="@/assets/svg/arrow.svg"/>
+        </div>
 
-    <p class="date"> {{ workPeriod }} </p>
-    <img src="@/assets/svg/arrow.svg"/>
-
+        <div v-if="isBaseJobOpen" class="jobDescriptionContainer">
+        {{ jobDescription }}
+        </div>
+        
     </div>
 </template>
 
@@ -16,10 +21,17 @@
 import { defineProps, ref } from 'vue'
 
 defineProps<{
-  jobTitle?: string
-  companyName?: string
-  workPeriod?: string
+    jobTitle?: string,
+    companyName?: string,
+    workPeriod?: string,
+    jobDescription?: string
 }>()
+
+const isBaseJobOpen = ref(false)
+
+const openCloseJobAcc = () => {
+    isBaseJobOpen.value = !isBaseJobOpen.value
+}
 
 </script>
 
@@ -27,16 +39,30 @@ defineProps<{
 
     .jobContainer{
         display: flex;
+        flex-flow: column;
+        cursor: pointer;
         width: 408px;
         margin-top: 30px;
         margin-bottom: 30px;
+        box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.25);
+        background: #FFFFFF;
+        border: 1px solid #D5D5D5;
+        border-radius: 6px;
+    }
+
+    .jobHeader{
+        display: flex;
         align-items: center;
         justify-content: space-around;
         height: 70px;
-        background: #FFFFFF;
-        border: 1px solid #D5D5D5;
-        box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.25);
-        border-radius: 6px;
+    }
+
+    .jobDescriptionContainer{
+        padding-right: 15px;
+        padding-left: 15px;
+        padding-bottom: 19px;
+        font-size: 12px;
+        line-height: 16px;
     }
 
     .companyPosition{
@@ -65,5 +91,9 @@ defineProps<{
         font-weight: 400;
         font-size: 14px;
         color: $grey;
+    }
+
+    .rotateIconUp{
+        transform: rotate(-90deg);
     }
 </style>
