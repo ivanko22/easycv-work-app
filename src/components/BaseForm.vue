@@ -164,11 +164,13 @@ axios.get('/api/user', config)
 // get main CV
 const getMainCv = () => axios.get('/api/cv', config, mainUserCvId.value)
   .then((response) => {
-    console.log('Get main CV', response)
+    // console.log('Get main CV', response)
     console.log('Get job history', response.data.cvs[0].workHistory)
+    console.log('Get job _id', response.data.cvs[0].workHistory[0]._id)
+
 
     jobs.value = response.data.cvs[0].workHistory
-    console.log('jobs', jobs, jobs.value)
+    // console.log('jobs', jobs, jobs.value)
   })
 
 getMainCv()
@@ -255,7 +257,7 @@ const updateListOfJob = () => {
 
   <BaseJob
     v-for="(job, index) in jobs"
-    :key="job.id"
+    :jobID="job._id"
     :jobTitle="job.position"
     :companyName="job.employer.name"
     :workPeriod="dateFormatation([job.startDate, job.endDate])"
