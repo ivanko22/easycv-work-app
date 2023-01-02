@@ -164,12 +164,12 @@ axios.get('/api/user', config)
 // get main CV
 const getMainCv = () => axios.get('/api/cv', config, mainUserCvId.value)
   .then((response) => {
-    // console.log('Get main CV', response)
-    console.log('Get job history', response.data.cvs[0].workHistory)
-    console.log('Get job _id', response.data.cvs[0].workHistory[0]._id)
+    console.log('Get main CV', response)
+    console.log('Get job history', response.data[0].workHistory)
+    console.log('Get job _id', response.data[0].workHistory[0]._id)
 
 
-    jobs.value = response.data.cvs[0].workHistory
+    jobs.value = response.data[0].workHistory
     // console.log('jobs', jobs, jobs.value)
   })
 
@@ -190,38 +190,28 @@ const dateFormatation = (date) => {
 }
 
 const onSubmit = () => {
-  const sendData = {
-    cv: mainUserCvId.value,
-    jobTitle: mainCVjobPositionValue.value,
-    jobCategory: jobCategoryValue.value,
-    experience: experienceValue.value,
-    skills: skillsValue.value,
-    newEmployment: [{
+    const sendData = {
       position: jobPositionValue.value,
       employer: employerValue.value,
-      newEmployer: newEmployerValue.value,
       startDate: new Date(startDateValue.value).toString(),
       endDate: new Date(endDateValue.value).toString(),
       description: descriptionValue.value
-    }]
-  }
+    }
 
-//   body = {
-//     cv (String): id of CV to update
-//     jobTitle (String, optional): job title for CV
-//     jobCategory (String, optional): job category for CV
-//     experience (Number, optional): years of experience in position
-//     skills ([String], optional): skill applicable to CV
-//     newEmployment (Optional): [{
-//         position (String): Job title of position held at company
-//         employer (String): name of the employer
-//         newEmployer (Boolean): true (For future use)
-//         startDate (Date): Date of start of employment
-//         endDate (Date, optional): Date of end of employment
-//         description (String): Description of job responsiblities
-//     }]
-//     removeEmployment ([String], optional): Used to remove employment records from a CV. Should be a list of the `_id` properties from each employment that is to be removed.
-// }
+  // const sendData = {
+  //   cv: mainUserCvId.value,
+  //   jobTitle: mainCVjobPositionValue.value,
+  //   jobCategory: jobCategoryValue.value,
+  //   experience: experienceValue.value,
+  //   skills: skillsValue.value,
+  //   newEmployment: [{
+  //     position: jobPositionValue.value,
+  //     employer: employerValue.value,
+  //     newEmployer: newEmployerValue.value,
+  //     startDate: new Date(startDateValue.value).toString(),
+  //     endDate: new Date(endDateValue.value).toString(),
+  //     description: descriptionValue.value
+  //   }]
 
   addJobForm.value.reset()
 
@@ -231,7 +221,7 @@ const onSubmit = () => {
   endDateLabel.value = 'Select Date'
   startDateLabel.value = 'Select Date'
 
-  axios.put('/api/cv', sendData, config)
+  axios.post(`/api/cv/${mainUserCvId.value}/employment`, sendData, config)
 
     .then((response) => {
 
@@ -259,7 +249,7 @@ const updateListOfJob = () => {
     v-for="(job, index) in jobs"
     :jobID="job._id"
     :jobTitle="job.position"
-    :companyName="job.employer.name"
+    :companyName="job.employer"
     :workPeriod="dateFormatation([job.startDate, job.endDate])"
     :jobDescription="job.description"
   />
