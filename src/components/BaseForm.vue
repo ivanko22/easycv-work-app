@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineEmits, ref, provide, computed } from 'vue'
+import { ref, provide, computed } from 'vue'
 import router from '@/router'
 import axios from 'axios'
 import BaseInput from '@/components/BaseInput.vue'
@@ -157,20 +157,18 @@ const showHideForm = (arg) => {
 // get ID of main CV
 axios.get('/api/user', config)
   .then((response) => {
-    console.log('response.data user from form', response)
     mainUserCvId.value = response.data.cvs[0]
   })
 
 // get main CV
 const getMainCv = () => axios.get('/api/cv', config, mainUserCvId.value)
   .then((response) => {
-    console.log('Get main CV', response)
-    console.log('Get job history', response.data[0].workHistory)
-    console.log('Get job _id', response.data[0].workHistory[0]._id)
-
-
+    // console.log('Get main CV from remove JOb', response)
     jobs.value = response.data[0].workHistory
-    // console.log('jobs', jobs, jobs.value)
+
+    if (jobs.value.length < 1) {
+      isShowForm.value = true
+    }
   })
 
 getMainCv()
@@ -198,21 +196,6 @@ const onSubmit = () => {
       description: descriptionValue.value
     }
 
-  // const sendData = {
-  //   cv: mainUserCvId.value,
-  //   jobTitle: mainCVjobPositionValue.value,
-  //   jobCategory: jobCategoryValue.value,
-  //   experience: experienceValue.value,
-  //   skills: skillsValue.value,
-  //   newEmployment: [{
-  //     position: jobPositionValue.value,
-  //     employer: employerValue.value,
-  //     newEmployer: newEmployerValue.value,
-  //     startDate: new Date(startDateValue.value).toString(),
-  //     endDate: new Date(endDateValue.value).toString(),
-  //     description: descriptionValue.value
-  //   }]
-
   addJobForm.value.reset()
 
   jobPositionValue.value = ''
@@ -228,17 +211,11 @@ const onSubmit = () => {
       if (typeof (response.data) !== 'string') {
         isShowForm.value = false
         getMainCv()
-        updateListOfJob()
+
         router.push('/step-two')
       }
 
     })
-}
-
-const emit = defineEmits<{(e: 'update:jobsList', value: object): void;}>()
-
-const updateListOfJob = () => {
-  emit('update:jobsList', jobs)
 }
 
 </script>
@@ -247,11 +224,13 @@ const updateListOfJob = () => {
 
   <BaseJob
     v-for="(job, index) in jobs"
+    :cvID="mainUserCvId"
     :jobID="job._id"
     :jobTitle="job.position"
     :companyName="job.employer"
     :workPeriod="dateFormatation([job.startDate, job.endDate])"
     :jobDescription="job.description"
+    v-on:update:jobs-list="getMainCv"
   />
 
   <BaseSecondaryButton
@@ -266,8 +245,13 @@ const updateListOfJob = () => {
   <form ref="addJobForm" v-show="isShowForm"  v-on:submit.prevent="onSubmit" class="signUpForm" autocomplete="off">
     <p class="addJobTittle"> Add Job </p>
 
-    <base-input class="input-long" type="text" label="Job Position" name="jobPosition" v-on:update:is-valid="onChildValidation"
-      required />
+    <base-input 
+      class="input-long" 
+      type="text" 
+      label="Job Position" 
+      name="jobPosition" 
+      v-on:update:is-valid="onChildValidation"
+    required />
 
     <base-input class="input-long" type="text" label="Employer" name="employer" v-on:update:is-valid="onChildValidation"
       required />

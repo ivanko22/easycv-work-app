@@ -12,7 +12,7 @@
             <!-- <img :class="{ rotateIconUp: isBaseJobOpen }" src="@/assets/svg/arrow.svg"/> -->
        
             <div class="iconsContainer">
-                <svg @click="handleIconClick('remove', jobID)" class="iconContainer"  width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg @click="handleIconClick('remove', cvID, jobID)" class="iconContainer"  width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path class="iconColor" d="M6.39558 18.7329C5.91289 18.7329 5.49982 18.5612 5.15637 18.2177C4.81234 17.8737 4.64032 17.4603 4.64032 16.9776V5.56844H3.7627V3.81318H8.15084V2.93555H13.4166V3.81318H17.8048V5.56844H16.9271V16.9776C16.9271 17.4603 16.7554 17.8737 16.412 18.2177C16.0679 18.5612 15.6546 18.7329 15.1719 18.7329H6.39558ZM15.1719 5.56844H6.39558V16.9776H15.1719V5.56844ZM8.15084 15.2224H9.9061V7.32369H8.15084V15.2224ZM11.6614 15.2224H13.4166V7.32369H11.6614V15.2224ZM6.39558 5.56844V16.9776V5.56844Z" fill="#B3B3B3"/>
                 </svg>
                 
@@ -42,6 +42,7 @@ import axios from 'axios';
 import { defineProps, ref } from 'vue'
 
 defineProps<{
+    cvID: string,
     jobID: string,
     jobTitle?: string,
     companyName?: string,
@@ -55,7 +56,7 @@ const openCloseJobAcc = () => {
     isBaseJobOpen.value = !isBaseJobOpen.value
 }
 
-const handleIconClick = (arg, id) => {
+const handleIconClick = (arg, cvID, jobID) => {
 
     const config = {
     headers:{
@@ -64,22 +65,21 @@ const handleIconClick = (arg, id) => {
     }
     };
 
-    const sendData = {
-        cv: '',
-        jobTitle: '',
-        jobCategory: '',
-        experience: '',
-        skills: '',
-        removeEmployment: [id],
-    }
-    console.log('handle icon click', arg, id)
+    // console.log('handle icon click', cvID, jobID)
 
     if (arg === 'remove') {
-        axios.put('/api/cv', sendData, config)
+        // console.log('remove job position', cvID, jobID)
+        axios.delete(`/api/cv/${cvID}/employment/${jobID}`, config)
+        .then(() => { updateListOfJob(true)} )
     }
 }
 
+const emit = defineEmits<{(e: 'update:jobsList', value: false): void;}>()
 
+const updateListOfJob = (arg) => {
+    console.log('update job list emit')
+    emit('update:jobsList', arg)
+}
 
 </script>
 
