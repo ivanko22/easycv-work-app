@@ -94,6 +94,7 @@ const onSubmit = () => {
       type="email"
       label="Email"
       name="Email"
+      inputPropsValue=""
       v-on:update:is-valid="onChildValidation"
       required
     />
@@ -103,6 +104,7 @@ const onSubmit = () => {
       type="password"
       label="Password"
       name="Login Password"
+      inputPropsValue=""
       v-on:update:is-valid="onChildValidation"
       required
     />

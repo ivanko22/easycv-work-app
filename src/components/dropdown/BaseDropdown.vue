@@ -90,7 +90,7 @@ const openYearsOrMonthsDropdown = (selected) => {
   if (selected[0] === 'selectedMonth') {
     selectedMonth.value = selected[1]
 
-    if (props.label === 'Start Date') {
+    if (props.label === 'startDate') {
       selectedPeriod.value[0] = selected[2].slice(2)
       dropdownLabel.value = selected[1]
     } else {
@@ -105,7 +105,7 @@ const openYearsOrMonthsDropdown = (selected) => {
   if (selected[0] === 'selectedYear') {
     selectedYear.value = selected[1]
 
-    if (props.label === 'Start Date') {
+    if (props.label === 'startDate') {
       selectedPeriod.value[0] = selectedYear.value.toString() + '-' + selectedPeriod.value[0] + '-01'
       currentPeriod.value = selectedPeriod.value[0]
       dropdownLabel.value = dropdownLabel.value + ' ' + selectedYear.value.toString()

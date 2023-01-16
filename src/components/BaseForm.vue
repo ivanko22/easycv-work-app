@@ -13,6 +13,12 @@ const selectedPeriod = ref(['Start Date', 'End Date'])
 provide('selectedPeriod', computed(() => selectedPeriod.value))
 
 const jobs = ref([])
+const isJobEdit = ref(false)
+const isAddJobFormShow = ref(false)
+const isShowBaseJob = ref(true)
+
+const selectedJobEdit = ref('')
+const editJobID = ref()
 
 const isFormValid = ref(false)
 const addJobForm = ref()
@@ -20,9 +26,10 @@ const isJobValid = ref(false)
 
 const isPrimaryBtnActive = ref(true)
 
-const isShowForm = ref(true)
-
 const jobPositionValue = ref('')
+const inputPreviousValue = ref('Fack')
+
+
 const isJobPositionValid = ref()
 
 const mainCVjobPositionValue = ref('')
@@ -54,27 +61,34 @@ const isDescriptonValid = ref()
 const newEmployerValue = ref(true)
 
 const onChildValidation = (isValueValid, label, inputValue) => {
-  if (label === 'Job Position') {
+
+  console.log('child validation', isValueValid, label, inputValue)
+
+  if (label === 'position') {
+    console.log('position', inputValue, jobPositionValue.value)
     isJobPositionValid.value = isValueValid
     jobPositionValue.value = inputValue
   }
 
-  if (label === 'Employer') {
+  if (label === 'employer') {
     isEmployerValid.value = isValueValid
     employerValue.value = inputValue
   }
 
-  if (label === 'Start Date') {
-    isStartDateValid.value = isValueValid
-    startDateValue.value = inputValue
-  }
+  // if (label === 'startDate') {
+  //   console.log('startDate', inputValue, startDateValue.value)
+  //   isStartDateValid.value = isValueValid
+  //   startDateValue.value = inputValue
+  // }
 
-  if (label === 'End Date') {
-    isEndDateValid.value = isValueValid
-    endDateValue.value = inputValue
-  }
+  // if (label === 'endDate') {
+  //   console.log('endtDate', inputValue, endDateValue.value)
 
-  if (label === 'Description') {
+  //   isEndDateValid.value = isValueValid
+  //   endDateValue.value = inputValue
+  // }
+
+  if (label === 'description') {
     isDescriptonValid.value = isValueValid
     descriptionValue.value = inputValue
 
@@ -125,7 +139,10 @@ const jobValdiation = () => {
 // }
 
 const childDate = (date, label, isDateValid, dropdownLabel) => {
-  if (label === 'Start Date') {
+
+  console.log('childDate', date, label, isDateValid, dropdownLabel )
+
+  if (label === 'startDate') {
     isStartDateValid.value = isDateValid
     startDateLabel.value = dropdownLabel
     startDateValue.value = date
@@ -149,9 +166,32 @@ const config = {
   }
 };
 
-const showHideForm = (arg) => {
-  isShowForm.value = arg
+const showHideForm = (arg, cvID, jobID) => {
+  isJobEdit.value =  false
   isPrimaryBtnActive.value = !isPrimaryBtnActive.value
+
+  if (arg === 'edit') {
+    // inputPreviousValue.value = 'OMG'
+
+    isJobEdit.value =  true
+    isAddJobFormShow.value = false
+    isShowBaseJob.value = false
+
+    editJob(arg, cvID, jobID)
+  }
+
+  if (arg === 'add job') {
+    isAddJobFormShow.value = true
+    isJobEdit.value =  false
+    isShowBaseJob.value = false
+
+    console.log('add job!!!', isAddJobFormShow.value)
+  }
+
+  if (arg === 'add job cancel') {
+    isAddJobFormShow.value = false
+    isShowBaseJob.value = true
+  }
 }
 
 // get ID of main CV
@@ -165,13 +205,42 @@ const getMainCv = () => axios.get('/api/cv', config, mainUserCvId.value)
   .then((response) => {
     // console.log('Get main CV from remove JOb', response)
     jobs.value = response.data[0].workHistory
+    // console.log('jobs', jobs.value[0]._id)
 
-    if (jobs.value.length < 1) {
-      isShowForm.value = true
-    }
-  })
+    // if (jobs.value.length < 1) {
+    //     isJobEdit.value = true
+    //   }
+
+    })
 
 getMainCv()
+
+// edit Job Position
+const editJob = (arg, cvID, jobID) => {
+
+  for (let i = 0; i < jobs.value.length; i++) {
+
+    const selectedJob = jobs.value[i];
+
+    // console.log('selectedJob', selectedJob)
+
+    if (selectedJob._id === jobID) {
+      selectedJobEdit.value = selectedJob
+      editJobID.value = jobID
+
+      jobPositionValue.value = selectedJobEdit.value.position
+
+      startDateLabel.value = formatMonth(new Date(selectedJobEdit.value.startDate).getMonth())+ ' ' + new Date(selectedJobEdit.value.startDate).getFullYear()
+      endDateLabel.value = formatMonth(new Date(selectedJobEdit.value.endDate).getMonth())+ ' ' + new Date(selectedJobEdit.value.endDate).getFullYear()
+
+      // console.log('this is selected job', selectedJobEdit.value, jobPositionValue.value)
+      // console.log('selectedJobPosition', `${localStorage.getItem("selectedJobPosition")}`)
+    }
+    
+  }
+  console.log('edit job position from parrent', arg, cvID, jobID)
+
+}
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
 
@@ -187,14 +256,14 @@ const dateFormatation = (date) => {
   return period
 }
 
-const onSubmit = () => {
-    const sendData = {
-      position: jobPositionValue.value,
-      employer: employerValue.value,
-      startDate: new Date(startDateValue.value).toString(),
-      endDate: new Date(endDateValue.value).toString(),
-      description: descriptionValue.value
-    }
+const onSubmit = (arg) => {
+  const sendData = {
+    position: jobPositionValue.value,
+    employer: employerValue.value,
+    startDate: new Date(startDateValue.value).toString(),
+    endDate: new Date(endDateValue.value).toString(),
+    description: descriptionValue.value
+  }
 
   addJobForm.value.reset()
 
@@ -204,18 +273,44 @@ const onSubmit = () => {
   endDateLabel.value = 'Select Date'
   startDateLabel.value = 'Select Date'
 
-  axios.post(`/api/cv/${mainUserCvId.value}/employment`, sendData, config)
+  if (arg === 'add') {
+    // console.log('add', sendData, mainUserCvId.value)
 
+    axios.post(`/api/cv/${mainUserCvId.value}/employment`, sendData, config)
     .then((response) => {
+      console.log('add response', response, sendData)
 
       if (typeof (response.data) !== 'string') {
-        isShowForm.value = false
+        isAddJobFormShow.value = false
+        isShowBaseJob.value = true
         getMainCv()
 
         router.push('/step-two')
       }
 
-    })
+    }) 
+  }
+
+  if (arg === 'update') {
+    // console.log('updating job', sendData, editJobID.value, mainUserCvId.value)
+
+    axios.put(`/api/cv/${mainUserCvId.value}/employment/${editJobID.value}`, sendData, config)    
+    .then((response) => {
+
+      console.log('response update job', response)
+
+      if (typeof (response.data) !== 'string') {
+        isAddJobFormShow.value = false
+        isShowBaseJob.value = true
+
+        getMainCv()
+
+        router.push('/step-two')
+      }
+
+    }) 
+    
+  }
 }
 
 </script>
@@ -223,6 +318,7 @@ const onSubmit = () => {
 <template>
 
   <BaseJob
+    v-show="isShowBaseJob"
     v-for="(job, index) in jobs"
     :cvID="mainUserCvId"
     :jobID="job._id"
@@ -231,79 +327,150 @@ const onSubmit = () => {
     :workPeriod="dateFormatation([job.startDate, job.endDate])"
     :jobDescription="job.description"
     v-on:update:jobs-list="getMainCv"
+    v-on:update:editJobPositon="showHideForm"
   />
 
   <BaseSecondaryButton
-    v-show="!isShowForm"
+    v-show="!isAddJobFormShow"
     icon="plus"
-    @click="showHideForm(true)"
+    @click="showHideForm('add job')"
     :disabled="isJobValid"
     type="submit"
     label="Add More Job"
   />
 
-  <form ref="addJobForm" v-show="isShowForm"  v-on:submit.prevent="onSubmit" class="signUpForm" autocomplete="off">
-    <p class="addJobTittle"> Add Job </p>
+  <form ref="addJobForm" v-on:submit.prevent="onSubmit" class="signUpForm" autocomplete="off">
 
-    <base-input 
-      class="input-long" 
-      type="text" 
-      label="Job Position" 
-      name="jobPosition" 
-      v-on:update:is-valid="onChildValidation"
-    required />
+  <template v-if="isJobEdit">
+    <div v-for="(value, key, index) in selectedJobEdit">
+      <BaseInput v-if="index > 3 || index < 2"
+        :input-props-value="value"
+        name="job position"
+        class="input-long" 
+        type="text" 
+        :label="key" 
+        v-on:update:is-valid="onChildValidation"
+        required 
+      />
 
-    <base-input class="input-long" type="text" label="Employer" name="employer" v-on:update:is-valid="onChildValidation"
-      required />
+      <div v-if="index <= 0" class="group-dropdown">
+        <base-dropdown
+          v-on:update:currentPeriod="childDate"
+          label="startDate"
+          :isValidDropdown="isStartDateValid"
+        >
+          <p class="dropdown">{{ startDateLabel }}</p>
+        </base-dropdown>
 
-    <div class="group-dropdown">
+        <base-dropdown
+          v-on:update:currentPeriod="childDate"
+          label="endDate"
+          :isValidDropdown="isEndDateValid"
+          >
+          <p class="dropdown">{{ endDateLabel }}</p>
+        </base-dropdown>
+      </div>
 
-      <base-dropdown
+      <!-- <base-dropdown v-if="index > 1 && index < 4"
         v-on:update:currentPeriod="childDate"
-        label="Start Date"
+        :label="key"
         :isValidDropdown="isStartDateValid"
       >
         <p class="dropdown">{{ startDateLabel }}</p>
-      </base-dropdown>
-
-      <base-dropdown
-        v-on:update:currentPeriod="childDate"
-        label="End Date"
-        :isValidDropdown="isEndDateValid"
-        >
-        <p class="dropdown">{{ endDateLabel }}</p>
-      </base-dropdown>
-
+      </base-dropdown> -->
     </div>
 
-    <base-input
-      class="input-long"
-      type="text"
-      label="Description"
-      name="description"
-      v-on:update:is-valid="onChildValidation"
-    />
+    <div class="secondBtnsContainer">
+        <BaseSecondaryButton
+          icon="plus"
+          @click="showHideForm(false), onSubmit('update')"
+          :disabled="isJobValid"
+          type="submit"
+          label="Save"
+        />
 
-  </form>
+        <BaseSecondaryButton
+          icon="close"
+          @click="showHideForm('add job cancel')"
+          type="cancel"
+          label="Cancel"
+        />
+      </div>
+  </template>
 
-  <div class="secondBtnsContainer">
-    <BaseSecondaryButton
-      v-show="isShowForm"
-      icon="plus"
-      @click="showHideForm(false), onSubmit()"
-      :disabled="isJobValid"
-      type="submit"
-      label="Add Job"
-    />
+    <template v-if="isAddJobFormShow">
+      <p class="addJobTittle"> Add Job </p>
 
-    <BaseSecondaryButton
-      v-show="isShowForm"
-      icon="close"
-      @click="showHideForm(false)"
-      type="cancel"
-      label="Cancel"
-    />
-  </div>
+      <base-input
+        :input-props-value="jobPositionValue"
+        name="job position"
+        class="input-long" 
+        type="text" 
+        label="position" 
+        v-on:update:is-valid="onChildValidation"
+        required 
+      />
+
+      <base-input
+        :input-props-value="`${inputPreviousValue}`"
+        class="input-long" 
+        name="employer"
+        type="text" 
+        label="employer" 
+        v-on:update:is-valid="onChildValidation"
+        required 
+        />  
+
+        <div class="group-dropdown">
+
+          <base-dropdown
+            v-on:update:currentPeriod="childDate"
+            label="startDate"
+            :isValidDropdown="isStartDateValid"
+          >
+            <p class="dropdown">{{ startDateLabel }}</p>
+          </base-dropdown>
+
+          <base-dropdown
+            v-on:update:currentPeriod="childDate"
+            label="endDate"
+            :isValidDropdown="isEndDateValid"
+            >
+            <p class="dropdown">{{ endDateLabel }}</p>
+          </base-dropdown>
+
+        </div>
+
+        <base-input
+          input-props-value="kjnkjnkjnkjnkj"
+          class="input-long"
+          type="text"
+          label="description"
+          name="description"
+          v-on:update:is-valid="onChildValidation"
+        />
+
+        <div class="secondBtnsContainer">
+          <BaseSecondaryButton
+            icon="plus"
+            @click="showHideForm(false), onSubmit('add')"
+            :disabled="isJobValid"
+            type="submit"
+            label="Save"
+          />
+
+          <BaseSecondaryButton
+            icon="close"
+            @click="showHideForm('add job cancel')"
+            type="cancel"
+            label="Cancel"
+          />
+        </div>
+
+    </template>
+    
+      
+    </form>
 
 </template>
 

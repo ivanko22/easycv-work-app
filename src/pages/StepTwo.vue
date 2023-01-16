@@ -22,32 +22,26 @@ const mainUserCvId = ref();
 
 const jobs = ref([]);
 
+const config = {
+  headers:{
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${localStorage.getItem("user")}`
+  }
+};
+
 // const showHideForm = () => {
 //   isShowForm.value = !isShowForm.value
 // console.log('isShowForm.value', isShowForm.value)
 // }
 
-// get ID of main CV
-// axios.get('api/user')
-//   .then((response) => {
-//     // console.log('response.data user', response.data, response.data.cvs[0])
-//     mainUserCvId.value = response.data.cvs[0]
-//   })
-
 // get main CV
 const getMainCv = () =>
-  axios.get("api/cv").then((response) => {
+  axios.get("api/cv", config).then((response) => {
     console.log("response api/cv", response);
     jobs.value.push(response.data.cvs[0]);
   });
 
 getMainCv();
-
-// const getListOfJob = (jobList) => {
-// console.log('jobList', jobList, jobList._rawValue[0])
-// console.log('jobList[0]', jobList[0])
-// console.log('typeof (jobList)', typeof (jobList))
-// };
 
 const primaryBtnStatus = (status) => {
   console.log(status, "primaryBtnStatus");
@@ -71,7 +65,7 @@ const primaryBtnStatus = (status) => {
       :isExperienced="true"
     ></base-wizzard>
 
-    <base-form v-on:update:jobsList="getListOfJob" />
+    <base-form />
 
     <base-button
       v-on:update:primaryBtnStatus="primaryBtnStatus"

@@ -7,7 +7,6 @@
       @focus="typingHandle"
       @blur="notFocus"
       :type="type"
-      name=""
       class=""
       v-model="watchInpute"
       @animationstart="checkAnimation"
@@ -40,7 +39,8 @@ const props = withDefaults(
       id?: string,
       label?: string,
       type?: string,
-      name: string
+      name: string,
+      inputPropsValue: string
     }>(),
   {
     id: '',
@@ -49,7 +49,8 @@ const props = withDefaults(
   }
 )
 
-const watchInpute = ref('')
+const watchInpute = ref(props.inputPropsValue)
+
 const isValidInput = ref(true)
 const activeInput = ref(false)
 const message = ref('')
@@ -57,8 +58,14 @@ const isPasswordOpen = ref(false)
 const eyeIcon = ref([eyeOpen, eyeClose])
 const eyeIconIndex = ref(0)
 
+// const getInputData = () => {
+//   watchInpute.value = props.inputValue
+//   console.log('input data should be here watchInpute.value', props.inputValue, watchInpute.value)
+// }
+
 const doneTyping = () => {
   inputValidation(watchInpute.value)
+  // console.log('props.inputValue', props.inputValue)
 }
 
 const typingHandle = () => {
@@ -121,7 +128,9 @@ const inputValidation = (inputValue) => {
   }
 }
 
-const emit = defineEmits<{(e: 'update:isValid', value: boolean, label: string): void;
+const emit = defineEmits<{
+  (e: 'update:isValid', value: boolean, label: string): void;
+  (e: 'update:getInputData', value: string): void;
   }>()
 
 const updateInputValue = () => {
