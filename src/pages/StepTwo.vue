@@ -38,7 +38,7 @@ const config = {
 const getMainCv = () =>
   axios.get("api/cv", config).then((response) => {
     console.log("response api/cv", response);
-    jobs.value.push(response.data.cvs[0]);
+    jobs.value.push(response.data[0]);
   });
 
 getMainCv();

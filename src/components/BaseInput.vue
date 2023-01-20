@@ -76,8 +76,12 @@ const typingHandle = () => {
 const notFocus = () => {
   if (watchInpute.value.length < 1) {
     activeInput.value = false
+  }else{
+    activeInput.value = true
   }
 }
+
+notFocus()
 
 const inputValidation = (inputValue) => {
 

@@ -27,8 +27,6 @@ const isJobValid = ref(false)
 const isPrimaryBtnActive = ref(true)
 
 const jobPositionValue = ref('')
-const inputPreviousValue = ref('Fack')
-
 
 const isJobPositionValid = ref()
 
@@ -49,11 +47,11 @@ const isEmployerValid = ref()
 
 const startDateLabel = ref('Start Date')
 const startDateValue = ref()
-const isStartDateValid = ref(true)
+const isStartDateValid = ref(false)
 
 const endDateLabel = ref('End Date')
 const endDateValue = ref()
-const isEndDateValid = ref(true)
+const isEndDateValid = ref(false)
 
 const descriptionValue = ref()
 const isDescriptonValid = ref()
@@ -184,6 +182,9 @@ const showHideForm = (arg, cvID, jobID) => {
     isAddJobFormShow.value = true
     isJobEdit.value =  false
     isShowBaseJob.value = false
+    startDateLabel.value = 'Start Date'
+    endDateLabel.value = 'End Date'
+
 
     console.log('add job!!!', isAddJobFormShow.value)
   }
@@ -274,7 +275,6 @@ const onSubmit = (arg) => {
   startDateLabel.value = 'Select Date'
 
   if (arg === 'add') {
-    // console.log('add', sendData, mainUserCvId.value)
 
     axios.post(`/api/cv/${mainUserCvId.value}/employment`, sendData, config)
     .then((response) => {
@@ -317,8 +317,8 @@ const onSubmit = (arg) => {
 
 <template>
 
-  <BaseJob
-    v-show="isShowBaseJob"
+  <template v-if="isShowBaseJob">
+    <BaseJob
     v-for="(job, index) in jobs"
     :cvID="mainUserCvId"
     :jobID="job._id"
@@ -331,29 +331,44 @@ const onSubmit = (arg) => {
   />
 
   <BaseSecondaryButton
-    v-show="!isAddJobFormShow"
     icon="plus"
     @click="showHideForm('add job')"
     :disabled="isJobValid"
     type="submit"
     label="Add More Job"
   />
+  </template>
+
+ 
 
   <form ref="addJobForm" v-on:submit.prevent="onSubmit" class="signUpForm" autocomplete="off">
 
   <template v-if="isJobEdit">
-    <div v-for="(value, key, index) in selectedJobEdit">
-      <BaseInput v-if="index > 3 || index < 2"
-        :input-props-value="value"
-        name="job position"
-        class="input-long" 
-        type="text" 
-        :label="key" 
-        v-on:update:is-valid="onChildValidation"
-        required 
-      />
 
-      <div v-if="index <= 0" class="group-dropdown">
+    <p class="addJobTittle"> Edit Job </p>
+
+    <base-input
+      :input-props-value="jobPositionValue"
+      name="job position"
+      class="input-long" 
+      type="text" 
+      label="position" 
+      v-on:update:is-valid="onChildValidation"
+      required 
+    />
+
+    <base-input
+      :input-props-value="selectedJobEdit.employer"
+      class="input-long" 
+      name="employer"
+      type="text" 
+      label="employer" 
+      v-on:update:is-valid="onChildValidation"
+      required 
+      />  
+
+      <div class="group-dropdown">
+
         <base-dropdown
           v-on:update:currentPeriod="childDate"
           label="startDate"
@@ -369,21 +384,92 @@ const onSubmit = (arg) => {
           >
           <p class="dropdown">{{ endDateLabel }}</p>
         </base-dropdown>
+
       </div>
 
-      <!-- <base-dropdown v-if="index > 1 && index < 4"
-        v-on:update:currentPeriod="childDate"
-        :label="key"
-        :isValidDropdown="isStartDateValid"
-      >
-        <p class="dropdown">{{ startDateLabel }}</p>
-      </base-dropdown> -->
-    </div>
+      <base-input
+        :input-props-value="selectedJobEdit.description"
+        class="input-long"
+        type="text"
+        label="description"
+        name="description"
+        v-on:update:is-valid="onChildValidation"
+      />
 
     <div class="secondBtnsContainer">
+      <BaseSecondaryButton
+        icon="plus"
+        @click="showHideForm(false), onSubmit('update')"
+        :disabled="isJobValid"
+        type="submit"
+        label="Save"
+      />
+
+      <BaseSecondaryButton
+        icon="close"
+        @click="showHideForm('add job cancel')"
+        type="cancel"
+        label="Cancel"
+      />
+    </div>
+  </template>
+
+  <template v-if="isAddJobFormShow">
+    <p class="addJobTittle"> Add Job </p>
+
+    <base-input
+      input-props-value=""
+      name="job position"
+      class="input-long" 
+      type="text" 
+      label="position" 
+      v-on:update:is-valid="onChildValidation"
+      required 
+    />
+
+    <base-input
+      input-props-value=""
+      class="input-long" 
+      name="employer"
+      type="text" 
+      label="employer" 
+      v-on:update:is-valid="onChildValidation"
+      required 
+      />  
+
+      <div class="group-dropdown">
+
+        <base-dropdown
+          v-on:update:currentPeriod="childDate"
+          label="startDate"
+          :isValidDropdown="isStartDateValid"
+        >
+          <p class="dropdown">{{ startDateLabel }}</p>
+        </base-dropdown>
+
+        <base-dropdown
+          v-on:update:currentPeriod="childDate"
+          label="endDate"
+          :isValidDropdown="isEndDateValid"
+          >
+          <p class="dropdown">{{ endDateLabel }}</p>
+        </base-dropdown>
+
+      </div>
+
+      <base-input
+        input-props-value=""
+        class="input-long"
+        type="text"
+        label="description"
+        name="description"
+        v-on:update:is-valid="onChildValidation"
+      />
+
+      <div class="secondBtnsContainer">
         <BaseSecondaryButton
           icon="plus"
-          @click="showHideForm(false), onSubmit('update')"
+          @click="showHideForm(false), onSubmit('add')"
           :disabled="isJobValid"
           type="submit"
           label="Save"
@@ -396,79 +482,8 @@ const onSubmit = (arg) => {
           label="Cancel"
         />
       </div>
+
   </template>
-
-    <template v-if="isAddJobFormShow">
-      <p class="addJobTittle"> Add Job </p>
-
-      <base-input
-        :input-props-value="jobPositionValue"
-        name="job position"
-        class="input-long" 
-        type="text" 
-        label="position" 
-        v-on:update:is-valid="onChildValidation"
-        required 
-      />
-
-      <base-input
-        :input-props-value="`${inputPreviousValue}`"
-        class="input-long" 
-        name="employer"
-        type="text" 
-        label="employer" 
-        v-on:update:is-valid="onChildValidation"
-        required 
-        />  
-
-        <div class="group-dropdown">
-
-          <base-dropdown
-            v-on:update:currentPeriod="childDate"
-            label="startDate"
-            :isValidDropdown="isStartDateValid"
-          >
-            <p class="dropdown">{{ startDateLabel }}</p>
-          </base-dropdown>
-
-          <base-dropdown
-            v-on:update:currentPeriod="childDate"
-            label="endDate"
-            :isValidDropdown="isEndDateValid"
-            >
-            <p class="dropdown">{{ endDateLabel }}</p>
-          </base-dropdown>
-
-        </div>
-
-        <base-input
-          input-props-value="kjnkjnkjnkjnkj"
-          class="input-long"
-          type="text"
-          label="description"
-          name="description"
-          v-on:update:is-valid="onChildValidation"
-        />
-
-        <div class="secondBtnsContainer">
-          <BaseSecondaryButton
-            icon="plus"
-            @click="showHideForm(false), onSubmit('add')"
-            :disabled="isJobValid"
-            type="submit"
-            label="Save"
-          />
-
-          <BaseSecondaryButton
-            icon="close"
-            @click="showHideForm('add job cancel')"
-            type="cancel"
-            label="Cancel"
-          />
-        </div>
-
-    </template>
-    
       
     </form>
 
@@ -508,7 +523,7 @@ const onSubmit = (arg) => {
 
   .group-dropdown{
     display: flex;
-    width: 420px;
+    width: 410px;
     height: 90px;
     margin-bottom: 14px;
     justify-content: space-around;

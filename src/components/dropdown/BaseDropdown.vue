@@ -1,7 +1,7 @@
 <template>
   <div class="dropdownContainer">
 
-    <label v-if="isShowLabel" class="dropdownLabel">
+    <label v-if="isValidDropdown" class="dropdownLabel">
         {{ label }}
     </label>
 
@@ -79,6 +79,8 @@ const dateValidation = (date) => {
     isDateValid.value = false
   }
 }
+
+console.log('date', selectedPeriod.value, props.label)
 
 const openYearsOrMonthsDropdown = (selected) => {
   if (selected[0] === 'monthDropdown') {
