@@ -13,6 +13,7 @@ defineProps<{
 }>()
 
 const isBaseJobOpen = ref(false)
+const isShowIcons = ref(false)
 
 const openCloseJobAcc = () => {
     isBaseJobOpen.value = !isBaseJobOpen.value
@@ -27,10 +28,7 @@ const handleIconClick = (arg, cvID, jobID) => {
     }
     };
 
-    // console.log('handle icon click', cvID, jobID)
-
     if (arg === 'remove') {
-        // console.log('remove job position', cvID, jobID)
         axios.delete(`/api/cv/${cvID}/employment/${jobID}`, config)
         .then(() => { updateListOfJob(true)} )
     }
@@ -62,19 +60,25 @@ const updateJobPosition = (arg, cvID, jobID) => {
 </script>
 
 <template>
-  <div @click="openCloseJobAcc" class="jobContainer">
-    <div class="jobHeader">
+  <div 
+    @click="openCloseJobAcc" 
+    class="jobContainer"
+  >
+    <div    
+      @mouseover="isShowIcons = true"
+      @mouseleave="isShowIcons = false"  
+      class="jobHeader"
+    >
       <div class="companyPosition">
         <p class="jobPosition">{{ jobTitle }}</p>
         <p class="company">{{ companyName }}</p>
-        <!-- <p class="company">  jobID: {{ jobID }} </p> -->
       </div>
 
       <p class="date">{{ workPeriod }}</p>
-      <!-- <img :class="{ rotateIconUp: isBaseJobOpen }" src="@/assets/svg/arrow.svg"/> -->
 
       <div class="iconsContainer">
         <svg
+          v-if="isShowIcons"
           @click="handleIconClick('remove', cvID, jobID)"
           class="iconContainer"
           width="22"
@@ -91,6 +95,7 @@ const updateJobPosition = (arg, cvID, jobID) => {
         </svg>
 
         <svg
+          v-if="isShowIcons"
           @click="handleIconClick('edit', cvID, jobID)"
           class="iconContainer"
           width="17"
@@ -135,6 +140,8 @@ const updateJobPosition = (arg, cvID, jobID) => {
 <style scoped lang="scss">
 .iconsContainer {
   display: flex;
+  justify-content: flex-end;
+  width: 90px;
   padding-right: 6px;
 }
 
