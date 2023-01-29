@@ -33,10 +33,10 @@ const handleIconClick = (arg, cvID, jobID) => {
         .then(() => { updateListOfJob(true)} )
     }
 
-    if (arg === 'edit') {
+    if (arg === 'Edit Job') {
         console.log('edit job position', cvID, jobID)
-        
-        updateJobPosition('edit', cvID, jobID)
+
+        updateJobPosition('Edit Job', cvID, jobID)
 
     }
 }
@@ -96,7 +96,7 @@ const updateJobPosition = (arg, cvID, jobID) => {
 
         <svg
           v-if="isShowIcons"
-          @click="handleIconClick('edit', cvID, jobID)"
+          @click="handleIconClick('Edit Job', cvID, jobID)"
           class="iconContainer"
           width="17"
           height="17"

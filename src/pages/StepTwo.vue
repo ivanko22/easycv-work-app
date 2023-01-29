@@ -6,45 +6,18 @@ import HeaderMain from "@/components/HeaderMain.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
 import BaseWizzard from "@/components/wizzard/BaseWizzard.vue";
-// import BaseJob from '@/components/dropdown/BaseJob.vue'
 import BaseForm from "@/components/BaseForm.vue";
 
 const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
 
-const isShowForm = ref(false);
-
+const isShowPrimaryBtn = ref(false);
 const isFormValid = ref(true);
-const isJobValid = ref(true);
 
-const mainUserCvId = ref();
-
-const jobs = ref([]);
-
-const config = {
-  headers:{
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${localStorage.getItem("user")}`
-  }
-};
-
-// const showHideForm = () => {
-//   isShowForm.value = !isShowForm.value
-// console.log('isShowForm.value', isShowForm.value)
-// }
-
-// get main CV
-const getMainCv = () =>
-  axios.get("api/cv", config).then((response) => {
-    console.log("response api/cv", response);
-    jobs.value.push(response.data[0]);
-  });
-
-getMainCv();
-
-const primaryBtnStatus = (status) => {
-  console.log(status, "primaryBtnStatus");
+const showHidePrimaryBtn = (state) => {
+  console.log("primary button status", state);
+  isShowPrimaryBtn.value = state;
 };
 </script>
 
@@ -54,6 +27,7 @@ const primaryBtnStatus = (status) => {
     :type="toasterType"
     :message="toasterMessage"
   />
+
   <header-main label="Sign Out" hrefUrl="/logout" />
 
   <div class="stepTwoForm">
@@ -62,13 +36,13 @@ const primaryBtnStatus = (status) => {
     <base-wizzard
       :isRegistered="true"
       :experience="true"
-      :isExperienced="true"
-    ></base-wizzard>
+      :isExperienced="false"
+    />
 
-    <base-form />
+    <base-form v-on:update:primaryBtnStatus="showHidePrimaryBtn" />
 
     <base-button
-      v-on:update:primaryBtnStatus="primaryBtnStatus"
+      v-if="isShowPrimaryBtn"
       label="Next"
       :class="{ primaryBtn: isFormValid }"
       type="submit"
