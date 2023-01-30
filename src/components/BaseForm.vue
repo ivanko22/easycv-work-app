@@ -6,6 +6,7 @@ import BaseInput from '@/components/BaseInput.vue'
 import BaseDropdown from '@/components/dropdown/BaseDropdown.vue'
 import BaseSecondaryButton from '@/components/BaseSecondaryButton.vue'
 import BaseJob from './dropdown/BaseJob.vue'
+import BaseButton from "@/components/BaseButton.vue";
 
 const mainUserCvId = ref()
 
@@ -161,9 +162,7 @@ const showHideForm = (arg, cvID, jobID) => {
     isAddJobFormShow.value = false
     formTitle.value = 'Edit Job'
     isFormShow.value = true
-      
     isShowPrimaryBtn.value = false
-    updatePrimaryBtnStatus(isShowPrimaryBtn.value)
 
     editJob(arg, cvID, jobID)
   }
@@ -176,7 +175,6 @@ const showHideForm = (arg, cvID, jobID) => {
     endDateLabel.value = 'End Date'
 
     isShowPrimaryBtn.value = false
-    updatePrimaryBtnStatus(isShowPrimaryBtn.value)
   }
 
   if (arg === 'add job cancel') {
@@ -190,10 +188,8 @@ const showHideForm = (arg, cvID, jobID) => {
 
     if (jobs.value.length > 0) {
         isShowPrimaryBtn.value = true
-        updatePrimaryBtnStatus(isShowPrimaryBtn.value)
       }else{
       isShowPrimaryBtn.value = false
-      updatePrimaryBtnStatus(isShowPrimaryBtn.value)
     }
   }
 }
@@ -211,7 +207,6 @@ const getMainCv = () => axios.get('/api/cv', config, mainUserCvId.value)
 
     if (jobs.value.length > 0) {
         isShowPrimaryBtn.value = true
-        updatePrimaryBtnStatus(isShowPrimaryBtn.value)
       }
     }
   )
@@ -305,14 +300,6 @@ const onSubmit = (arg) => {
 
     }) 
   }
-}
-
-const emit = defineEmits<{
- (e: 'update:primaryBtnStatus', value: boolean): void;
-}>()
-
-const updatePrimaryBtnStatus = (arg) => {
-  emit('update:primaryBtnStatus', arg)
 }
 
 </script>
@@ -413,6 +400,13 @@ const updatePrimaryBtnStatus = (arg) => {
     </template>
       
   </form>
+
+  <base-button
+      v-if="isShowPrimaryBtn"
+      label="Next"
+      :class="{ primaryBtn: isShowPrimaryBtn }"
+      type="submit"
+    />
 
 </template>
 

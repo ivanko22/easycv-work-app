@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import axios from "axios";
 
 import HeaderMain from "@/components/HeaderMain.vue";
-import BaseButton from "@/components/BaseButton.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
 import BaseWizzard from "@/components/wizzard/BaseWizzard.vue";
 import BaseForm from "@/components/BaseForm.vue";
@@ -12,13 +10,6 @@ const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
 
-const isShowPrimaryBtn = ref(false);
-const isFormValid = ref(true);
-
-const showHidePrimaryBtn = (state) => {
-  console.log("primary button status", state);
-  isShowPrimaryBtn.value = state;
-};
 </script>
 
 <template>
@@ -39,14 +30,7 @@ const showHidePrimaryBtn = (state) => {
       :isExperienced="false"
     />
 
-    <base-form v-on:update:primaryBtnStatus="showHidePrimaryBtn" />
-
-    <base-button
-      v-if="isShowPrimaryBtn"
-      label="Next"
-      :class="{ primaryBtn: isFormValid }"
-      type="submit"
-    />
+    <base-form />
   </div>
 </template>
 

@@ -44,16 +44,15 @@ const handleIconClick = (arg, cvID, jobID) => {
 const emit = defineEmits<{
   (e: 'update:jobsList', value: boolean): void;
   (e: 'update:editJobPositon', value: string): void;
-
 }>()
 
 const updateListOfJob = (arg) => {
-    console.log('update job list emit')
+    // console.log('update job list emit')
     emit('update:jobsList', arg)
 }
 
 const updateJobPosition = (arg, cvID, jobID) => {
-  console.log('update job position from child')
+  // console.log('update job position from child')
   emit('update:editJobPositon', arg, cvID, jobID)
 }
 
