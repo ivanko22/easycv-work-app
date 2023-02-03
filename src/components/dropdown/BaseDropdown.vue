@@ -1,61 +1,24 @@
-<template>
-  <div class="dropdownContainer">
-
-    <label v-if="isValidDropdown" class="dropdownLabel">
-        {{ label }}
-    </label>
-
-    <div
-      class="dropdown"
-      @click="openYearsOrMonthsDropdown(['monthDropdown', 'monthDropdown'])"
-    >
-      <slot/>
-      <img class="dropdown-icon" src="@/assets/svg/dropdown.svg"/>
-
-    </div>
-
-    <base-dropdown-content v-if="isDropdownOpen" v-click-away="onClickAway">
-      <template v-if="isMonthsShow" #slotMonths>
-        <base-dropdown-item
-          v-for="(month, key) in months"
-          v-bind:key="key"
-          :selected="month"
-          @click="openYearsOrMonthsDropdown(['selectedMonth', month, key])"
-        />
-      </template>
-
-      <template v-if="isYearsShow" #slotYears>
-        <base-dropdown-item
-          v-for="year in years"
-          v-bind:key="year.toString()"
-          :selected="year.toString()"
-          @click="openYearsOrMonthsDropdown(['selectedYear', year])"
-        />
-      </template>
-    </base-dropdown-content>
-
-    <p v-if="!isValidDropdown" class="errorMessage"> {{ 'Required' }} </p>
-
-  </div>
-
-</template>
-
 <script setup lang="ts">
 import { defineProps, defineEmits, withDefaults, provide, inject, computed, ref } from 'vue'
-
 import { directive as vClickAway } from 'vue3-click-away'
 import BaseDropdownContent from '@/components/dropdown/BaseDropdownContent.vue'
 import BaseDropdownItem from '@/components/dropdown/BaseDropdownItem.vue'
+import calendarDropdownItem from '@/components/dropdown/calendarDropdownItem.vue'
 
 const props = withDefaults(
   defineProps<{
     label?: string;
     isValidDropdown: false;
+    dropdownType: string;
+    width: string;
+    isOpen: boolean;
   }>(),
   {
     label: 'Start Date'
   }
 )
+
+console.log('props.dropdownType', props.dropdownType)
 
 const isShowLabel = ref(false)
 const isDropdownOpen = ref(false)
@@ -68,8 +31,18 @@ const selectedYear = ref(2000)
 const currentPeriod = ref()
 const isDateValid = ref(false)
 
+const selectedJobCategory = ref('')
+// const isJobCategoryShow = ref(false)
+
 const months = { id01: 'Jan', id02: 'Feb', id03: 'Mar', id04: 'Apr', id05: 'May', id06: 'June', id07: 'July', id08: 'Aug', id09: 'Sept', id10: 'Oct', id11: 'Nov', id12: 'Dec' }
 const years = ref([2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022])
+
+const jobCategories = { id01: 'JavaScript', id02: 'Java', id03: '.NET', id04: 'Python', id05: 'PHP', id06: 'Node.js', id07: 'iOS', id08: 'Android', id09: 'C++', 
+  id10: 'Flutter', id11: 'Golang', id12: 'Ruby', id13: 'Scala', id14: 'Salesforce', id15: 'Rust',
+  id16: 'QA', id17: 'QA Automation', id18: 'Design', id19: 'Artist', id20: 'Project Manager', id21: 'Product Manager',
+  id22: 'Lead', id23: 'DevOps', id24: 'Business Analyst', id25: 'Data Science', id26: 'Data Analyst',
+  id27: 'Sysadmin', is28: 'Unity', id28: 'SQL', id29: 'Security', id30: 'Data Engineer', id31: 'Scrum Master'
+}
 
 const dateValidation = (date) => {
   if (date.length === 10) {
@@ -80,9 +53,9 @@ const dateValidation = (date) => {
   }
 }
 
-console.log('date', selectedPeriod.value, props.label)
-
 const openYearsOrMonthsDropdown = (selected) => {
+  console.log('open dropdown', selected)
+
   if (selected[0] === 'monthDropdown') {
     isMonthsShow.value = !isMonthsShow.value
     isDropdownOpen.value = true
@@ -127,14 +100,81 @@ const openYearsOrMonthsDropdown = (selected) => {
   updateCurrentPeriod()
 }
 
-const emit = defineEmits<{(e: 'update:currentPeriod', value: string, label: string, isDateValid: boolean, dropdownLabel: string): void;
+const emit = defineEmits<{
+  (e: 'update:currentPeriod', value: string, label: string, isDateValid: boolean, dropdownLabel: string): void;
+  (e: 'update:selectedJobCategory', value: string): void
   }>()
 
 const updateCurrentPeriod = () => {
   emit('update:currentPeriod', currentPeriod.value, props.label, isDateValid.value, dropdownLabel.value)
 }
 
+const updateSelectedJobCategory = (arg) => {
+  selectedJobCategory.value = arg
+  isDropdownOpen.value = false
+  emit('update:selectedJobCategory', selectedJobCategory.value )
+}
+
 </script>
+
+<template>
+  <div class="dropdownContainer">
+
+    <label v-if="isValidDropdown" class="dropdownLabel">
+        {{ label }}
+    </label>
+
+    <div
+      class="dropdown"
+      :class="[{dropdownWidth410: width === 'longDropdown'}, 'dropdownWidth184']"
+      @click="openYearsOrMonthsDropdown(['monthDropdown', 'monthDropdown'])"
+    >
+      <slot/>
+      <img class="dropdown-icon" src="@/assets/svg/dropdown.svg"/>
+
+    </div>
+
+    <base-dropdown-content v-if="isDropdownOpen && props.dropdownType === 'calendar'" v-click-away="onClickAway">
+      <template v-if="isMonthsShow" #slotMonths>
+        <calendarDropdownItem
+          v-for="(month, key) in months"
+          v-bind:key="key"
+          :selected="month"
+          @click="openYearsOrMonthsDropdown(['selectedMonth', month, key])"
+        />
+      </template>
+
+      <template v-if="isYearsShow" #slotYears>
+        <calendarDropdownItem
+          v-for="year in years"
+          v-bind:key="year.toString()"
+          :selected="year.toString()"
+          @click="openYearsOrMonthsDropdown(['selectedYear', year])"
+        />
+      </template>
+    </base-dropdown-content>
+
+    <base-dropdown-content
+      class="longeDropdown"
+      v-if="isDropdownOpen && props.dropdownType === 'jobCategory'"
+      v-click-away="onClickAway">
+      <p>This is dropdown</p>
+
+      <template #slotJobCategory>
+        <base-dropdown-item
+          v-for="category in jobCategories"
+          v-bind:key="category"
+          :selected="category"
+          @click="updateSelectedJobCategory( category )"
+          />
+      </template>
+    </base-dropdown-content>
+
+    <p v-if="!isValidDropdown" class="errorMessage"> {{ 'Required' }} </p>
+
+  </div>
+
+</template>
 
 <style scoped lang="scss">
 
@@ -142,6 +182,8 @@ const updateCurrentPeriod = () => {
     display: flex;
     align-items: center;
     cursor: pointer;
+    margin-bottom: 68px;
+    margin-top: 34px;
   }
 
   .dropdown{
@@ -155,10 +197,22 @@ const updateCurrentPeriod = () => {
     border: 1px solid $lightGrey;
     padding-left: 16px;
     font-size: 16px;
-    width: 184px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .dropdownWidth184{
+    width: 184px;
+  }
+
+  .dropdownWidth410{
+    width: 410px;
+  }
+
+  .longeDropdown{
+    width: 420px;
+    height: -webkit-fill-available;
   }
 
   .dropdown:focus {

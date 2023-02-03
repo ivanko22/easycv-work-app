@@ -5,7 +5,7 @@ import axios from 'axios'
 import BaseInput from '@/components/BaseInput.vue'
 import BaseDropdown from '@/components/dropdown/BaseDropdown.vue'
 import BaseSecondaryButton from '@/components/BaseSecondaryButton.vue'
-import BaseJob from './dropdown/BaseJob.vue'
+import BaseJob from './BaseJob.vue'
 import BaseButton from "@/components/BaseButton.vue";
 
 const mainUserCvId = ref()
@@ -14,6 +14,7 @@ const selectedPeriod = ref(['Start Date', 'End Date'])
 provide('selectedPeriod', computed(() => selectedPeriod.value))
 
 const jobs = ref([])
+//use array for several variables
 
 const isFormShow = ref(false)
 const formTitle = ref('')
@@ -27,21 +28,13 @@ const selectedJobEdit = ref('')
 
 const editJobID = ref()
 
-// const isFormValid = ref(false)
 const addJobForm = ref()
 const isJobValid = ref(false)
 
 const jobPositionValue = ref('')
 const isJobPositionValid = ref()
 
-// const mainCVjobPositionValue = ref('')
-// const isMainCVjobPositionValid = ref()
-
 const jobCategoryValue = ref('')
-// const isJobCategoryValid = ref()
-
-// const experienceValue = ref(0)
-// const isExperienceValid = ref()
 
 const skillsValue = ref([''])
 const isSkillsValid = ref()
@@ -59,8 +52,6 @@ const isEndDateValid = ref(false)
 
 const descriptionValue = ref('')
 const isDescriptonValid = ref()
-
-// const newEmployerValue = ref(true)
 
 const onChildValidation = (isValueValid, label, inputValue) => {
 
@@ -324,7 +315,7 @@ const onSubmit = (arg) => {
       @click="showHideForm('Add Job')"
       :disabled="isJobValid"
       type="submit"
-      label="Add More Job"
+      label="Add Another Job"
     />
   </template>
 
@@ -356,16 +347,18 @@ const onSubmit = (arg) => {
 
         <div class="group-dropdown">
           <base-dropdown
+            :dropdownType="'calendar'"
             v-on:update:currentPeriod="childDate"
-            label="startDate"
+            :label="'startDate'"
             :isValidDropdown="isStartDateValid"
           >
             <p class="dropdown">{{ startDateLabel }}</p>
           </base-dropdown>
 
           <base-dropdown
+            :dropdownType="'calendar'"
             v-on:update:currentPeriod="childDate"
-            label="endDate"
+            :label="'endDate'"
             :isValidDropdown="isEndDateValid"
             >
             <p class="dropdown">{{ endDateLabel }}</p>
@@ -406,6 +399,7 @@ const onSubmit = (arg) => {
       label="Next"
       :class="{ primaryBtn: isShowPrimaryBtn }"
       type="submit"
+      @click="router.push('/step-three')"
     />
 
 </template>
