@@ -11,12 +11,15 @@ const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
 
-const drodownJobCategory = ref("Select Job Category");
-const isOpen = ref(false);
+const jobCategoryValue = ref("Select Job Category");
+const englishLevelValue = ref("Select Your English Level");
 
-const handleDropdownCategory = (arg) => {
-  console.log("handleDropdownCategory", arg);
-  drodownJobCategory.value = arg;
+const handleDropdown = (value, type) => {
+  if (type === "jobCategory") {
+    jobCategoryValue.value = value;
+  } else {
+    englishLevelValue.value = value;
+  }
 };
 </script>
 
@@ -40,24 +43,37 @@ const handleDropdownCategory = (arg) => {
 
     <form v-on:submit.prevent="onSubmit" autocomplete="off">
       <base-dropdown
-        @click="isOpen = !isOpen"
-        :isOpen="isOpen"
         :dropdown-type="'jobCategory'"
         :width="'longDropdown'"
         :label="'Job Category'"
         :is-valid-dropdown="true"
-        v-on:update:selected-job-category="handleDropdownCategory"
+        v-on:update:dropdownValue="handleDropdown"
       >
-        <p>{{ drodownJobCategory }}</p>
+        <p
+          :class="{
+            dropdownTitleInitial: jobCategoryValue === 'Select Job Category',
+          }"
+          class="dropdownTitle"
+        >
+          {{ jobCategoryValue }}
+        </p>
       </base-dropdown>
 
       <base-dropdown
         :dropdown-type="'englishLevel'"
         :width="'longDropdown'"
-        label="English Level"
+        :label="'English Level'"
         :is-valid-dropdown="true"
+        v-on:update:dropdownValue="handleDropdown"
       >
-        <p class="dropdown">Level of English</p>
+        <p
+          :class="{
+            dropdownTitleInitial: englishLevelValue === 'Select Your English Level',
+          }"
+          class="dropdownTitle"
+        >
+          {{ englishLevelValue }}
+        </p>
       </base-dropdown>
 
       <base-input
@@ -79,5 +95,14 @@ const handleDropdownCategory = (arg) => {
   flex-flow: column;
   align-items: center;
   height: 80vh;
+}
+
+.dropdownTitle {
+  font-weight: 500;
+}
+
+.dropdownTitleInitial {
+  font-weight: 400;
+  color: $grey;
 }
 </style>

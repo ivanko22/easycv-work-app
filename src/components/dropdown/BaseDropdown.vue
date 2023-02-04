@@ -3,7 +3,8 @@ import { defineProps, defineEmits, withDefaults, provide, inject, computed, ref 
 import { directive as vClickAway } from 'vue3-click-away'
 import BaseDropdownContent from '@/components/dropdown/BaseDropdownContent.vue'
 import BaseDropdownItem from '@/components/dropdown/BaseDropdownItem.vue'
-import calendarDropdownItem from '@/components/dropdown/calendarDropdownItem.vue'
+import CalendarDropdownContent from './CalendarDropdownContent.vue'
+import CalendarDropdownItem from '@/components/dropdown/calendarDropdownItem.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -11,7 +12,6 @@ const props = withDefaults(
     isValidDropdown: false;
     dropdownType: string;
     width: string;
-    isOpen: boolean;
   }>(),
   {
     label: 'Start Date'
@@ -102,85 +102,140 @@ const openYearsOrMonthsDropdown = (selected) => {
 
 const emit = defineEmits<{
   (e: 'update:currentPeriod', value: string, label: string, isDateValid: boolean, dropdownLabel: string): void;
-  (e: 'update:selectedJobCategory', value: string): void
+  (e: 'update:dropdownValue', value: string): void
   }>()
 
 const updateCurrentPeriod = () => {
   emit('update:currentPeriod', currentPeriod.value, props.label, isDateValid.value, dropdownLabel.value)
 }
 
-const updateSelectedJobCategory = (arg) => {
-  selectedJobCategory.value = arg
+const updateDropdownValue = (value, type) => {
   isDropdownOpen.value = false
-  emit('update:selectedJobCategory', selectedJobCategory.value )
+  emit('update:dropdownValue', value, type )
 }
 
 </script>
 
 <template>
-  <div class="dropdownContainer">
+  <template v-if="props.dropdownType === 'calendar'">
+    <div class="dropdownContainer">
 
-    <label v-if="isValidDropdown" class="dropdownLabel">
-        {{ label }}
-    </label>
+      <label v-if="isValidDropdown" class="dropdownLabel">
+          {{ label }}
+      </label>
 
-    <div
-      class="dropdown"
-      :class="[{dropdownWidth410: width === 'longDropdown'}, 'dropdownWidth184']"
-      @click="openYearsOrMonthsDropdown(['monthDropdown', 'monthDropdown'])"
-    >
-      <slot/>
-      <img class="dropdown-icon" src="@/assets/svg/dropdown.svg"/>
+      <div
+        class="dropdown"
+        :class="[{dropdownWidth410: width === 'longDropdown'}, 'dropdownWidth184']"
+        @click="openYearsOrMonthsDropdown(['monthDropdown', 'monthDropdown'])"
+      >
+        <slot/>
+        <img class="dropdown-icon" src="@/assets/svg/dropdown.svg"/>
+
+      </div>
+
+      <CalendarDropdownContent v-if="isDropdownOpen && props.dropdownType === 'calendar'" v-click-away="onClickAway">
+        <template v-if="isMonthsShow" #slotMonths>
+          <CalendarDropdownItem
+            v-for="(month, key) in months"
+            v-bind:key="key"
+            :selected="month"
+            @click="openYearsOrMonthsDropdown(['selectedMonth', month, key])"
+          />
+        </template>
+
+        <template v-if="isYearsShow" #slotYears>
+          <CalendarDropdownItem
+            v-for="year in years"
+            v-bind:key="year.toString()"
+            :selected="year.toString()"
+            @click="openYearsOrMonthsDropdown(['selectedYear', year])"
+          />
+        </template>
+      </CalendarDropdownContent>
+
+      <p v-if="!isValidDropdown" class="errorMessage"> {{ 'Required' }} </p>
 
     </div>
+  </template>
 
-    <base-dropdown-content v-if="isDropdownOpen && props.dropdownType === 'calendar'" v-click-away="onClickAway">
-      <template v-if="isMonthsShow" #slotMonths>
-        <calendarDropdownItem
-          v-for="(month, key) in months"
-          v-bind:key="key"
-          :selected="month"
-          @click="openYearsOrMonthsDropdown(['selectedMonth', month, key])"
-        />
-      </template>
+  <template v-if="props.dropdownType === 'jobCategory' || props.dropdownType === 'englishLevel'">
+    
+    <div class="dropdownContainer categoryPosition">
+      <label v-if="isValidDropdown" class="dropdownLabel">
+          {{ label }}
+      </label>
 
-      <template v-if="isYearsShow" #slotYears>
-        <calendarDropdownItem
-          v-for="year in years"
-          v-bind:key="year.toString()"
-          :selected="year.toString()"
-          @click="openYearsOrMonthsDropdown(['selectedYear', year])"
-        />
-      </template>
-    </base-dropdown-content>
+      <div
+        class="dropdown longDropdown"
+        @click="openYearsOrMonthsDropdown(['monthDropdown', 'monthDropdown'])"
+      >
+        <slot/>
+        <img class="dropdown-icon" src="@/assets/svg/dropdown.svg"/>
+      </div>
 
-    <base-dropdown-content
-      class="longeDropdown"
-      v-if="isDropdownOpen && props.dropdownType === 'jobCategory'"
-      v-click-away="onClickAway">
-      <p>This is dropdown</p>
+      <base-dropdown-content
+          v-if="isDropdownOpen && props.dropdownType === 'jobCategory'"
+          class="longeDropdown jobCategoryDropdown"
+          v-click-away="onClickAway">
 
-      <template #slotJobCategory>
-        <base-dropdown-item
-          v-for="category in jobCategories"
-          v-bind:key="category"
-          :selected="category"
-          @click="updateSelectedJobCategory( category )"
+          <template #slotJobCategory>
+            <base-dropdown-item
+              v-for="category in jobCategories"
+              v-bind:key="category"
+              :selected="category"
+              @click="updateDropdownValue( category, 'jobCategory' )"
+              />
+          </template>
+      </base-dropdown-content>
+
+      <base-dropdown-content
+        v-if="isDropdownOpen && props.dropdownType === 'englishLevel'"
+        class="longeDropdown"
+        v-click-away="onClickAway">
+
+        <template #slotEnglishLevel>
+          <base-dropdown-item
+            :selected="'No English'"
+            @click="updateDropdownValue( 'No English', 'englishLevel' )"
           />
-      </template>
-    </base-dropdown-content>
+          <base-dropdown-item
+            :selected="'Beginner/Elementary'"
+            @click="updateDropdownValue( 'Beginner/Elementary', 'englishLevel' )"
+          />
+          <base-dropdown-item
+            :selected="'Pre-Intermediate'"
+            @click="updateDropdownValue( 'Pre-Intermediate', 'englishLevel' )"
+          />
+          <base-dropdown-item
+            :selected="'Intermediate'"
+            @click="updateDropdownValue( 'Intermediate', 'englishLevel' )"
+          />
+          <base-dropdown-item
+            :selected="'Upper-Intermediate'"
+            @click="updateDropdownValue( 'Upper-Intermediate', 'englishLevel' )"
+          />
+          <base-dropdown-item
+            :selected="'Advanced/Fluent'"
+            @click="updateDropdownValue( 'Advanced/Fluent', 'englishLevel' )"
+          />
+        </template>
+      </base-dropdown-content>
 
     <p v-if="!isValidDropdown" class="errorMessage"> {{ 'Required' }} </p>
 
   </div>
+  </template>
 
 </template>
+
 
 <style scoped lang="scss">
 
   .dropdownContainer{
     display: flex;
-    align-items: center;
+    // align-items: center;
+    flex-direction: column;
     cursor: pointer;
     margin-bottom: 68px;
     margin-top: 34px;
@@ -212,7 +267,10 @@ const updateSelectedJobCategory = (arg) => {
 
   .longeDropdown{
     width: 420px;
-    height: -webkit-fill-available;
+  }
+
+  .jobCategoryDropdown{
+    height: 420px;
   }
 
   .dropdown:focus {
@@ -224,8 +282,9 @@ const updateSelectedJobCategory = (arg) => {
   }
 
   .dropdownLabel{
-    position: absolute;
-    margin-bottom: 94px;
+    position: relative;
+    margin-bottom: 16px;
+    left: 16px;
     font-size: 14px;
     color: $grey;
     transition: .25s;
@@ -245,6 +304,10 @@ const updateSelectedJobCategory = (arg) => {
     margin-top: 96px;
     text-align: right;
     color: $error;
+  }
+
+  .categoryPosition{
+    position: relative;
   }
 
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="dropdownContent">
-    <slot name="slotJobCategory"></slot>
-    <slot name="slotEnglishLevel"></slot>
+    <slot name="slotMonths"></slot>
+    <slot name="slotYears"></slot>
   </div>
 </template>
 
@@ -10,8 +10,7 @@
 <style scoped lang="scss">
 .dropdownContent {
   position: absolute;
-  top: 36px;
-  overflow: auto;
+  // overflow: auto;
   padding-left: 4px;
   padding-right: 4px;
   z-index: 1;
