@@ -118,9 +118,9 @@ const updateDropdownValue = (value, type) => {
 
 <template>
   <template v-if="props.dropdownType === 'calendar'">
-    <div class="dropdownContainer">
+    <div class="dropdownContainer categoryPosition">
 
-      <label v-if="isValidDropdown" class="dropdownLabel">
+      <label v-if="isValidDropdown" class="dropdownLabel dropdownLabelCalendar">
           {{ label }}
       </label>
 
@@ -289,6 +289,11 @@ const updateDropdownValue = (value, type) => {
     color: $grey;
     transition: .25s;
     pointer-events: none;
+  }
+
+  .dropdownLabelCalendar{
+    position: absolute;
+    top: -33px;
   }
 
   .dropdown-icon{
