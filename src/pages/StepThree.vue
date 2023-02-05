@@ -6,6 +6,7 @@ import BaseToaster from "@/components/BaseToaster.vue";
 import BaseWizzard from "@/components/wizzard/BaseWizzard.vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
 import BaseInput from "@/components/BaseInput.vue";
+import BaseSlider from "@/components/BaseSlider.vue";
 
 const isShowToaster = ref(false);
 const toasterType = ref();
@@ -58,6 +59,8 @@ const handleDropdown = (value, type) => {
           {{ jobCategoryValue }}
         </p>
       </base-dropdown>
+
+      <base-slider/>
 
       <base-dropdown
         :dropdown-type="'englishLevel'"

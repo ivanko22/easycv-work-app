@@ -1,33 +1,3 @@
-<template>
-  <div class="input-container" :class="{error: !isValidInput }">
-
-    <input
-      @keyup="typingHandle"
-      @keydown="typingHandle"
-      @focus="typingHandle"
-      @blur="notFocus"
-      :type="type"
-      class=""
-      v-model="watchInpute"
-      @animationstart="checkAnimation"
-    />
-
-    <label :class="[ activeInput ? 'inputLabelActive' : '', 'inputLabel' ]">
-      {{ label }}
-    </label>
-
-    <p v-if="!isValidInput" class="inputErrorMessage"> {{ message }} </p>
-
-    <img
-      v-if="props.name === 'Sign Up Password'"
-      @click="showPassword"
-      class="show-password-icon"
-      :src="eyeIcon[eyeIconIndex]"
-      />
-  </div>
-
-</template>
-
 <script setup lang="ts">
 import { defineProps, withDefaults, defineEmits, ref } from 'vue'
 import eyeOpen from '@/assets/svg/eyeOpen.svg'
@@ -160,6 +130,36 @@ const showPassword = () => {
 }
 
 </script>
+
+<template>
+  <div class="input-container" :class="{error: !isValidInput }">
+
+    <input
+      @keyup="typingHandle"
+      @keydown="typingHandle"
+      @focus="typingHandle"
+      @blur="notFocus"
+      :type="type"
+      class=""
+      v-model="watchInpute"
+      @animationstart="checkAnimation"
+    />
+
+    <label :class="[ activeInput ? 'inputLabelActive' : '', 'inputLabel' ]">
+      {{ label }}
+    </label>
+
+    <p v-if="!isValidInput" class="inputErrorMessage"> {{ message }} </p>
+
+    <img
+      v-if="props.name === 'Sign Up Password'"
+      @click="showPassword"
+      class="show-password-icon"
+      :src="eyeIcon[eyeIconIndex]"
+      />
+  </div>
+
+</template>
 
 <style scoped lang="scss">
 :-webkit-autofill {
