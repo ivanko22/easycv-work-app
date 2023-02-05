@@ -10,7 +10,6 @@
 <style scoped lang="scss">
 .dropdownContent {
   position: absolute;
-  // overflow: auto;
   padding-left: 4px;
   padding-right: 4px;
   z-index: 1;

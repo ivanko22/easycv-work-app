@@ -14,7 +14,7 @@
   overflow: auto;
   padding-left: 4px;
   padding-right: 4px;
-  z-index: 1;
+  z-index: 5;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;

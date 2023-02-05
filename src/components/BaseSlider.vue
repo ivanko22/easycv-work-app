@@ -2,18 +2,28 @@
 import { ref } from "vue";
 
 const currentValue = ref("0");
-const sliderPosition = ref("-3px");
-const yearYears = ref("years");
+const sliderTitlePosition = ref("4px");
+const yearYears = ref("Years");
+
+const sliderThumbPosition = [
+  4, 22, 41, 60, 78, 97, 116, 135, 153, 172, 190, 209, 227, 245, 264, 283, 302,
+  320, 339, 357, 376,
+];
 
 const onInput = () => {
-  sliderPosition.value = `${currentValue.value * 20}${"px"}`;
+  sliderTitlePosition.value = `${sliderThumbPosition[currentValue.value]}px`;
 
   if (currentValue.value === "1") {
-    yearYears.value = "year";
+    yearYears.value = "Year";
   } else {
-    yearYears.value = "years";
+    yearYears.value = "Years";
   }
-  console.log("currentValue", currentValue.value, sliderPosition.value);
+  console.log(
+    "currentValue",
+    currentValue.value,
+    sliderPosition.value,
+    sliderTitlePosition.value
+  );
 };
 </script>
 
@@ -31,13 +41,18 @@ const onInput = () => {
     <label class="sliderLabel"> Experience </label>
 
     <div class="filledSlider"></div>
-    <p class="sliderThumbTitle">{{ currentValue }} {{ yearYears }}</p>
+    <div class="sliderThumbTitle">
+      {{ currentValue }}
+      <p class="sliderThumbTitleYears">{{ yearYears }}</p>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .sliderContainer {
   position: relative;
+  padding-left: 4px;
+  padding-right: 4px;
   display: flex;
   height: 50px;
   flex-direction: column;
@@ -46,7 +61,7 @@ const onInput = () => {
 .slider {
   -webkit-appearance: none; /* Override default CSS styles */
   appearance: none;
-  width: 404px; /* Full-width */
+  width: 100%; /* Full-width */
   height: 5px;
   outline: none; /* Remove outline */
   opacity: 1; /* Set transparency (for mouse-over effects on hover) */
@@ -59,13 +74,15 @@ const onInput = () => {
 
 .slider:hover {
   opacity: 1;
+  background: #bfe0c1;
+  cursor: pointer;
 }
 
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none; /* Override default look */
   appearance: none;
-  width: 22px;
-  height: 22px;
+  width: 30px;
+  height: 30px;
   border-radius: 32px;
   background: $primary;
   cursor: pointer;
@@ -74,12 +91,9 @@ const onInput = () => {
 .slider::-webkit-slider-thumb:hover {
   -webkit-appearance: none;
   appearance: none;
-  width: 28px;
-  height: 28px;
-  border-radius: 32px;
-  background: $primary;
+  background: $primaryHover;
   cursor: pointer;
-  opacity: 1 !important;
+  box-shadow: 0px 0px 6px #4eab4f;
 }
 
 .slider::-webkit-slider-runnable-track {
@@ -87,8 +101,8 @@ const onInput = () => {
 }
 
 .slider::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
+  width: 30px;
+  height: 30px;
   border-radius: 32px;
   cursor: pointer;
 }
@@ -98,21 +112,31 @@ const onInput = () => {
   display: flex;
   justify-content: flex-end;
   top: 2px;
+  left: 6px;
   height: 5px;
-  width: v-bind(sliderPosition);
+  width: v-bind(sliderTitlePosition);
   background: $primary;
   border-radius: 4px;
 }
 
 .sliderThumbTitle {
   position: absolute;
-  top: 11px;
-  left: v-bind(sliderPosition);
+  top: -4px;
+  z-index: 1;
+  left: v-bind(sliderTitlePosition);
   width: 34px;
   text-align: center;
   font-weight: 600;
+  font-size: 14px;
+  color: $white;
+  pointer-events: none;
+}
+
+.sliderThumbTitleYears {
+  margin-top: 8px;
+  font-weight: 500;
   font-size: 12px;
-  color: $grey;
+  color: $black;
 }
 
 .sliderLabel {
