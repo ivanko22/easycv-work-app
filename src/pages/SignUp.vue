@@ -110,6 +110,7 @@ const onSubmit = () => {
         type="text"
         label="Given Name"
         name="Given Name"
+        inputPropsValue=""
         v-on:update:is-valid="onChildValidation"
         required
       />

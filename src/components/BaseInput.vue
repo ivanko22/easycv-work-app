@@ -19,7 +19,7 @@ const props = withDefaults(
   }
 )
 
-const watchInpute = ref(props.inputPropsValue)
+const watchInpute = ref('')
 
 const isValidInput = ref(true)
 const activeInput = ref(false)

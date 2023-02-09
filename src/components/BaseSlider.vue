@@ -18,12 +18,6 @@ const onInput = () => {
   } else {
     yearYears.value = "Years";
   }
-  console.log(
-    "currentValue",
-    currentValue.value,
-    sliderPosition.value,
-    sliderTitlePosition.value
-  );
 };
 </script>
 
