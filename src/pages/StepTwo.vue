@@ -25,8 +25,8 @@ const toasterMessage = ref();
     <h1 class="title-tell-us">Tell Us About Yourself</h1>
 
     <base-wizzard
-      :isRegistered="true"
       :experience="true"
+      :isRegistered="true"
       :isExperienced="false"
     />
 

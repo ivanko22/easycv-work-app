@@ -3,14 +3,14 @@ import { defineProps, withDefaults } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    active?: boolean;
+    activePoint?: boolean;
     passed: boolean;
     step: string;
     label: string;
     showRoute?: boolean;
   }>(),
   {
-    active: false,
+    activePoint: false,
     passed: false,
     showRoute: true
   }
@@ -19,7 +19,7 @@ const props = withDefaults(
 
 <template>
     <div class="wizzardPointContainer">
-        <div class="circle" :class="{ circleFilled: passed, circleInnactive: !active && !passed }">
+        <div class="circle" :class="{ circleFilled: passed, circleInnactive: !activePoint && !passed }">
             <p> {{ step }} </p>
         </div>
         <p class="wizzardPointLabel" :class="{ labelInnactive: !passed }">{{ label }}</p>

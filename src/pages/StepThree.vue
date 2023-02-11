@@ -37,9 +37,10 @@ const handleDropdown = (value, type) => {
     <h1 class="title-tell-us">Tell Us About Yourself</h1>
 
     <base-wizzard
+      :skills="true"
       :isRegistered="true"
-      :experience="true"
       :isExperienced="true"
+      :isSkilled="false"
     />
 
     <form v-on:submit.prevent="onSubmit" autocomplete="off">
