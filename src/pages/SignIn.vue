@@ -85,6 +85,7 @@ const onSubmit = () => {
     :type="toasterType"
     :message="toasterMessage"
   />
+
   <header-main label="Sign Up" hrefUrl="sign-up" />
   <form v-on:submit.prevent="onSubmit" class="signInForm" autocomplete="off">
     <h1 class="title-tell-us">Sign In</h1>

@@ -25,12 +25,7 @@ const toasterMessage = ref();
 
     <base-wizzard :isRegistered="true" :experience="true"></base-wizzard>
 
-    <base-form></base-form>
-    <base-button
-      label="Next"
-      :class="{ primaryBtn: isFormValid }"
-      type="submit"
-    />
+    <base-form />
   </div>
 </template>
 

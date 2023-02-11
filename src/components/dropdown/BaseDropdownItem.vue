@@ -1,53 +1,46 @@
-<template>
-  <ul @mouseover="isShowCircle = true" @mouseleave="isShowCircle = false"> {{ props.selected }}
-    <div v-show="isShowCircle" class="hoverCircle"></div>
-  <slot/>
-  </ul>
-</template>
-
 <script setup lang="ts">
-import { defineProps, withDefaults, ref } from 'vue'
+import { defineProps, withDefaults } from 'vue'
 
 const props = withDefaults(
   defineProps<{
     selected: string,
   }>(),
   {
-    selected: 'Jan'
+    selected: ''
   }
 )
-
-const isShowCircle = ref(false)
-
+  
 </script>
 
+<template>
+    <ul class="dropdownItem"> {{ props.selected }}
+    <slot/>
+    </ul>
+</template>
+  
 <style scoped lang="scss">
+  
+  .dropdownItem {
+      margin-top: 0px;
+      margin-bottom: 0px;
+      padding-left: 11px;
+      padding-right: 0px;
+      width: 420px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: left;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      color: $black;
+      cursor: pointer;
 
-  ul {
-    // padding: 0;
-    // padding-left: 14px;
-    // padding-right: 13px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
-    width: 42px;
-    height: 42px;
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    color: $black;
-    cursor: pointer;
-
-    &:hover{
+      &:hover{
       color: $primary;
-      font-weight: 600;
+      }
     }
-  }
-
+  
   .hoverCircle{
     position: absolute;
     width: 46px;
@@ -56,5 +49,6 @@ const isShowCircle = ref(false)
     border-radius: 26px;
     color: $primary;
   }
-
+  
 </style>
+  

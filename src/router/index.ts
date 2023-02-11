@@ -34,6 +34,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/step-two',
     name: 'Step Two',
     component: () => import(/* webpackChunkName: "step two" */ '@/pages/StepTwo.vue')
+  },
+  {
+    path: '/step-three',
+    name: 'Step Three',
+    component: () => import(/* webpackChunkName: "step two" */ '@/pages/StepThree.vue')
   }
 ]
 
