@@ -20,7 +20,6 @@ const props = withDefaults(
 )
 
 const watchInpute = ref('')
-
 const isValidInput = ref(true)
 const activeInput = ref(false)
 const message = ref('')
@@ -28,14 +27,14 @@ const isPasswordOpen = ref(false)
 const eyeIcon = ref([eyeOpen, eyeClose])
 const eyeIconIndex = ref(0)
 
-// const getInputData = () => {
-//   watchInpute.value = props.inputValue
-//   console.log('input data should be here watchInpute.value', props.inputValue, watchInpute.value)
-// }
+const getInputData = () => {
+  watchInpute.value = props.inputPropsValue
+}
+
+getInputData()
 
 const doneTyping = () => {
   inputValidation(watchInpute.value)
-  // console.log('props.inputValue', props.inputValue)
 }
 
 const typingHandle = () => {
@@ -104,7 +103,6 @@ const inputValidation = (inputValue) => {
 
 const emit = defineEmits<{
   (e: 'update:isValid', value: boolean, label: string): void;
-  (e: 'update:getInputData', value: string): void;
   }>()
 
 const updateInputValue = () => {

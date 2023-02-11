@@ -55,13 +55,12 @@ const onInput = () => {
 .slider {
   -webkit-appearance: none; /* Override default CSS styles */
   appearance: none;
-  width: 100%; /* Full-width */
+  width: 100%;
   height: 5px;
-  outline: none; /* Remove outline */
-  opacity: 1; /* Set transparency (for mouse-over effects on hover) */
+  outline: none;
+  opacity: 1;
   -webkit-transition: 0.2s; /* 0.2 seconds transition on hover */
   transition: opacity 0.2s;
-
   background: #cae6ca;
   border-radius: 4px;
 }
@@ -73,7 +72,7 @@ const onInput = () => {
 }
 
 .slider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
+  -webkit-appearance: none;
   appearance: none;
   width: 30px;
   height: 30px;
@@ -130,7 +129,7 @@ const onInput = () => {
   margin-top: 8px;
   font-weight: 500;
   font-size: 12px;
-  color: $black;
+  color: $grey;
 }
 
 .sliderLabel {

@@ -4,7 +4,7 @@ import { directive as vClickAway } from 'vue3-click-away'
 import BaseDropdownContent from '@/components/dropdown/BaseDropdownContent.vue'
 import BaseDropdownItem from '@/components/dropdown/BaseDropdownItem.vue'
 import CalendarDropdownContent from './CalendarDropdownContent.vue'
-import CalendarDropdownItem from '@/components/dropdown/calendarDropdownItem.vue'
+import CalendarDropdownItem from '@/components/dropdown/CalendarDropdownItem.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -54,8 +54,6 @@ const dateValidation = (date) => {
 }
 
 const openYearsOrMonthsDropdown = (selected) => {
-  console.log('open dropdown', selected)
-
   if (selected[0] === 'monthDropdown') {
     isMonthsShow.value = !isMonthsShow.value
     isDropdownOpen.value = true
@@ -229,9 +227,7 @@ const updateDropdownValue = (value, type) => {
 
 </template>
 
-
 <style scoped lang="scss">
-
   .dropdownContainer{
     display: flex;
     // align-items: center;
