@@ -9,7 +9,6 @@ import BaseForm from "@/components/BaseForm.vue";
 const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
-
 </script>
 
 <template>
@@ -25,8 +24,8 @@ const toasterMessage = ref();
     <h1 class="title-tell-us">Tell Us About Yourself</h1>
 
     <base-wizzard
-      :isRegistered="true"
       :experience="true"
+      :isRegistered="true"
       :isExperienced="false"
     />
 

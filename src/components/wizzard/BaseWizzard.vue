@@ -7,14 +7,14 @@ const props = withDefaults(
     registration?: boolean;
     experience?: boolean;
     skills?: boolean;
-    active?: string;
     isRegistered?: boolean;
     isExperienced?: boolean;
     isSkilled?: boolean;
   }>(),
   {
     isRegistered: false,
-    registration: false
+    registration: false,
+    isSkilled: false
   }
 )
 
@@ -23,19 +23,19 @@ const props = withDefaults(
 <template>
     <div class="wizzardContainer">
         <wizzard-point
-            :active="registration"
+            :activePoint="registration"
             :passed="isRegistered"
             step="1"
             label="Registration"
         />
         <wizzard-point
-            :active="experience"
+            :activePoint="experience"
             :passed="isExperienced"
             step="2"
             label="Work Experience"
         />
         <wizzard-point
-            :active="skills"
+            :activePoint="skills"
             :passed="isSkilled"
             step="3"
             label="Job Category & Skills"

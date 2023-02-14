@@ -254,4 +254,8 @@ input[type=password]:visited
   width: 22px;
   cursor: pointer;
 }
+
+.skilsContainer{
+  display: flex;
+}
 </style>

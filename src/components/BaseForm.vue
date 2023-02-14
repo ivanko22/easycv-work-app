@@ -17,20 +17,15 @@ provide(
 );
 
 const jobs = ref([]);
-//use array for several variables
-
-const isFormShow = ref(false);
-const formTitle = ref("");
-const isShowPrimaryBtn = ref(false);
-
 const isJobEdit = ref(false);
 const isAddJobFormShow = ref(false);
 const isShowBaseJob = ref(true);
 
 const selectedJobEdit = ref("");
-
 const editJobID = ref();
 
+const isFormShow = ref(false);
+const formTitle = ref("");
 const addJobForm = ref();
 const isJobValid = ref(false);
 
@@ -43,13 +38,14 @@ const isEmployerValid = ref();
 const startDateLabel = ref("Start Date");
 const startDateValue = ref();
 const isStartDateValid = ref(false);
-
 const endDateLabel = ref("End Date");
 const endDateValue = ref();
 const isEndDateValid = ref(false);
 
 const descriptionValue = ref("");
 const isDescriptonValid = ref();
+
+const isShowPrimaryBtn = ref(false);
 
 const onChildValidation = (isValueValid, label, inputValue) => {
   if (label === "position") {

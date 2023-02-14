@@ -18,7 +18,17 @@ const onInput = () => {
   } else {
     yearYears.value = "Years";
   }
+
+  emitSliderValue();
 };
+
+const emit = defineEmits<{
+  (e: 'update:sliderValue', value: string): void
+  }>()
+
+const emitSliderValue = () => {
+  emit('update:sliderValue', currentValue.value)
+}
 </script>
 
 <template>
