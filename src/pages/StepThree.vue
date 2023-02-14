@@ -1,19 +1,44 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
+import router from "@/router";
+import axios from "axios";
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
 import BaseWizzard from "@/components/wizzard/BaseWizzard.vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
-import BaseInput from "@/components/BaseInput.vue";
 import BaseSlider from "@/components/BaseSlider.vue";
+import Chips from "@/components/chips/BaseChips.vue";
+import BaseButton from "@/components/BaseButton.vue";
 
 const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
 
+const mainUserCvId = ref();
+
 const jobCategoryValue = ref("Select Job Category");
+const yearsExperience = ref();
 const englishLevelValue = ref("Select Your English Level");
+const skills = ref();
+
+const isActivePrimaryBtn = ref(true);
+
+const config = {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("user")}`,
+  },
+};
+
+// get ID of main CV
+axios.get("/api/user", config).then((response) => {
+  mainUserCvId.value = response.data.cvs[0];
+});
+
+const getSkills = (emitedSkills) => {
+  skills.value = emitedSkills;
+};
 
 const handleDropdown = (value, type) => {
   if (type === "jobCategory") {
@@ -22,6 +47,33 @@ const handleDropdown = (value, type) => {
     englishLevelValue.value = value;
   }
 };
+
+const handleSlider = (value) => {
+  yearsExperience.value = value;
+};
+
+const onSubmit = () => {
+  const sendData = {
+    cv: mainUserCvId.value,
+    jobCategory: jobCategoryValue.value,
+    experience: yearsExperience.value,
+    skills: skills.value,
+  };
+
+  axios.put("/api/cv", sendData, config).then((response) => {
+    console.log("response", response);
+  });
+};
+
+// body = {
+//     cv (String): id of CV to update
+//     jobTitle (String, optional): job title for CV
+//     jobCategory (String, optional): job category for CV
+//     experience (Number, optional): years of experience in position
+//     skills ([String], optional): skill applicable to CV
+// }
+
+//need to add English level on API
 </script>
 
 <template>
@@ -61,7 +113,7 @@ const handleDropdown = (value, type) => {
         </p>
       </base-dropdown>
 
-      <base-slider/>
+      <base-slider v-on:update:sliderValue="handleSlider" />
 
       <base-dropdown
         :dropdown-type="'englishLevel'"
@@ -72,7 +124,8 @@ const handleDropdown = (value, type) => {
       >
         <p
           :class="{
-            dropdownTitleInitial: englishLevelValue === 'Select Your English Level',
+            dropdownTitleInitial:
+              englishLevelValue === 'Select Your English Level',
           }"
           class="dropdownTitle"
         >
@@ -80,15 +133,14 @@ const handleDropdown = (value, type) => {
         </p>
       </base-dropdown>
 
-      <base-input
-        :input-props-value="''"
-        class="input-long"
-        type="text"
-        label="skils"
-        name="skils"
-        v-on:update:is-valid="onChildValidation"
-      />
+      <chips v-on:update:skills="getSkills" />
     </form>
+
+    <base-button
+      label="Next"
+      :class="{ primaryBtn: isActivePrimaryBtn }"
+      @click="onSubmit"
+    />
   </div>
 </template>
 

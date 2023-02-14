@@ -9,7 +9,6 @@ import BaseForm from "@/components/BaseForm.vue";
 const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
-
 </script>
 
 <template>

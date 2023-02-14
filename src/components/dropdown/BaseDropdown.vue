@@ -18,8 +18,6 @@ const props = withDefaults(
   }
 )
 
-console.log('props.dropdownType', props.dropdownType)
-
 const isShowLabel = ref(false)
 const isDropdownOpen = ref(false)
 const dropdownLabel = ref()
@@ -230,10 +228,9 @@ const updateDropdownValue = (value, type) => {
 <style scoped lang="scss">
   .dropdownContainer{
     display: flex;
-    // align-items: center;
     flex-direction: column;
     cursor: pointer;
-    margin-bottom: 68px;
+    margin-bottom: 46px;
     margin-top: 34px;
   }
 

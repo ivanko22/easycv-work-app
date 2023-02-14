@@ -34,8 +34,6 @@ const handleIconClick = (arg, cvID, jobID) => {
     }
 
     if (arg === 'Edit Job') {
-        console.log('edit job position', cvID, jobID)
-
         updateJobPosition('Edit Job', cvID, jobID)
 
     }
@@ -47,12 +45,10 @@ const emit = defineEmits<{
 }>()
 
 const updateListOfJob = (arg) => {
-    // console.log('update job list emit')
     emit('update:jobsList', arg)
 }
 
 const updateJobPosition = (arg, cvID, jobID) => {
-  // console.log('update job position from child')
   emit('update:editJobPositon', arg, cvID, jobID)
 }
 
