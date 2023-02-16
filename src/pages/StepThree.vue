@@ -65,14 +65,6 @@ const onSubmit = () => {
   });
 };
 
-// body = {
-//     cv (String): id of CV to update
-//     jobTitle (String, optional): job title for CV
-//     jobCategory (String, optional): job category for CV
-//     experience (Number, optional): years of experience in position
-//     skills ([String], optional): skill applicable to CV
-// }
-
 //need to add English level on API
 </script>
 
