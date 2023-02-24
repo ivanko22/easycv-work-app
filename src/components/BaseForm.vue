@@ -163,6 +163,7 @@ axios.get("/api/user", config).then((response) => {
 const getMainCv = () =>
   axios.get("/api/cv", config, mainUserCvId.value).then((response) => {
     jobs.value = response.data[0].workHistory;
+    // console.log("get job from base form", response.data);
 
     if (jobs.value.length > 0) {
       isShowPrimaryBtn.value = true;
@@ -170,6 +171,8 @@ const getMainCv = () =>
   });
 
 getMainCv();
+
+// console.log("jobs", jobs);
 
 // edit Job Position
 const editJob = (arg, cvID, jobID) => {
@@ -290,6 +293,7 @@ const onSubmit = (arg) => {
       :jobID="job._id"
       :jobTitle="job.position"
       :companyName="job.employer"
+      :key="index"
       :workPeriod="dateFormatation([job.startDate, job.endDate])"
       :jobDescription="job.description"
       v-on:update:jobs-list="getMainCv"
@@ -447,7 +451,7 @@ h1 {
   font-weight: 600;
   font-size: 14px;
   padding-left: 10px;
-  color: $lightGrey2;
+  color: $lightGrey;
 }
 
 .plusIcon {

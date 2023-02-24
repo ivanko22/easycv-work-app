@@ -38,7 +38,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/step-three',
     name: 'Step Three',
-    component: () => import(/* webpackChunkName: "step two" */ '@/pages/StepThree.vue')
+    component: () => import(/* webpackChunkName: "step three" */ '@/pages/StepThree.vue')
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: () => import(/* webpackChunkName: "step three" */ '@/pages/DashBoard.vue')
   }
 ]
 

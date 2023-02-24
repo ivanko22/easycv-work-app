@@ -109,7 +109,7 @@ const updateSkills = (skills) => {
   border-radius: 2px;
   outline: none;
   border: none;
-  border: 1px solid $lightGrey;
+  border: 1px solid $ultraLightGrey;
   padding-left: 10px;
 
   input {

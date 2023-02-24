@@ -81,7 +81,7 @@ const props = withDefaults(
     .wizzardRoute{
         width: 160px;
         height: 0px;
-        border: 1px dashed $lightGrey;
+        border: 1px dashed $ultraLightGrey;
         margin-top: 14px;
         position: relative;
     }

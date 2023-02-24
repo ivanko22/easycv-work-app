@@ -152,11 +152,11 @@ const updateJobPosition = (arg, cvID, jobID) => {
 }
 
 .iconColor {
-  fill: $lightGrey2;
+  fill: $lightGrey;
 }
 
 .accordionIconColor {
-  fill: $lightGrey2;
+  fill: $lightGrey;
 }
 
 .jobContainer {

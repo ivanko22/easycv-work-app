@@ -61,7 +61,8 @@ const onSubmit = () => {
   };
 
   axios.put("/api/cv", sendData, config).then((response) => {
-    console.log("response", response);
+    // console.log("response from step 3", response);
+    router.push("/dashboard");
   });
 };
 
@@ -142,7 +143,6 @@ const onSubmit = () => {
   justify-content: center;
   flex-flow: column;
   align-items: center;
-  height: 80vh;
 }
 
 .dropdownTitle {

@@ -4,7 +4,6 @@ import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
 import BaseForm from "@/components/BaseForm.vue";
 import BaseWizzard from "@/components/wizzard/BaseWizzard.vue";
-import BaseButton from "@/components/BaseButton.vue";
 
 const isShowToaster = ref(false);
 const toasterType = ref();
