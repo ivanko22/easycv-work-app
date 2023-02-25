@@ -48,6 +48,8 @@ const onSubmit = () => {
   toasterType.value = "";
   toasterMessage.value = "";
 
+  console.log('sumbit');
+
   axios
     .post("/api/login", {
       email: emailValue.value,
@@ -55,6 +57,7 @@ const onSubmit = () => {
     })
 
     .then(function (response) {
+
       switch (response.data) {
         case "User with that email doesn't exist":
           toasterType.value = "warning";
@@ -72,6 +75,7 @@ const onSubmit = () => {
       if (typeof response.data !== "string") {
         let token = response.data.jwt;
         localStorage.setItem("user", token);
+        // console.log('response', response.data);
 
         router.push("/logged-in");
       }
@@ -86,7 +90,7 @@ const onSubmit = () => {
     :message="toasterMessage"
   />
 
-  <header-main label="Sign Up" hrefUrl="sign-up" />
+  <header-main label="Sign Up" hrefUrl="/sign-up" />
   <form v-on:submit.prevent="onSubmit" class="signInForm" autocomplete="off">
     <h1 class="title-tell-us">Sign In</h1>
 

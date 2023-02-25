@@ -2,7 +2,7 @@
 import { ref } from "vue";
 
 import axios from "axios";
-import { userData } from "@/components/getMainCV";
+import { user } from "@/components/getMainCV";
 import { getMainCv } from "@/components/getMainCV";
 
 import HeaderMain from "@/components/HeaderMain.vue";
@@ -13,7 +13,7 @@ const toasterType = ref();
 const toasterMessage = ref();
 
 const cv = getMainCv();
-const user = userData;
+const user = user;
 
 console.log("dashboard", cv, user);
 </script>

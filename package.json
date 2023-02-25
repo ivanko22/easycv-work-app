@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
+    "pinia": "^2.0.32",
     "vue": "^3.2.38",
     "vue-jwt-decode": "^0.1.0",
     "vue-router": "^4.1.6",

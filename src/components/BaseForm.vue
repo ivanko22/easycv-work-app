@@ -7,8 +7,12 @@ import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
 import BaseSecondaryButton from "@/components/BaseSecondaryButton.vue";
 import BaseJob from "./BaseJob.vue";
 import BaseButton from "@/components/BaseButton.vue";
+import { cv } from "@/components/getMainCV";
+import { mainUserCvId } from "@/components/getMainCV";
 
-const mainUserCvId = ref();
+const jobs = cv;
+// const mainUserCvId = ref(mainCvId);
+console.log('mainUserCvId', mainUserCvId.value, mainUserCvId);
 
 const selectedPeriod = ref(["Start Date", "End Date"]);
 provide(
@@ -16,7 +20,7 @@ provide(
   computed(() => selectedPeriod.value)
 );
 
-const jobs = ref([]);
+// const jobs = ref([]);
 const isJobEdit = ref(false);
 const isAddJobFormShow = ref(false);
 const isShowBaseJob = ref(true);
@@ -155,22 +159,22 @@ const showHideForm = (arg, cvID, jobID) => {
 };
 
 // get ID of main CV
-axios.get("/api/user", config).then((response) => {
-  mainUserCvId.value = response.data.cvs[0];
-});
+// axios.get("/api/user", config).then((response) => {
+//   mainUserCvId.value = response.data.cvs[0];
+// });
 
 // get main CV
-const getMainCv = () =>
-  axios.get("/api/cv", config, mainUserCvId.value).then((response) => {
-    jobs.value = response.data[0].workHistory;
+// const getMainCv = () =>
+//   axios.get("/api/cv", config, mainUserCvId.value).then((response) => {
+//     jobs.value = response.data[0].workHistory;
     // console.log("get job from base form", response.data);
 
-    if (jobs.value.length > 0) {
-      isShowPrimaryBtn.value = true;
-    }
-  });
+//     if (jobs.value.length > 0) {
+//       isShowPrimaryBtn.value = true;
+//     }
+//   });
 
-getMainCv();
+// getMainCv();
 
 // console.log("jobs", jobs);
 

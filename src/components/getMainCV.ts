@@ -8,21 +8,25 @@ const config = {
   },
 };
 
-const mainUserCvId = ref();
-export const userData = ref();
+export const mainUserCvId = ref();
+export const user = ref();
+export const cv = ref();
+
+console.log("get main Cv global", mainUserCvId, user, cv);
 
 // get ID of main CV
 axios.get("/api/user", config).then((response) => {
   mainUserCvId.value = response.data.cvs[0];
-  userData.value = response.data;
+  user.value = response.data;
 });
 
 // get main CV
 export function getMainCv() {
-  const cv = ref();
   axios.get("/api/cv", config, mainUserCvId.value).then((response) => {
     cv.value = response.data[0].workHistory;
   });
 
-  return cv;
+  console.log("get main Cv global 2", mainUserCvId, user, cv);
 }
+
+getMainCv();

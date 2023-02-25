@@ -15,4 +15,9 @@ $error: #E17777;
 :root{
   background-color: $secondGrey;
   margin: 0;
+
+  a, a:link, a:visited, a:focus, a:hover, a:active{
+    text-decoration:none;
+    cursor: pointer;
+  }
 }

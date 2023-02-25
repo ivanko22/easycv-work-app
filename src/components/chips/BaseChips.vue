@@ -56,7 +56,7 @@ const removeChip = (index) => {
 };
 
 const emit = defineEmits<{
-    (e: 'update:skills', value: string): void;
+  (e: 'update:skills', value: string): void;
 }>()
 
 const updateSkills = (skills) => {
@@ -78,10 +78,11 @@ const updateSkills = (skills) => {
     />
 
     <input
+      type="text"
       v-model="inputValue"
       @focus="handleInputStatus(true)"
       @blur="handleInputStatus(false)"
-      @keypress.enter="addTypingChip(inputValue)"
+      v-on:keydown.enter.prevent="addTypingChip(inputValue)"
       @keydown.delete="removeChip(selectedSkills.length - 1)"
     />
   </div>
