@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia';
+import { useUserData } from "@/helpers/user";
 import { ref, provide, computed } from "vue";
 import router from "@/router";
 import axios from "axios";
@@ -7,12 +9,16 @@ import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
 import BaseSecondaryButton from "@/components/BaseSecondaryButton.vue";
 import BaseJob from "./BaseJob.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import { cv } from "@/components/getMainCV";
-import { mainUserCvId } from "@/components/getMainCV";
 
-const jobs = cv;
-// const mainUserCvId = ref(mainCvId);
-console.log('mainUserCvId', mainUserCvId.value, mainUserCvId);
+const { token, mainCVid, mainCV, isLogIn, count } = storeToRefs(useUserData());
+const { fillToken, fillConfig, fillMainCvId, fillMainCv } = useUserData();
+
+fillToken();
+fillConfig();
+fillMainCvId();
+fillMainCv();
+
+const jobs = mainCV;
 
 const selectedPeriod = ref(["Start Date", "End Date"]);
 provide(
@@ -20,7 +26,6 @@ provide(
   computed(() => selectedPeriod.value)
 );
 
-// const jobs = ref([]);
 const isJobEdit = ref(false);
 const isAddJobFormShow = ref(false);
 const isShowBaseJob = ref(true);
@@ -150,33 +155,14 @@ const showHideForm = (arg, cvID, jobID) => {
     endDateLabel.value = "Select Date";
     startDateLabel.value = "Select Date";
 
-    if (jobs.value.length > 0) {
+    if (jobs.length > 0) {
       isShowPrimaryBtn.value = true;
+      // console.log('show primary btn');
     } else {
       isShowPrimaryBtn.value = false;
     }
   }
 };
-
-// get ID of main CV
-// axios.get("/api/user", config).then((response) => {
-//   mainUserCvId.value = response.data.cvs[0];
-// });
-
-// get main CV
-// const getMainCv = () =>
-//   axios.get("/api/cv", config, mainUserCvId.value).then((response) => {
-//     jobs.value = response.data[0].workHistory;
-    // console.log("get job from base form", response.data);
-
-//     if (jobs.value.length > 0) {
-//       isShowPrimaryBtn.value = true;
-//     }
-//   });
-
-// getMainCv();
-
-// console.log("jobs", jobs);
 
 // edit Job Position
 const editJob = (arg, cvID, jobID) => {
@@ -253,14 +239,14 @@ const onSubmit = (arg) => {
 
   if (arg === "Add Job") {
     axios
-      .post(`/api/cv/${mainUserCvId.value}/employment`, sendData, config)
+      .post(`/api/cv/${user.mainCVid.value}/employment`, sendData, config)
       .then((response) => {
         if (typeof response.data !== "string") {
           isAddJobFormShow.value = false;
           isShowBaseJob.value = true;
           isFormShow.value = false;
 
-          getMainCv();
+          // getMainCv();
 
           router.push("/step-two");
         }
@@ -270,7 +256,7 @@ const onSubmit = (arg) => {
   if (arg === "Edit Job") {
     axios
       .put(
-        `/api/cv/${mainUserCvId.value}/employment/${editJobID.value}`,
+        `/api/cv/${user.mainCVid.value}/employment/${editJobID.value}`,
         sendData,
         config
       )
@@ -280,7 +266,7 @@ const onSubmit = (arg) => {
           isShowBaseJob.value = true;
           isFormShow.value = false;
 
-          getMainCv();
+          // getMainCv();
 
           router.push("/step-two");
         }
@@ -293,14 +279,14 @@ const onSubmit = (arg) => {
   <template v-if="!isFormShow">
     <BaseJob
       v-for="(job, index) in jobs"
-      :cvID="mainUserCvId"
+      :cvID="mainCVid"
       :jobID="job._id"
       :jobTitle="job.position"
       :companyName="job.employer"
       :key="index"
       :workPeriod="dateFormatation([job.startDate, job.endDate])"
       :jobDescription="job.description"
-      v-on:update:jobs-list="getMainCv"
+      v-on:update:jobs-list="jobs"
       v-on:update:editJobPositon="showHideForm"
     />
 
@@ -393,7 +379,7 @@ const onSubmit = (arg) => {
   </form>
 
   <base-button
-    v-if="isShowPrimaryBtn"
+    v-if="!isShowPrimaryBtn"
     label="Next"
     :class="{ primaryBtn: isShowPrimaryBtn }"
     type="submit"

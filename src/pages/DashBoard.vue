@@ -1,21 +1,27 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
+import { useUserData } from "@/helpers/user";
 import { ref } from "vue";
-
 import axios from "axios";
-import { user } from "@/components/getMainCV";
-import { getMainCv } from "@/components/getMainCV";
 
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
+
+const { token, mainCVid, mainCV, userInfo, isLogIn, count } = storeToRefs(
+  useUserData()
+);
+const { fillToken, fillConfig, fillMainCvId, fillMainCv } = useUserData();
+
+fillToken();
+fillConfig();
+fillMainCvId();
+fillMainCv();
 
 const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
 
-const cv = getMainCv();
-const user = user;
-
-console.log("dashboard", cv, user);
+console.log("dashboard", mainCV, userInfo.value);
 </script>
 
 <template>
@@ -53,14 +59,16 @@ console.log("dashboard", cv, user);
               fill="#DADADA"
             />
           </svg>
-          <p class="initials">{{ user.firstName[0] }}{{ user.lastName[0] }}</p>
+          <p class="initials">
+            {{ userInfo.firstName[0] }}{{ userInfo.lastName[0] }}
+          </p>
         </div>
         <div class="bio">
           <h1 class="firstLastName">
-            {{ user.firstName }} {{ user.lastName }}
+            {{ userInfo.firstName }} {{ userInfo.lastName }}
           </h1>
           <p class="jobTitle">Product Designer need from DB {{}}</p>
-          <p class="contact">{{ user.email }}</p>
+          <p class="contact">{{ userInfo.email }}</p>
           <p class="addContact">+ Add Phone</p>
           <p class="addContact">+ Location</p>
           <p class="addContact">+ Linkedin</p>
@@ -76,7 +84,7 @@ console.log("dashboard", cv, user);
 
       <div class="cvContent">
         <h2 class="cvContentTitle">Work Experience</h2>
-        <p class="addContact">{{ cv[0] }}</p>
+        <p class="addContact">{{ mainCV[0] }}</p>
       </div>
     </div>
   </div>

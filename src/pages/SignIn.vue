@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useUserData } from "@/helpers/user";
 import { ref } from "vue";
 import router from "@/router";
 import axios from "axios";
@@ -6,6 +7,9 @@ import HeaderMain from "@/components/HeaderMain.vue";
 import BaseInput from "@/components/BaseInput.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
+
+const user = useUserData();
+user.count++;
 
 const isShowToaster = ref(false);
 const toasterType = ref();
@@ -48,7 +52,7 @@ const onSubmit = () => {
   toasterType.value = "";
   toasterMessage.value = "";
 
-  console.log('sumbit');
+  console.log("sumbit");
 
   axios
     .post("/api/login", {
@@ -57,7 +61,6 @@ const onSubmit = () => {
     })
 
     .then(function (response) {
-
       switch (response.data) {
         case "User with that email doesn't exist":
           toasterType.value = "warning";
@@ -75,7 +78,14 @@ const onSubmit = () => {
       if (typeof response.data !== "string") {
         let token = response.data.jwt;
         localStorage.setItem("user", token);
-        // console.log('response', response.data);
+        // console.log('token', token);
+
+        // user.token = token;
+        user.isLogIn = true;
+        user.getToken;
+        // user.getConfig;
+        // user.getMainCvId;
+        // user.getMainCv;
 
         router.push("/logged-in");
       }
