@@ -155,7 +155,7 @@ const showHideForm = (arg, cvID, jobID) => {
     endDateLabel.value = "Select Date";
     startDateLabel.value = "Select Date";
 
-    if (jobs.length > 0) {
+    if (jobs.value.length > 0) {
       isShowPrimaryBtn.value = true;
       // console.log('show primary btn');
     } else {
@@ -246,8 +246,6 @@ const onSubmit = (arg) => {
           isShowBaseJob.value = true;
           isFormShow.value = false;
 
-          // getMainCv();
-
           router.push("/step-two");
         }
       });
@@ -265,8 +263,6 @@ const onSubmit = (arg) => {
           isAddJobFormShow.value = false;
           isShowBaseJob.value = true;
           isFormShow.value = false;
-
-          // getMainCv();
 
           router.push("/step-two");
         }
