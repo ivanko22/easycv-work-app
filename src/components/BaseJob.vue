@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import axios from 'axios'
-import router from '@/router'
 import { defineProps, ref } from 'vue'
 
 defineProps<{
@@ -21,16 +19,8 @@ const openCloseJobAcc = () => {
 
 const handleIconClick = (arg, cvID, jobID) => {
 
-    const config = {
-    headers:{
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("user")}`
-    }
-    };
-
     if (arg === 'remove') {
-        axios.delete(`/api/cv/${cvID}/employment/${jobID}`, config)
-        .then(() => { updateListOfJob(true)} )
+        updateJobPosition('Remove Job', cvID, jobID)
     }
 
     if (arg === 'Edit Job') {
@@ -43,10 +33,6 @@ const emit = defineEmits<{
   (e: 'update:jobsList', value: boolean): void;
   (e: 'update:editJobPositon', value: string): void;
 }>()
-
-const updateListOfJob = (arg) => {
-    emit('update:jobsList', arg)
-}
 
 const updateJobPosition = (arg, cvID, jobID) => {
   emit('update:editJobPositon', arg, cvID, jobID)
@@ -184,7 +170,7 @@ const updateJobPosition = (arg, cvID, jobID) => {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  height: 70px;
+  height: 80px;
 }
 
 .jobDescriptionContainer {

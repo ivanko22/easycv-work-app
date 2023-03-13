@@ -6,7 +6,7 @@ import axios from "axios";
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
 
-const { token, mainCVid, mainCV, userInfo, isLogIn, count } = storeToRefs(
+const { token, mainCVid, mainCV, userInfo, isLogIn, count, jobs } = storeToRefs(
   useUserData()
 );
 const { fillToken, fillConfig, fillMainCvId, fillMainCv } = useUserData();
@@ -20,7 +20,7 @@ const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
 
-console.log("dashboard", mainCV, userInfo.value);
+console.log("dashboard", mainCV , userInfo);
 </script>
 
 <template>
@@ -32,7 +32,7 @@ console.log("dashboard", mainCV, userInfo.value);
 
   <header-main label="Log Out" hrefUrl="/logout" />
 
-  <!-- <h1 class="dashboardTitle">Dashboard{{ cv[0].position }}</h1> -->
+  <h1 class="dashboardTitle">Dashboard {{ mainCV,  jobs[0].position }}</h1>
 
   <div class="dashboard">
     <div class="allTemplatesContainer"></div>
@@ -66,7 +66,7 @@ console.log("dashboard", mainCV, userInfo.value);
           <h1 class="firstLastName">
             {{ userInfo.firstName }} {{ userInfo.lastName }}
           </h1>
-          <p class="jobTitle">Product Designer need from DB {{}}</p>
+          <p class="jobTitle"> {{ mainCV.jobTitle }}</p>
           <p class="contact">{{ userInfo.email }}</p>
           <p class="addContact">+ Add Phone</p>
           <p class="addContact">+ Location</p>
@@ -77,13 +77,31 @@ console.log("dashboard", mainCV, userInfo.value);
       </div>
 
       <div class="cvContent">
-        <h2 class="cvContentTitle">Objective Overview</h2>
-        <p class="addContact">+ Add Objective</p>
+        <h2 class="cvContentTitle">Experience Summary</h2>
+        <!-- <p class="addContact">+ Add Objective</p> -->
+        <p class="summary"> Experienced product designer skilled in wireframing, prototyping, and creating design systems.
+            Strong background in conducting user research, usability testing, and analyzing user behavior to improve product features.
+            Proficient in various design tools, including Sketch, Figma, Zeplin, and Vue.js.
+            Collaborative team player who can work with different teams, including developers, QA, marketing, and sales.
+            Designed mobile apps for clients like NASCAR, Indycar, and ECHL hockey league, and created UX/UI solutions from scratch to optimize user experience.
+            Knowledgeable in AWS cloud services, databases, and Python data structures.
+            Completed Vue - The Complete Guide and Agile Planning for Software Products Course.
+</p>
       </div>
 
       <div class="cvContent">
         <h2 class="cvContentTitle">Work Experience</h2>
-        <p class="addContact">{{ mainCV[0] }}</p>
+        <p class="addContact">{{ jobs[0].startDate }}</p>
+        <p class="addContact">{{ jobs[0].endDate }}</p>
+        <p class="addContact">{{ jobs[0].position }}</p>
+        <p class="addContact">{{ jobs[0].employer }}</p>
+        <p class="addContact">{{ jobs[0].description }}</p>
+
+        <p class="addContact">Job Category: {{ mainCV.jobCategory }}</p>
+        <p class="addContact">Experience: {{ mainCV.experience }}</p>
+        <p class="addContact">Skills: {{ mainCV.skills }}</p>
+        <p class="addContact">languages: {{ mainCV.languages }}</p>
+
       </div>
     </div>
   </div>
@@ -124,7 +142,11 @@ console.log("dashboard", mainCV, userInfo.value);
   padding-right: 70px;
 }
 
-.bio {
+.summary {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 25px;
+  color: $black;
 }
 
 .firstLastName {

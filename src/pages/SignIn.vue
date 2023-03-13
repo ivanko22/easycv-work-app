@@ -52,8 +52,6 @@ const onSubmit = () => {
   toasterType.value = "";
   toasterMessage.value = "";
 
-  console.log("sumbit");
-
   axios
     .post("/api/login", {
       email: emailValue.value,
@@ -78,15 +76,9 @@ const onSubmit = () => {
       if (typeof response.data !== "string") {
         let token = response.data.jwt;
         localStorage.setItem("user", token);
-        // console.log('token', token);
 
-        // user.token = token;
         user.isLogIn = true;
         user.getToken;
-        // user.getConfig;
-        // user.getMainCvId;
-        // user.getMainCv;
-
         router.push("/logged-in");
       }
     });
