@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useUserData } from "@/helpers/user";
+import { dateFormatation } from "@/helpers/dateFormat";
 import { ref } from "vue";
 import axios from "axios";
 import HeaderMain from "@/components/HeaderMain.vue";
@@ -78,10 +79,14 @@ console.log("dashboard", mainCV , userInfo);
         <div class="">
           <div class="skillsContainer">
             <p class="jobTitle">Skills</p>
-
             <div class="skillsTagsContainer">
               <p class="skill" v-for="skill in mainCV.skills"> {{ skill }},&nbsp;</p>
             </div>
+            <p class="jobTitle">languages</p>
+            <div class="skillsTagsContainer"> 
+              <p class="skill"> English - Fluent, Ukranian - Native, Russian - Native </p>
+            </div>
+
           </div>
         </div>
       </div>
@@ -101,10 +106,14 @@ console.log("dashboard", mainCV , userInfo);
       </div>
         <div class="cvContent">
           <h2 class="cvContentTitle">Work Experience</h2>
-          <p class="addContact">{{ jobs[0].startDate }}</p>
-          <p class="addContact">{{ jobs[0].endDate }}</p>
-          <p class="addContact">{{ jobs[0].position }}</p>
-          <p class="addContact">{{ jobs[0].employer }}</p>
+          
+          <div class="jobPositionContainer">
+            <p class="employerTitle">{{ jobs[0].employer }}</p>
+            <p class="workPeriod">{{ dateFormatation([jobs[0].startDate, jobs[0].endDate ]) }}</p>
+          </div>
+          
+          <p class="jobTitle">{{ jobs[0].position }}</p>
+
           <p class="addContact">{{ jobs[0].description }}</p>
 
           <p class="addContact">Job Category: {{ mainCV.jobCategory }}</p>
@@ -200,8 +209,8 @@ console.log("dashboard", mainCV , userInfo);
 }
 
 .initials {
-  position: absolute;
-  top: 139px;
+  position: relative;
+  bottom: 205px;
   width: 206px;
   font-weight: 600;
   font-size: 61px;
@@ -218,6 +227,7 @@ console.log("dashboard", mainCV , userInfo);
 .skillsContainer {
   display: flex;
   flex-flow: column;
+  padding-top: 10px;
   margin-left: 10px;
   justify-content: center;
   height: 205px;
@@ -233,5 +243,26 @@ console.log("dashboard", mainCV , userInfo);
 .skill{
   height: 22px;
   margin: 0;
+}
+
+.jobPositionContainer {
+  display: flex;
+  align-items: center;
+
+  p{
+    padding-right: 6px;
+    margin: 0;
+  }
+}
+
+.workPeriod {
+  font-weight: 400;
+  font-size: 14px;
+  color: $black;
+}
+
+.employerTitle {
+  font-weight: 600;
+  font-size: 14px;
 }
 </style>
