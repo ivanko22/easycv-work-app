@@ -29,7 +29,7 @@ const toasterMessage = ref();
     :message="toasterMessage"
   />
 
-  <header-main label="Sign Out" hrefUrl="/logout" />
+  <header-main label="Log Out" hrefUrl="/logout" />
 
   <div class="formContainer">
     <h1 class="title-tell-us">Tell Us About Yourself</h1>

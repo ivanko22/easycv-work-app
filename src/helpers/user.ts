@@ -33,6 +33,10 @@ export const useUserData = defineStore("userStore", {
     getMainCv: (state) => {
       return state.mainCV;
     },
+
+    getCTAbtnState: (state) => {
+      return state.showCTAbtn;
+    },
   },
 
   actions: {
@@ -60,11 +64,10 @@ export const useUserData = defineStore("userStore", {
       axios.get("/api/cv", this.config, this.mainCVid).then((response) => {
         this.mainCV = response.data[0];
         this.jobs = response.data[0].workHistory
-        if (this.mainCV.length > 0) {
+        if (this.jobs.length > 0) {
           this.showCTAbtn = true;
         }else{
           this.showCTAbtn = false;
-
         }
 
       });

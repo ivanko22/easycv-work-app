@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useUserData } from "@/helpers/user";
+import { dateFormatation } from "@/helpers/dateFormat";
 import { ref } from "vue";
 import axios from "axios";
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
+import BaseChip from "@/components/chips/BaseChip.vue";
 
 const { token, mainCVid, mainCV, userInfo, isLogIn, count, jobs } = storeToRefs(
   useUserData()
@@ -32,7 +34,7 @@ console.log("dashboard", mainCV , userInfo);
 
   <header-main label="Log Out" hrefUrl="/logout" />
 
-  <h1 class="dashboardTitle">Dashboard {{ mainCV,  jobs[0].position }}</h1>
+  <h1 class="dashboardTitle">Dashboard {{ mainCV.skills }}</h1>
 
   <div class="dashboard">
     <div class="allTemplatesContainer"></div>
@@ -74,6 +76,19 @@ console.log("dashboard", mainCV , userInfo);
           <p class="addContact">+ Github</p>
           <p class="addContact">+ Other</p>
         </div>
+        <div class="">
+          <div class="skillsContainer">
+            <p class="jobTitle">Skills</p>
+            <div class="skillsTagsContainer">
+              <p class="skill" v-for="skill in mainCV.skills"> {{ skill }},&nbsp;</p>
+            </div>
+            <p class="jobTitle">languages</p>
+            <div class="skillsTagsContainer"> 
+              <p class="skill"> English - Fluent, Ukranian - Native, Russian - Native </p>
+            </div>
+
+          </div>
+        </div>
       </div>
 
       <div class="cvContent">
@@ -86,23 +101,26 @@ console.log("dashboard", mainCV , userInfo);
             Designed mobile apps for clients like NASCAR, Indycar, and ECHL hockey league, and created UX/UI solutions from scratch to optimize user experience.
             Knowledgeable in AWS cloud services, databases, and Python data structures.
             Completed Vue - The Complete Guide and Agile Planning for Software Products Course.
-</p>
-      </div>
-
-      <div class="cvContent">
-        <h2 class="cvContentTitle">Work Experience</h2>
-        <p class="addContact">{{ jobs[0].startDate }}</p>
-        <p class="addContact">{{ jobs[0].endDate }}</p>
-        <p class="addContact">{{ jobs[0].position }}</p>
-        <p class="addContact">{{ jobs[0].employer }}</p>
-        <p class="addContact">{{ jobs[0].description }}</p>
-
-        <p class="addContact">Job Category: {{ mainCV.jobCategory }}</p>
-        <p class="addContact">Experience: {{ mainCV.experience }}</p>
-        <p class="addContact">Skills: {{ mainCV.skills }}</p>
-        <p class="addContact">languages: {{ mainCV.languages }}</p>
+        </p>
 
       </div>
+        <div class="cvContent">
+          <h2 class="cvContentTitle">Work Experience</h2>
+          
+          <div class="jobPositionContainer">
+            <p class="employerTitle">{{ jobs[0].employer }}</p>
+            <p class="workPeriod">{{ dateFormatation([jobs[0].startDate, jobs[0].endDate ]) }}</p>
+          </div>
+          
+          <p class="jobTitle">{{ jobs[0].position }}</p>
+
+          <p class="addContact">{{ jobs[0].description }}</p>
+
+          <p class="addContact">Job Category: {{ mainCV.jobCategory }}</p>
+          <p class="addContact">Experience: {{ mainCV.experience }}</p>
+          <p class="addContact">Skills: {{ mainCV.skills }}</p>
+          <p class="addContact">languages: {{ mainCV.languages }}</p>
+        </div>
     </div>
   </div>
 </template>
@@ -149,6 +167,9 @@ console.log("dashboard", mainCV , userInfo);
   color: $black;
 }
 
+.bio {
+  width: 200px;
+}
 .firstLastName {
   font-style: normal;
   font-weight: 700;
@@ -188,8 +209,8 @@ console.log("dashboard", mainCV , userInfo);
 }
 
 .initials {
-  position: absolute;
-  top: 139px;
+  position: relative;
+  bottom: 205px;
   width: 206px;
   font-weight: 600;
   font-size: 61px;
@@ -201,5 +222,47 @@ console.log("dashboard", mainCV , userInfo);
   font-weight: 700;
   font-size: 18px;
   color: $black;
+}
+
+.skillsContainer {
+  display: flex;
+  flex-flow: column;
+  padding-top: 10px;
+  margin-left: 10px;
+  justify-content: center;
+  height: 205px;
+}
+.skillsTagsContainer{
+  display: flex;
+  flex-flow: wrap;
+  align-content: flex-start;
+  font-size: 12px;
+  width: 304px;
+}
+
+.skill{
+  height: 22px;
+  margin: 0;
+}
+
+.jobPositionContainer {
+  display: flex;
+  align-items: center;
+
+  p{
+    padding-right: 6px;
+    margin: 0;
+  }
+}
+
+.workPeriod {
+  font-weight: 400;
+  font-size: 14px;
+  color: $black;
+}
+
+.employerTitle {
+  font-weight: 600;
+  font-size: 14px;
 }
 </style>
