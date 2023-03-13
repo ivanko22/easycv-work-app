@@ -313,7 +313,6 @@ const onSubmit = (arg) => {
   </form>
 
   <base-button
-    v-if="showCTAbtn"
     label="Next"
     :class="{ primaryBtn: isShowPrimaryBtn }"
     type="submit"

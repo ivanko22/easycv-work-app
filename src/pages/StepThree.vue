@@ -50,8 +50,6 @@ const handleSlider = (value) => {
 };
 
 const handlePrimaryBtn = () => {
-  console.log('handle primary btn')
-
   if (
     jobCategoryValue.value !== "Select Job Category" && 
     yearsExperience.value && 
@@ -66,7 +64,7 @@ const handlePrimaryBtn = () => {
 const onSubmit = () => {
   const sendData = {
     cv: mainCVid.value,
-    jobTitle: "Some Job Title",
+    jobTitle: "Product Designer",
     jobCategory: jobCategoryValue.value,
     experience: yearsExperience.value,
     skills: skills.value,
@@ -85,7 +83,7 @@ const onSubmit = () => {
     :message="toasterMessage"
   />
 
-  <header-main label="Sign Out" hrefUrl="/logout" />
+  <header-main label="Log Out" hrefUrl="/logout" />
 
   <div class="stepThreeForm">
     <h1 class="title-tell-us">Tell Us About Yourself</h1>
