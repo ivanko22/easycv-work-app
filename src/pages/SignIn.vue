@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useUserData } from "@/helpers/user";
 import { ref } from "vue";
 import router from "@/router";
 import axios from "axios";
@@ -6,6 +7,9 @@ import HeaderMain from "@/components/HeaderMain.vue";
 import BaseInput from "@/components/BaseInput.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
+
+const user = useUserData();
+user.count++;
 
 const isShowToaster = ref(false);
 const toasterType = ref();
@@ -73,6 +77,8 @@ const onSubmit = () => {
         let token = response.data.jwt;
         localStorage.setItem("user", token);
 
+        user.isLogIn = true;
+        user.getToken;
         router.push("/logged-in");
       }
     });
@@ -86,7 +92,7 @@ const onSubmit = () => {
     :message="toasterMessage"
   />
 
-  <header-main label="Sign Up" hrefUrl="sign-up" />
+  <header-main label="Sign Up" hrefUrl="/sign-up" />
   <form v-on:submit.prevent="onSubmit" class="signInForm" autocomplete="off">
     <h1 class="title-tell-us">Sign In</h1>
 

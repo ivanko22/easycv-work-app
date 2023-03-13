@@ -43,7 +43,7 @@ const typingHandle = () => {
 }
 
 const notFocus = () => {
-  if (watchInpute.value.length < 1) {
+  if (watchInpute.length < 1) {
     activeInput.value = false
   }else{
     activeInput.value = true
@@ -182,7 +182,7 @@ input{
   text-align: left;
   outline: none;
   border: none;
-  border: 1px solid $lightGrey;
+  border: 1px solid $ultraLightGrey;
   padding-left: 10px;
   font-size: 16px;
 }
@@ -229,7 +229,7 @@ input:hover {
   left: 10px;
   top: 16px;
   font-size: 16px;
-  color: $lightGrey2;
+  color: $lightGrey;
   transition: .25s;
   pointer-events: none;
 }

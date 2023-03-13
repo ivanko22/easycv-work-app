@@ -242,7 +242,7 @@ const updateDropdownValue = (value, type) => {
     text-align: left;
     outline: none;
     border: none;
-    border: 1px solid $lightGrey;
+    border: 1px solid $ultraLightGrey;
     padding-left: 16px;
     font-size: 16px;
     display: flex;

@@ -4,7 +4,7 @@ import MainContainer from "@/components/ContainerMain.vue";
 </script>
 
 <template>
-  <header-main hrefUrl="sign-in" label="Sign In" />
+  <header-main hrefUrl="/sign-in" label="Sign In" />
   <MainContainer />
 </template>
 

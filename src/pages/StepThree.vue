@@ -1,8 +1,7 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
+import { useUserData } from "@/helpers/user";
 import { ref } from "vue";
-
-import router from "@/router";
-import axios from "axios";
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
 import BaseWizzard from "@/components/wizzard/BaseWizzard.vue";
@@ -11,33 +10,29 @@ import BaseSlider from "@/components/BaseSlider.vue";
 import Chips from "@/components/chips/BaseChips.vue";
 import BaseButton from "@/components/BaseButton.vue";
 
+const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillJob, addJob, removeJob, updateCv } =
+  useUserData();
+
+fillToken();
+fillConfig();
+fillMainCvId();
+fillMainCv();
+
+const { mainCVid, mainCV, showCTAbtn, config } = storeToRefs(useUserData());
+const isShowPrimaryBtn = ref(false);
+
 const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
-
-const mainUserCvId = ref();
 
 const jobCategoryValue = ref("Select Job Category");
 const yearsExperience = ref();
 const englishLevelValue = ref("Select Your English Level");
 const skills = ref();
 
-const isActivePrimaryBtn = ref(true);
-
-const config = {
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("user")}`,
-  },
-};
-
-// get ID of main CV
-axios.get("/api/user", config).then((response) => {
-  mainUserCvId.value = response.data.cvs[0];
-});
-
 const getSkills = (emitedSkills) => {
   skills.value = emitedSkills;
+  handlePrimaryBtn();
 };
 
 const handleDropdown = (value, type) => {
@@ -46,34 +41,41 @@ const handleDropdown = (value, type) => {
   } else {
     englishLevelValue.value = value;
   }
+  handlePrimaryBtn();
 };
 
 const handleSlider = (value) => {
   yearsExperience.value = value;
+  handlePrimaryBtn();
 };
+
+const handlePrimaryBtn = () => {
+  console.log('handle primary btn')
+
+  if (
+    jobCategoryValue.value !== "Select Job Category" && 
+    yearsExperience.value && 
+    englishLevelValue.value !== "Select Your English Level" && skills.value
+    ) {
+    isShowPrimaryBtn.value = true;
+  }else{
+    isShowPrimaryBtn.value = false;
+  }
+}
 
 const onSubmit = () => {
   const sendData = {
-    cv: mainUserCvId.value,
+    cv: mainCVid.value,
+    jobTitle: "Some Job Title",
     jobCategory: jobCategoryValue.value,
     experience: yearsExperience.value,
     skills: skills.value,
+    languages: [{language: "English", level: englishLevelValue.value}]
   };
 
-  axios.put("/api/cv", sendData, config).then((response) => {
-    console.log("response", response);
-  });
+  updateCv(sendData);
 };
 
-// body = {
-//     cv (String): id of CV to update
-//     jobTitle (String, optional): job title for CV
-//     jobCategory (String, optional): job category for CV
-//     experience (Number, optional): years of experience in position
-//     skills ([String], optional): skill applicable to CV
-// }
-
-//need to add English level on API
 </script>
 
 <template>
@@ -138,7 +140,7 @@ const onSubmit = () => {
 
     <base-button
       label="Next"
-      :class="{ primaryBtn: isActivePrimaryBtn }"
+      :class="{ primaryBtn: isShowPrimaryBtn }"
       @click="onSubmit"
     />
   </div>
@@ -150,7 +152,6 @@ const onSubmit = () => {
   justify-content: center;
   flex-flow: column;
   align-items: center;
-  height: 80vh;
 }
 
 .dropdownTitle {

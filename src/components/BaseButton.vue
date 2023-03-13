@@ -27,13 +27,13 @@ const props = withDefaults(
 <style scoped lang="scss">
 .disabled-btn {
   margin-top: 60px;
-  border: 1px solid $lightGrey2;
+  border: 1px solid $lightGrey;
   border-radius: 2px;
   width: 410px;
   height: 50px;
   font-weight: 600;
   font-size: 16px;
-  color: $lightGrey2;
+  color: $lightGrey;
   background-color: unset;
 }
 
@@ -43,5 +43,6 @@ const props = withDefaults(
   color: $white;
   cursor: pointer;
   transition: .25s;
+  margin-bottom: 60px;
 }
 </style>

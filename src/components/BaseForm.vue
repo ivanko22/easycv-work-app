@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
+import { useUserData } from "@/helpers/user";
+import { dateFormatation } from "@/helpers/dateFormat";
 import { ref, provide, computed } from "vue";
 import router from "@/router";
 import axios from "axios";
@@ -8,7 +11,17 @@ import BaseSecondaryButton from "@/components/BaseSecondaryButton.vue";
 import BaseJob from "./BaseJob.vue";
 import BaseButton from "@/components/BaseButton.vue";
 
-const mainUserCvId = ref();
+const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillJob, addJob, removeJob } =
+  useUserData();
+
+fillToken();
+fillConfig();
+fillMainCvId();
+fillMainCv();
+
+const { mainCVid, jobs, showCTAbtn } = storeToRefs(useUserData());
+
+const isShowPrimaryBtn = showCTAbtn;
 
 const selectedPeriod = ref(["Start Date", "End Date"]);
 provide(
@@ -16,7 +29,6 @@ provide(
   computed(() => selectedPeriod.value)
 );
 
-const jobs = ref([]);
 const isJobEdit = ref(false);
 const isAddJobFormShow = ref(false);
 const isShowBaseJob = ref(true);
@@ -44,8 +56,6 @@ const isEndDateValid = ref(false);
 
 const descriptionValue = ref("");
 const isDescriptonValid = ref();
-
-const isShowPrimaryBtn = ref(false);
 
 const onChildValidation = (isValueValid, label, inputValue) => {
   if (label === "position") {
@@ -104,19 +114,6 @@ const childDate = (date, label, isDateValid, dropdownLabel) => {
   }
 };
 
-// const onClickAway = (event: any) => {
-// isMonthsShow.value = false
-// isYearsShow.value = false
-// isDropdownOpen.value = false
-// }
-
-const config = {
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("user")}`,
-  },
-};
-
 const showHideForm = (arg, cvID, jobID) => {
   isJobEdit.value = false;
 
@@ -145,31 +142,13 @@ const showHideForm = (arg, cvID, jobID) => {
     descriptionValue.value = "";
     endDateLabel.value = "Select Date";
     startDateLabel.value = "Select Date";
-
-    if (jobs.value.length > 0) {
-      isShowPrimaryBtn.value = true;
-    } else {
-      isShowPrimaryBtn.value = false;
-    }
   }
+
+  if (arg === "Remove Job") {
+    removeJob(arg, cvID, jobID)
+  }
+
 };
-
-// get ID of main CV
-axios.get("/api/user", config).then((response) => {
-  mainUserCvId.value = response.data.cvs[0];
-});
-
-// get main CV
-const getMainCv = () =>
-  axios.get("/api/cv", config, mainUserCvId.value).then((response) => {
-    jobs.value = response.data[0].workHistory;
-
-    if (jobs.value.length > 0) {
-      isShowPrimaryBtn.value = true;
-    }
-  });
-
-getMainCv();
 
 // edit Job Position
 const editJob = (arg, cvID, jobID) => {
@@ -196,37 +175,6 @@ const editJob = (arg, cvID, jobID) => {
   }
 };
 
-const months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "June",
-  "July",
-  "Aug",
-  "Sept",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
-const formatMonth = (month) => {
-  return months[month];
-};
-
-const dateFormatation = (date) => {
-  const startDate = new Date(date[0]);
-  const endDate = new Date(date[1]);
-
-  const period = `${formatMonth(
-    startDate.getMonth() - 1
-  )} ${startDate.getFullYear()} - ${formatMonth(
-    endDate.getMonth() - 1
-  )} ${endDate.getFullYear()}`;
-  return period;
-};
-
 const onSubmit = (arg) => {
   const sendData = {
     position: jobPositionValue.value,
@@ -245,54 +193,34 @@ const onSubmit = (arg) => {
   startDateLabel.value = "Select Date";
 
   if (arg === "Add Job") {
-    axios
-      .post(`/api/cv/${mainUserCvId.value}/employment`, sendData, config)
-      .then((response) => {
-        if (typeof response.data !== "string") {
-          isAddJobFormShow.value = false;
-          isShowBaseJob.value = true;
-          isFormShow.value = false;
-
-          getMainCv();
-
-          router.push("/step-two");
-        }
-      });
+    addJob(sendData);
+    isAddJobFormShow.value = false;
+    isShowBaseJob.value = true;
+    isFormShow.value = false;
   }
 
   if (arg === "Edit Job") {
-    axios
-      .put(
-        `/api/cv/${mainUserCvId.value}/employment/${editJobID.value}`,
-        sendData,
-        config
-      )
-      .then((response) => {
-        if (typeof response.data !== "string") {
-          isAddJobFormShow.value = false;
-          isShowBaseJob.value = true;
-          isFormShow.value = false;
-
-          getMainCv();
-
-          router.push("/step-two");
-        }
-      });
+    fillJob(sendData, editJobID.value);
+    isAddJobFormShow.value = false;
+    isShowBaseJob.value = true;
+    isFormShow.value = false;
   }
 };
+
 </script>
 
 <template>
   <template v-if="!isFormShow">
     <BaseJob
       v-for="(job, index) in jobs"
-      :cvID="mainUserCvId"
+      :cvID="mainCVid"
       :jobID="job._id"
       :jobTitle="job.position"
       :companyName="job.employer"
+      :key="index"
       :workPeriod="dateFormatation([job.startDate, job.endDate])"
       :jobDescription="job.description"
-      v-on:update:jobs-list="getMainCv"
+      v-on:update:jobs-list="jobs"
       v-on:update:editJobPositon="showHideForm"
     />
 
@@ -385,7 +313,7 @@ const onSubmit = (arg) => {
   </form>
 
   <base-button
-    v-if="isShowPrimaryBtn"
+    v-if="showCTAbtn"
     label="Next"
     :class="{ primaryBtn: isShowPrimaryBtn }"
     type="submit"
@@ -447,7 +375,7 @@ h1 {
   font-weight: 600;
   font-size: 14px;
   padding-left: 10px;
-  color: $lightGrey2;
+  color: $lightGrey;
 }
 
 .plusIcon {
