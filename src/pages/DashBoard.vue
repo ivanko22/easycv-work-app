@@ -6,7 +6,7 @@ import { ref } from "vue";
 import axios from "axios";
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
-import BaseChip from "@/components/chips/BaseChip.vue";
+import cvThumbnail from "@/components/cvThumbnail.vue";
 
 const { token, mainCVid, mainCV, userInfo, isLogIn, count, jobs } = storeToRefs(
   useUserData()
@@ -22,6 +22,8 @@ const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
 
+const cvImages = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13']
+
 console.log("dashboard", mainCV , userInfo);
 </script>
 
@@ -34,10 +36,15 @@ console.log("dashboard", mainCV , userInfo);
 
   <header-main label="Log Out" hrefUrl="/logout" />
 
-  <h1 class="dashboardTitle">Dashboard {{ mainCV.skills }}</h1>
+  <!-- <h1 class="dashboardTitle">Dashboard {{ mainCV.skills }}</h1> -->
 
   <div class="dashboard">
-    <div class="allTemplatesContainer"></div>
+    <div class="allTemplatesContainer">
+      <div class="cvThumbnailsContainer">
+        <cvThumbnail v-for="image in cvImages" :imageUrl="image"/>
+      </div>
+    </div>
+
     <div class="cvContainer">
       <div class="cvHeaderContainer">
         <div class="uploadImage">
@@ -104,22 +111,22 @@ console.log("dashboard", mainCV , userInfo);
         </p>
 
       </div>
-        <div class="cvContent">
+        <div v-for="job in jobs" class="cvContent">
           <h2 class="cvContentTitle">Work Experience</h2>
           
           <div class="jobPositionContainer">
-            <p class="employerTitle">{{ jobs[0].employer }}</p>
-            <p class="workPeriod">{{ dateFormatation([jobs[0].startDate, jobs[0].endDate ]) }}</p>
+            <p class="employerTitle">{{ job.employer }}</p>
+            <p class="workPeriod">{{ dateFormatation([job.startDate, job.endDate ]) }}</p>
           </div>
           
-          <p class="jobTitle">{{ jobs[0].position }}</p>
+          <p class="jobTitle">{{ job.position }}</p>
 
-          <p class="addContact">{{ jobs[0].description }}</p>
+          <p class="summary">{{ job.description }}</p>
 
-          <p class="addContact">Job Category: {{ mainCV.jobCategory }}</p>
+          <!-- <p class="addContact">Job Category: {{ mainCV.jobCategory }}</p>
           <p class="addContact">Experience: {{ mainCV.experience }}</p>
           <p class="addContact">Skills: {{ mainCV.skills }}</p>
-          <p class="addContact">languages: {{ mainCV.languages }}</p>
+          <p class="addContact">languages: {{ mainCV.languages }}</p> -->
         </div>
     </div>
   </div>
@@ -136,9 +143,9 @@ console.log("dashboard", mainCV , userInfo);
 
 .allTemplatesContainer {
   width: 330px;
-  height: 1114px;
   background: $white;
   margin-right: 34px;
+  padding-top: 18px;
 }
 
 .cvContainer {
@@ -265,4 +272,11 @@ console.log("dashboard", mainCV , userInfo);
   font-weight: 600;
   font-size: 14px;
 }
+
+.cvThumbnailsContainer {
+ display: flex;
+ flex-wrap: wrap;
+ margin-left: 21px;
+}
+
 </style>
