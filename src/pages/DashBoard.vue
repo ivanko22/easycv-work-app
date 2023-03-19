@@ -22,7 +22,14 @@ const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
 
-const cvImages = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13']
+const cvImages = ref({'1':true, '2':false, '3':false, '4':false, '5':false, '6':false, '7':false, '8':false, '9':false, '10':false, '11':false, '12':false, '13':false});
+const selectedCv = ref(1);
+
+const handleClickThumbnail = ( index ) => {
+  cvImages.value[selectedCv.value] =  false;
+  selectedCv.value = index;
+  cvImages.value[selectedCv.value] = true;
+}
 
 console.log("dashboard", mainCV , userInfo);
 </script>
@@ -41,7 +48,13 @@ console.log("dashboard", mainCV , userInfo);
   <div class="dashboard">
     <div class="allTemplatesContainer">
       <div class="cvThumbnailsContainer">
-        <cvThumbnail v-for="image in cvImages" :imageUrl="image"/>
+        <cvThumbnail 
+          v-for="(image, index) in cvImages" 
+          :selected="cvImages[index]"
+          :imageUrl="index"
+          :index="index"
+          @click="handleClickThumbnail(index)"
+        />
       </div>
     </div>
 
