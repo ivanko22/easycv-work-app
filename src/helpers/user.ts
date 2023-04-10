@@ -84,6 +84,13 @@ export const useUserData = defineStore("userStore", {
         });
     },
 
+    updateUser(dataSend) {
+      axios.put('api/user', dataSend, this.config)
+      .then((response) => {
+        console.log('user response', response.data)
+      })
+    },
+
     updateCv(dataSend) {
       axios.put('/api/cv', dataSend, this.config)
       .then((response) => {

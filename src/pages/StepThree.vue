@@ -68,7 +68,9 @@ const onSubmit = () => {
     jobCategory: jobCategoryValue.value,
     experience: yearsExperience.value,
     skills: skills.value,
-    languages: [{language: "English", level: englishLevelValue.value}]
+    languages: [{
+      language: "English", 
+      level: englishLevelValue.value}]
   };
 
   updateCv(sendData);

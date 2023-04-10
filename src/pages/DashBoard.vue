@@ -7,11 +7,12 @@ import axios from "axios";
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
 import cvThumbnail from "@/components/cvThumbnail.vue";
+import CvInput from "@/components/inputs/CvInput.vue";
 
 const { token, mainCVid, mainCV, userInfo, isLogIn, count, jobs } = storeToRefs(
   useUserData()
 );
-const { fillToken, fillConfig, fillMainCvId, fillMainCv } = useUserData();
+const { fillToken, fillConfig, fillMainCvId, fillMainCv, updateUser } = useUserData();
 
 fillToken();
 fillConfig();
@@ -29,6 +30,31 @@ const handleClickThumbnail = ( index ) => {
   cvImages.value[selectedCv.value] =  false;
   selectedCv.value = index;
   cvImages.value[selectedCv.value] = true;
+}
+
+const onSubmit = () => {
+  console.log('submit');
+  const sendData = {
+    email: 'some@me.com',
+    firstName: null,
+    lastName: null,
+    languages: [{
+      language: null, 
+      level: null
+    }],
+    socials: [{
+        name: 'Phone',
+        link: '+38 067 555 33 44'
+    },
+    {
+        name: 'Linkedin',
+        link: '+38 067 555 33 44'
+    }
+  ],
+    skills: null
+  };
+
+  updateUser(sendData);
 }
 
 console.log("dashboard", mainCV , userInfo);
@@ -89,14 +115,40 @@ console.log("dashboard", mainCV , userInfo);
             {{ userInfo.firstName }} {{ userInfo.lastName }}
           </h1>
           <p class="jobTitle"> {{ mainCV.jobTitle }}</p>
+          
+          <CvInput 
+            :placeholder="'Add Your Phone'" 
+            :label="'+ Add Phone'" 
+            :type="'tel'"
+          />
+
           <p class="contact">{{ userInfo.email }}</p>
-          <p class="addContact">+ Add Phone</p>
-          <p class="addContact">+ Location</p>
-          <p class="addContact">+ Linkedin</p>
-          <p class="addContact">+ Github</p>
-          <p class="addContact">+ Other</p>
+
+          <CvInput 
+            :placeholder="'Add Location'" 
+            :label="'+ Location'" 
+            :type="'text'"
+          />
+
+          <CvInput 
+            :placeholder="'Add Linkedin'" 
+            :label="'+ Linkedin'" 
+            :type="'url'"
+          />
+
+          <CvInput 
+            :placeholder="'Add Github'" 
+            :label="'+ Github'" 
+            :type="'url'"
+          />
+
+          <CvInput 
+            :placeholder="'Add Other info'" 
+            :label="'+ Other'" 
+            :type="'text'"
+          />
+
         </div>
-        <div class="">
           <div class="skillsContainer">
             <p class="jobTitle">Skills</p>
             <div class="skillsTagsContainer">
@@ -105,9 +157,8 @@ console.log("dashboard", mainCV , userInfo);
             <p class="jobTitle">languages</p>
             <div class="skillsTagsContainer"> 
               <p class="skill"> English - Fluent, Ukranian - Native, Russian - Native </p>
-            </div>
+         </div>
 
-          </div>
         </div>
       </div>
 
@@ -177,7 +228,7 @@ console.log("dashboard", mainCV , userInfo);
 
 .uploadImage {
   width: 200px;
-  padding-right: 70px;
+  padding-right: 40px;
 }
 
 .summary {
@@ -188,7 +239,7 @@ console.log("dashboard", mainCV , userInfo);
 }
 
 .bio {
-  width: 200px;
+  width: 170px;
 }
 .firstLastName {
   font-style: normal;
@@ -206,11 +257,11 @@ console.log("dashboard", mainCV , userInfo);
 }
 
 .contact {
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   margin: 0;
-  margin-bottom: 8px;
   margin-top: 10px;
+  padding-left: 2px;
 }
 
 .addContact {
@@ -251,6 +302,7 @@ console.log("dashboard", mainCV , userInfo);
   margin-left: 10px;
   justify-content: center;
   height: 205px;
+  width: 270px;
 }
 .skillsTagsContainer{
   display: flex;

@@ -5,7 +5,7 @@ import { dateFormatation } from "@/helpers/dateFormat";
 import { ref, provide, computed } from "vue";
 import router from "@/router";
 import axios from "axios";
-import BaseInput from "@/components/BaseInput.vue";
+import BaseInput from "@/components/inputs/BaseInput.vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
 import BaseSecondaryButton from "@/components/BaseSecondaryButton.vue";
 import BaseJob from "./BaseJob.vue";

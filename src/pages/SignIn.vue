@@ -4,7 +4,7 @@ import { ref } from "vue";
 import router from "@/router";
 import axios from "axios";
 import HeaderMain from "@/components/HeaderMain.vue";
-import BaseInput from "@/components/BaseInput.vue";
+import BaseInput from "@/components/inputs/BaseInput.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
 
