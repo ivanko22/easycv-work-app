@@ -1,27 +1,58 @@
 <script setup lang="ts">
 import { defineProps, withDefaults, ref, nextTick} from 'vue';
+import { storeToRefs } from "pinia";
+import { useUserData } from "@/helpers/user";
+
+const { token, mainCVid, mainCV, userInfo, jobs } = storeToRefs(
+  useUserData()
+);
+const { fillToken, fillConfig, fillMainCvId, fillMainCv, updateUser } = useUserData();
+
+fillToken();
+fillConfig();
+fillMainCvId();
+fillMainCv();
 
 const props = withDefaults(
   defineProps<{
       label?: string,
       type?: string,
-      placeholder: string
+      placeholder: string, 
+      previousValue: string
     }>(),
   {
     label: '',
     type: 'text'
   }
-)
+);
 
 const myInput = ref(null);
 const isPhone = ref(false);
 const isShowLabel = ref(true);
 const isShowInput = ref(false);
+const inputValue = ref('sdfsdf');
+inputValue.value = props.previousValue;
+// console.log('props.previousValue', props.previousValue, props.label);
 
-const inputValue = ref('');
+const socials = ref({
+    email: null,
+    firstName: null,
+    lastName: null,
+    languages: [{
+      language: null, 
+      level: null
+    }],
+    socials: [],
+    skills: null
+  });
+
+const fillSocials = () => {
+    socials.value.socials = userInfo.value.socials;
+    // console.log('socials.value', socials.value.socials[0].name);
+}
+fillSocials();
 
 const handleInput = (arg) => {
-
     if (arg === 'click') {
         isShowLabel.value = false;
         isShowInput.value = true;
@@ -45,6 +76,11 @@ const handleInput = (arg) => {
     }
 }
 
+const onSubmit = (type) => {
+  socials.value.socials.push({ name: type, link: inputValue.value})
+  updateUser(socials.value);
+}
+
 </script>
 
 <template>
@@ -54,11 +90,13 @@ const handleInput = (arg) => {
             ref="myInput"
             v-if="isShowInput" 
             v-model="inputValue"
+            :value='inputValue'
             :class="{ phone: isPhone }"
             :type=type 
             :placeholder=placeholder 
             @blur="handleInput('blur')"
             @input="handleInput('input')"
+            @keyup.enter="onSubmit(label)"
             autofocus
         >
     </div>

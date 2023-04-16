@@ -3,25 +3,28 @@ import { storeToRefs } from "pinia";
 import { useUserData } from "@/helpers/user";
 import { dateFormatation } from "@/helpers/dateFormat";
 import { ref } from "vue";
-import axios from "axios";
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
 import cvThumbnail from "@/components/cvThumbnail.vue";
 import CvInput from "@/components/inputs/CvInput.vue";
 
-const { token, mainCVid, mainCV, userInfo, isLogIn, count, jobs } = storeToRefs(
+const { token, mainCVid, mainCV, userInfo, jobs } = storeToRefs(
   useUserData()
 );
-const { fillToken, fillConfig, fillMainCvId, fillMainCv, updateUser } = useUserData();
+const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillUser, updateUser } = useUserData();
 
 fillToken();
 fillConfig();
 fillMainCvId();
 fillMainCv();
+fillUser();
 
 const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
+const phone = ref();
+phone.value = userInfo.value;
+console.log('phone', phone.value)
 
 const cvImages = ref({'1':true, '2':false, '3':false, '4':false, '5':false, '6':false, '7':false, '8':false, '9':false, '10':false, '11':false, '12':false, '13':false});
 const selectedCv = ref(1);
@@ -32,32 +35,10 @@ const handleClickThumbnail = ( index ) => {
   cvImages.value[selectedCv.value] = true;
 }
 
-const onSubmit = () => {
-  console.log('submit');
-  const sendData = {
-    email: 'some@me.com',
-    firstName: null,
-    lastName: null,
-    languages: [{
-      language: null, 
-      level: null
-    }],
-    socials: [{
-        name: 'Phone',
-        link: '+38 067 555 33 44'
-    },
-    {
-        name: 'Linkedin',
-        link: '+38 067 555 33 44'
-    }
-  ],
-    skills: null
-  };
+// console.log('userInfo.value.socials[0].name', userInfo.value);
 
-  updateUser(sendData);
-}
+// console.log('userInfo.value.socials[0].name', userInfo.value.socials[0].link);
 
-console.log("dashboard", mainCV , userInfo);
 </script>
 
 <template>
@@ -115,11 +96,19 @@ console.log("dashboard", mainCV , userInfo);
             {{ userInfo.firstName }} {{ userInfo.lastName }}
           </h1>
           <p class="jobTitle"> {{ mainCV.jobTitle }}</p>
+
+          <!-- <CvInput 
+            v-for="(social index) in userInfo.value.socials"
+            :placeholder="'some placeholder'"
+            :type=""
+          
+          /> -->
           
           <CvInput 
             :placeholder="'Add Your Phone'" 
             :label="'+ Add Phone'" 
             :type="'tel'"
+            :previous-value="phone.value"
           />
 
           <p class="contact">{{ userInfo.email }}</p>
@@ -128,24 +117,29 @@ console.log("dashboard", mainCV , userInfo);
             :placeholder="'Add Location'" 
             :label="'+ Location'" 
             :type="'text'"
+            :previous-value="'location'"
           />
 
           <CvInput 
             :placeholder="'Add Linkedin'" 
             :label="'+ Linkedin'" 
             :type="'url'"
+            :previous-value="'linkedin'"
+
           />
 
           <CvInput 
             :placeholder="'Add Github'" 
             :label="'+ Github'" 
             :type="'url'"
+            :previous-value="'github'"
           />
 
           <CvInput 
             :placeholder="'Add Other info'" 
             :label="'+ Other'" 
             :type="'text'"
+            :previous-value="'userInfo.value.socials[4]'"
           />
 
         </div>
