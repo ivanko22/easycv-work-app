@@ -1,9 +1,3 @@
-<template>
-  <button class="disabled-btn">
-    {{ label }}
-  </button>
-</template>
-
 <script setup lang="ts">
 import { defineProps, withDefaults } from 'vue'
 
@@ -23,6 +17,12 @@ const props = withDefaults(
   }
 )
 </script>
+
+<template>
+  <button class="disabled-btn">
+    {{ label }}
+  </button>
+</template>
 
 <style scoped lang="scss">
 .disabled-btn {

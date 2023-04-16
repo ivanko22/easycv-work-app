@@ -56,6 +56,11 @@ export const useUserData = defineStore("userStore", {
     fillMainCvId() {
       this.mainCvId = axios.get("/api/user", this.config).then((response) => {
         this.mainCVid = response.data.cvs[0];
+      });
+    },
+
+    fillUser() {
+      this.mainCvId = axios.get("/api/user", this.config).then((response) => {
         this.userInfo = response.data;
       });
     },
@@ -82,6 +87,13 @@ export const useUserData = defineStore("userStore", {
             this.fillMainCv();
           }
         });
+    },
+
+    updateUser(dataSend) {
+      axios.put('api/user', dataSend, this.config)
+      .then((response) => {
+        console.log('user response', response.data)
+      })
     },
 
     updateCv(dataSend) {

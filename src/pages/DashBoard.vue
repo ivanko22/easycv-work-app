@@ -3,26 +3,42 @@ import { storeToRefs } from "pinia";
 import { useUserData } from "@/helpers/user";
 import { dateFormatation } from "@/helpers/dateFormat";
 import { ref } from "vue";
-import axios from "axios";
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
-import BaseChip from "@/components/chips/BaseChip.vue";
+import cvThumbnail from "@/components/cvThumbnail.vue";
+import CvInput from "@/components/inputs/CvInput.vue";
 
-const { token, mainCVid, mainCV, userInfo, isLogIn, count, jobs } = storeToRefs(
+const { token, mainCVid, mainCV, userInfo, jobs } = storeToRefs(
   useUserData()
 );
-const { fillToken, fillConfig, fillMainCvId, fillMainCv } = useUserData();
+const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillUser, updateUser } = useUserData();
 
 fillToken();
 fillConfig();
 fillMainCvId();
 fillMainCv();
+fillUser();
 
 const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
+const phone = ref();
+phone.value = userInfo.value;
+console.log('phone', phone.value)
 
-console.log("dashboard", mainCV , userInfo);
+const cvImages = ref({'1':true, '2':false, '3':false, '4':false, '5':false, '6':false, '7':false, '8':false, '9':false, '10':false, '11':false, '12':false, '13':false});
+const selectedCv = ref(1);
+
+const handleClickThumbnail = ( index ) => {
+  cvImages.value[selectedCv.value] =  false;
+  selectedCv.value = index;
+  cvImages.value[selectedCv.value] = true;
+}
+
+// console.log('userInfo.value.socials[0].name', userInfo.value);
+
+// console.log('userInfo.value.socials[0].name', userInfo.value.socials[0].link);
+
 </script>
 
 <template>
@@ -34,10 +50,21 @@ console.log("dashboard", mainCV , userInfo);
 
   <header-main label="Log Out" hrefUrl="/logout" />
 
-  <h1 class="dashboardTitle">Dashboard {{ mainCV.skills }}</h1>
+  <!-- <h1 class="dashboardTitle">Dashboard {{ mainCV.skills }}</h1> -->
 
   <div class="dashboard">
-    <div class="allTemplatesContainer"></div>
+    <div class="allTemplatesContainer">
+      <div class="cvThumbnailsContainer">
+        <cvThumbnail 
+          v-for="(image, index) in cvImages" 
+          :selected="cvImages[index]"
+          :imageUrl="index"
+          :index="index"
+          @click="handleClickThumbnail(index)"
+        />
+      </div>
+    </div>
+
     <div class="cvContainer">
       <div class="cvHeaderContainer">
         <div class="uploadImage">
@@ -69,14 +96,53 @@ console.log("dashboard", mainCV , userInfo);
             {{ userInfo.firstName }} {{ userInfo.lastName }}
           </h1>
           <p class="jobTitle"> {{ mainCV.jobTitle }}</p>
+
+          <!-- <CvInput 
+            v-for="(social index) in userInfo.value.socials"
+            :placeholder="'some placeholder'"
+            :type=""
+          
+          /> -->
+          
+          <CvInput 
+            :placeholder="'Add Your Phone'" 
+            :label="'+ Add Phone'" 
+            :type="'tel'"
+            :previous-value="phone.value"
+          />
+
           <p class="contact">{{ userInfo.email }}</p>
-          <p class="addContact">+ Add Phone</p>
-          <p class="addContact">+ Location</p>
-          <p class="addContact">+ Linkedin</p>
-          <p class="addContact">+ Github</p>
-          <p class="addContact">+ Other</p>
+
+          <CvInput 
+            :placeholder="'Add Location'" 
+            :label="'+ Location'" 
+            :type="'text'"
+            :previous-value="'location'"
+          />
+
+          <CvInput 
+            :placeholder="'Add Linkedin'" 
+            :label="'+ Linkedin'" 
+            :type="'url'"
+            :previous-value="'linkedin'"
+
+          />
+
+          <CvInput 
+            :placeholder="'Add Github'" 
+            :label="'+ Github'" 
+            :type="'url'"
+            :previous-value="'github'"
+          />
+
+          <CvInput 
+            :placeholder="'Add Other info'" 
+            :label="'+ Other'" 
+            :type="'text'"
+            :previous-value="'userInfo.value.socials[4]'"
+          />
+
         </div>
-        <div class="">
           <div class="skillsContainer">
             <p class="jobTitle">Skills</p>
             <div class="skillsTagsContainer">
@@ -85,9 +151,8 @@ console.log("dashboard", mainCV , userInfo);
             <p class="jobTitle">languages</p>
             <div class="skillsTagsContainer"> 
               <p class="skill"> English - Fluent, Ukranian - Native, Russian - Native </p>
-            </div>
+         </div>
 
-          </div>
         </div>
       </div>
 
@@ -104,22 +169,22 @@ console.log("dashboard", mainCV , userInfo);
         </p>
 
       </div>
-        <div class="cvContent">
+        <div v-for="job in jobs" class="cvContent">
           <h2 class="cvContentTitle">Work Experience</h2>
           
           <div class="jobPositionContainer">
-            <p class="employerTitle">{{ jobs[0].employer }}</p>
-            <p class="workPeriod">{{ dateFormatation([jobs[0].startDate, jobs[0].endDate ]) }}</p>
+            <p class="employerTitle">{{ job.employer }}</p>
+            <p class="workPeriod">{{ dateFormatation([job.startDate, job.endDate ]) }}</p>
           </div>
           
-          <p class="jobTitle">{{ jobs[0].position }}</p>
+          <p class="jobTitle">{{ job.position }}</p>
 
-          <p class="addContact">{{ jobs[0].description }}</p>
+          <p class="summary">{{ job.description }}</p>
 
-          <p class="addContact">Job Category: {{ mainCV.jobCategory }}</p>
+          <!-- <p class="addContact">Job Category: {{ mainCV.jobCategory }}</p>
           <p class="addContact">Experience: {{ mainCV.experience }}</p>
           <p class="addContact">Skills: {{ mainCV.skills }}</p>
-          <p class="addContact">languages: {{ mainCV.languages }}</p>
+          <p class="addContact">languages: {{ mainCV.languages }}</p> -->
         </div>
     </div>
   </div>
@@ -136,9 +201,9 @@ console.log("dashboard", mainCV , userInfo);
 
 .allTemplatesContainer {
   width: 330px;
-  height: 1114px;
   background: $white;
   margin-right: 34px;
+  padding-top: 18px;
 }
 
 .cvContainer {
@@ -157,7 +222,7 @@ console.log("dashboard", mainCV , userInfo);
 
 .uploadImage {
   width: 200px;
-  padding-right: 70px;
+  padding-right: 40px;
 }
 
 .summary {
@@ -168,7 +233,7 @@ console.log("dashboard", mainCV , userInfo);
 }
 
 .bio {
-  width: 200px;
+  width: 170px;
 }
 .firstLastName {
   font-style: normal;
@@ -186,11 +251,11 @@ console.log("dashboard", mainCV , userInfo);
 }
 
 .contact {
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   margin: 0;
-  margin-bottom: 8px;
   margin-top: 10px;
+  padding-left: 2px;
 }
 
 .addContact {
@@ -231,6 +296,7 @@ console.log("dashboard", mainCV , userInfo);
   margin-left: 10px;
   justify-content: center;
   height: 205px;
+  width: 270px;
 }
 .skillsTagsContainer{
   display: flex;
@@ -265,4 +331,11 @@ console.log("dashboard", mainCV , userInfo);
   font-weight: 600;
   font-size: 14px;
 }
+
+.cvThumbnailsContainer {
+ display: flex;
+ flex-wrap: wrap;
+ margin-left: 21px;
+}
+
 </style>
