@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import { defineProps, withDefaults, ref, nextTick} from 'vue';
-import { storeToRefs } from "pinia";
+import { defineProps, withDefaults, ref, nextTick, computed} from 'vue';
 import { useUserData } from "@/helpers/user";
 
-const { token, mainCVid, mainCV, userInfo, jobs } = storeToRefs(
-  useUserData()
-);
 const { fillToken, fillConfig, fillMainCvId, fillMainCv, updateUser } = useUserData();
 
 fillToken();
@@ -18,7 +14,8 @@ const props = withDefaults(
       label?: string,
       type?: string,
       placeholder: string, 
-      previousValue: string
+      previousValue: string,
+      param: number
     }>(),
   {
     label: '',
@@ -30,27 +27,9 @@ const myInput = ref(null);
 const isPhone = ref(false);
 const isShowLabel = ref(true);
 const isShowInput = ref(false);
-const inputValue = ref('sdfsdf');
+const inputValue = ref('');
+
 inputValue.value = props.previousValue;
-// console.log('props.previousValue', props.previousValue, props.label);
-
-const socials = ref({
-    email: null,
-    firstName: null,
-    lastName: null,
-    languages: [{
-      language: null, 
-      level: null
-    }],
-    socials: [],
-    skills: null
-  });
-
-const fillSocials = () => {
-    socials.value.socials = userInfo.value.socials;
-    // console.log('socials.value', socials.value.socials[0].name);
-}
-fillSocials();
 
 const handleInput = (arg) => {
     if (arg === 'click') {
@@ -69,6 +48,7 @@ const handleInput = (arg) => {
 
     if (inputValue.value.length > 1) {
         isShowLabel.value = false;
+        isShowInput.value = true;
     }
 
     if(props.type === 'tel'){
@@ -76,9 +56,10 @@ const handleInput = (arg) => {
     }
 }
 
-const onSubmit = (type) => {
-  socials.value.socials.push({ name: type, link: inputValue.value})
-  updateUser(socials.value);
+handleInput(inputValue.value);
+
+const onSubmit = () => {
+    updateUser(props.param, inputValue.value);
 }
 
 </script>
@@ -92,12 +73,12 @@ const onSubmit = (type) => {
             v-model="inputValue"
             :value='inputValue'
             :class="{ phone: isPhone }"
-            :type=type 
+            :type=type
+            :param="param"
             :placeholder=placeholder 
             @blur="handleInput('blur')"
             @input="handleInput('input')"
             @keyup.enter="onSubmit(label)"
-            autofocus
         >
     </div>
 </template>

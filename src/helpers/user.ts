@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import router from "@/router";
+import { ref } from 'vue';
 
 export const useUserData = defineStore("userStore", {
   state: () => ({
@@ -11,7 +12,15 @@ export const useUserData = defineStore("userStore", {
     mainCVid: "",
     mainCV: [],
     jobs: [],
-    userInfo: [],
+    user: [],
+    userSocial: [
+      {name: 'Cell', link: '38 067 605 78 58'}, 
+      {name: '+ Portfolio', link: '+ Portfolio'},
+      {name: '+ Linkedin', link: '+ Linkedin'},
+      {name: '+ Location', link: '+ Location'},
+      {name: '+ Github', link: '+ Github'},
+      {name: '+ Other', link: '+ Other'},
+    ],
     config: {},
     showCTAbtn: false,
     error: null,
@@ -37,6 +46,14 @@ export const useUserData = defineStore("userStore", {
     getCTAbtnState: (state) => {
       return state.showCTAbtn;
     },
+
+    getUser: (state) => {
+      return state.user;
+    },
+
+    getUserSocial: (state) => {
+      return state.userSocial;
+    }
   },
 
   actions: {
@@ -59,9 +76,12 @@ export const useUserData = defineStore("userStore", {
       });
     },
 
-    fillUser() {
+    fillUserSocial() {
       this.mainCvId = axios.get("/api/user", this.config).then((response) => {
-        this.userInfo = response.data;
+        if (response.data.socials.length === 6) {
+          this.userSocial = response.data.socials;
+        }
+        this.user = response.data;
       });
     },
 
@@ -89,10 +109,35 @@ export const useUserData = defineStore("userStore", {
         });
     },
 
-    updateUser(dataSend) {
-      axios.put('api/user', dataSend, this.config)
+    updateUser(param, data) {
+      this.userSocial[param].link = data;
+
+      const sendData = ref({
+        email: null,
+        firstName: null,
+        lastName: null,
+        languages: [{
+          language: null, 
+          level: null
+        }],
+        socials: [
+          this.userSocial[0],
+          this.userSocial[1],
+          this.userSocial[2],
+          this.userSocial[3],
+          this.userSocial[4],
+          this.userSocial[5],
+        ],
+        skills: null
+      });
+
+      //fill one social from input data
+      axios.put('api/user', sendData.value, this.config)
       .then((response) => {
-        console.log('user response', response.data)
+        this.userSocial = response.data.socials;
+
+      }).catch((err) => {
+        console.log('err!!!!!!!!!', err)
       })
     },
 
