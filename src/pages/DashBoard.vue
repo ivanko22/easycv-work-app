@@ -2,29 +2,36 @@
 import { storeToRefs } from "pinia";
 import { useUserData } from "@/helpers/user";
 import { dateFormatation } from "@/helpers/dateFormat";
-import { ref } from "vue";
+import { ref, onMounted, computed } from "vue";
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
 import cvThumbnail from "@/components/cvThumbnail.vue";
 import CvInput from "@/components/inputs/CvInput.vue";
 
-const { token, mainCVid, mainCV, userInfo, jobs } = storeToRefs(
+const { mainCV, user, jobs } = storeToRefs(
   useUserData()
 );
-const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillUser, updateUser } = useUserData();
+const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillUserSocial, updateUser } = useUserData();
+
+const userStore = useUserData();
+
+const userSocials = computed(() => {
+  return userStore.getUserSocial;
+});
+
+onMounted(() => {
+  console.log('user onMounted', userSocials.value);
+})
 
 fillToken();
 fillConfig();
 fillMainCvId();
 fillMainCv();
-fillUser();
+fillUserSocial();
 
 const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
-const phone = ref();
-phone.value = userInfo.value;
-console.log('phone', phone.value)
 
 const cvImages = ref({'1':true, '2':false, '3':false, '4':false, '5':false, '6':false, '7':false, '8':false, '9':false, '10':false, '11':false, '12':false, '13':false});
 const selectedCv = ref(1);
@@ -34,10 +41,6 @@ const handleClickThumbnail = ( index ) => {
   selectedCv.value = index;
   cvImages.value[selectedCv.value] = true;
 }
-
-// console.log('userInfo.value.socials[0].name', userInfo.value);
-
-// console.log('userInfo.value.socials[0].name', userInfo.value.socials[0].link);
 
 </script>
 
@@ -49,8 +52,6 @@ const handleClickThumbnail = ( index ) => {
   />
 
   <header-main label="Log Out" hrefUrl="/logout" />
-
-  <!-- <h1 class="dashboardTitle">Dashboard {{ mainCV.skills }}</h1> -->
 
   <div class="dashboard">
     <div class="allTemplatesContainer">
@@ -88,58 +89,55 @@ const handleClickThumbnail = ( index ) => {
             />
           </svg>
           <p class="initials">
-            {{ userInfo.firstName[0] }}{{ userInfo.lastName[0] }}
+            {{ user.firstName[0] }}{{ user.lastName[0] }}
           </p>
         </div>
         <div class="bio">
           <h1 class="firstLastName">
-            {{ userInfo.firstName }} {{ userInfo.lastName }}
+            {{ user.firstName }} {{ user.lastName }}
           </h1>
           <p class="jobTitle"> {{ mainCV.jobTitle }}</p>
-
-          <!-- <CvInput 
-            v-for="(social index) in userInfo.value.socials"
-            :placeholder="'some placeholder'"
-            :type=""
-          
-          /> -->
           
           <CvInput 
             :placeholder="'Add Your Phone'" 
             :label="'+ Add Phone'" 
             :type="'tel'"
-            :previous-value="phone.value"
+            :param="0"
+            :previous-value="userSocials[0].link"
           />
 
-          <p class="contact">{{ userInfo.email }}</p>
+          <p class="contact">{{ user.email }}</p>
 
           <CvInput 
             :placeholder="'Add Location'" 
             :label="'+ Location'" 
             :type="'text'"
-            :previous-value="'location'"
+            :param="1"
+            :previous-value="userSocials[1].link"
           />
 
           <CvInput 
             :placeholder="'Add Linkedin'" 
             :label="'+ Linkedin'" 
             :type="'url'"
-            :previous-value="'linkedin'"
-
+            :param="2"
+            :previous-value="userSocials[2].link"
           />
 
           <CvInput 
             :placeholder="'Add Github'" 
             :label="'+ Github'" 
             :type="'url'"
-            :previous-value="'github'"
+            :param="3"
+            :previous-value="userSocials[3].link"
           />
 
           <CvInput 
             :placeholder="'Add Other info'" 
             :label="'+ Other'" 
             :type="'text'"
-            :previous-value="'userInfo.value.socials[4]'"
+            :param="4"
+            :previous-value="userSocials[4].link"
           />
 
         </div>
@@ -180,11 +178,6 @@ const handleClickThumbnail = ( index ) => {
           <p class="jobTitle">{{ job.position }}</p>
 
           <p class="summary">{{ job.description }}</p>
-
-          <!-- <p class="addContact">Job Category: {{ mainCV.jobCategory }}</p>
-          <p class="addContact">Experience: {{ mainCV.experience }}</p>
-          <p class="addContact">Skills: {{ mainCV.skills }}</p>
-          <p class="addContact">languages: {{ mainCV.languages }}</p> -->
         </div>
     </div>
   </div>
