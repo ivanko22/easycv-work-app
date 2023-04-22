@@ -33,25 +33,23 @@ inputValue.value = props.previousValue;
 const inputWidth = ref(inputValue.value.length);
 
 const cssVars = computed(() => {
-    return {'width': (inputWidth.value -1) * 1 + 'ch'};
+    return {'width': ((inputWidth.value -   1) * 1) + 'ch'};
 });
 
 onMounted(() => {
-  if (myInput.value) {
-    myInput.value.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        myInput.value.blur();
-      }
-    });
-  }
-  onSubmit();
+    if (myInput.value) {
+        myInput.value.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            onSubmit();
+            myInput.value.blur();
+        }
+        });
+    }
+  
 });
 
 const handleInput = (arg) => {
-
     inputWidth.value = inputValue.value.length;
-
-    // console.log('typing', inputValue.value, inputWidth.value, cssVars);
 
     if (arg === 'click') {
         isShowLabel.value = false;
@@ -86,7 +84,6 @@ const handleInput = (arg) => {
 handleInput(inputValue.value);
 
 const onSubmit = () => {    
-    console.log('submit');
     updateUser(props.param, inputValue.value);
 }
 
@@ -123,6 +120,8 @@ const onSubmit = () => {
     .inputCv {
         display: flex;
         margin-top: 3px;
+        align-items: center;
+        cursor: pointer;
         
         input {
             cursor: pointer;
@@ -180,6 +179,5 @@ const onSubmit = () => {
     .phone {
         font-weight: 600;
         font-size: 18px !important;
-        margin-top: 12px;
     }
 </style>
