@@ -130,8 +130,7 @@ export const useUserData = defineStore("userStore", {
         ],
         skills: null
       });
-
-      //fill one social from input data
+      
       axios.put('api/user', sendData.value, this.config)
       .then((response) => {
         this.userSocial = response.data.socials;
