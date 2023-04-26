@@ -20,7 +20,7 @@
   justify-content: space-evenly;
   align-items: center;
   width: 202px;
-  height: 204px;
+  // height: 204px;
   background: #ffffff;
   box-shadow: 0px 9px 10px rgba(0, 0, 0, 0.21);
   border-radius: 2px;
