@@ -30,7 +30,6 @@ const currentPeriod = ref()
 const isDateValid = ref(false)
 
 const selectedJobCategory = ref('')
-// const isJobCategoryShow = ref(false)
 
 const months = { id01: 'Jan', id02: 'Feb', id03: 'Mar', id04: 'Apr', id05: 'May', id06: 'June', id07: 'July', id08: 'Aug', id09: 'Sept', id10: 'Oct', id11: 'Nov', id12: 'Dec' }
 const years = ref([2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022])

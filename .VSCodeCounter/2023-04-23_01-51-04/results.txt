@@ -1,0 +1,90 @@
+Date : 2023-04-23 01:51:04
+Directory : /Users/ivankordonets/Documents/projectCss/easycv-work-app/src
+Total : 50 files,  3387 codes, 45 comments, 619 blanks, all 4051 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| Vue        |         31 |      3,045 |         39 |        555 |      3,639 |
+| TypeScript |          6 |        278 |          6 |         46 |        330 |
+| XML        |         12 |         46 |          0 |         12 |         58 |
+| SCSS       |          1 |         18 |          0 |          6 |         24 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                          | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                             |         50 |      3,387 |         45 |        619 |      4,051 |
+| . (Files)                                                                                                     |          3 |         32 |          6 |          9 |         47 |
+| assets                                                                                                        |         13 |         64 |          0 |         18 |         82 |
+| assets/css                                                                                                    |          1 |         18 |          0 |          6 |         24 |
+| assets/svg                                                                                                    |         12 |         46 |          0 |         12 |         58 |
+| components                                                                                                    |         22 |      2,237 |         33 |        404 |      2,674 |
+| components (Files)                                                                                            |         11 |      1,132 |         30 |        200 |      1,362 |
+| components/chips                                                                                              |          2 |        193 |          0 |         30 |        223 |
+| components/dropdown                                                                                           |          5 |        413 |          1 |         80 |        494 |
+| components/inputs                                                                                             |          2 |        367 |          2 |         76 |        445 |
+| components/wizzard                                                                                            |          2 |        132 |          0 |         18 |        150 |
+| helpers                                                                                                       |          3 |        214 |          1 |         36 |        251 |
+| pages                                                                                                         |          8 |        792 |          1 |        148 |        941 |
+| router                                                                                                        |          1 |         48 |          4 |          4 |         56 |
++---------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                                      | language   | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/App.vue                                         | Vue        |         16 |          5 |          3 |         24 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/assets/css/main.scss                            | SCSS       |         18 |          0 |          6 |         24 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/assets/svg/alert.svg                            | XML        |          3 |          0 |          1 |          4 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/assets/svg/arrow.svg                            | XML        |          5 |          0 |          1 |          6 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/assets/svg/checkmark.svg                        | XML        |          3 |          0 |          1 |          4 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/assets/svg/close.svg                            | XML        |          3 |          0 |          1 |          4 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/assets/svg/closeSmall.svg                       | XML        |          3 |          0 |          1 |          4 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/assets/svg/dropdown.svg                         | XML        |          3 |          0 |          1 |          4 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/assets/svg/easyCVworkLogo.svg                   | XML        |          4 |          0 |          1 |          5 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/assets/svg/edit.svg                             | XML        |          3 |          0 |          1 |          4 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/assets/svg/eyeClose.svg                         | XML        |         10 |          0 |          1 |         11 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/assets/svg/eyeOpen.svg                          | XML        |          3 |          0 |          1 |          4 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/assets/svg/plusBtn.svg                          | XML        |          3 |          0 |          1 |          4 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/assets/svg/remove.svg                           | XML        |          3 |          0 |          1 |          4 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/BaseButton.vue                       | Vue        |         44 |          0 |          5 |         49 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/BaseForm.vue                         | Vue        |        337 |          1 |         61 |        399 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/BaseJob.vue                          | Vue        |        186 |          0 |         31 |        217 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/BaseSecondaryButton.vue              | Vue        |         49 |          0 |          8 |         57 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/BaseSlider.vue                       | Vue        |        133 |          0 |         21 |        154 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/BaseToaster.vue                      | Vue        |         62 |          0 |         12 |         74 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/ContainerMain.vue                    | Vue        |         17 |          0 |          3 |         20 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/HeaderMain.vue                       | Vue        |        119 |          0 |         27 |        146 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/HelloWorld.vue                       | Vue        |         24 |         29 |          5 |         58 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/MotoWizzard.vue                      | Vue        |         93 |          0 |         15 |        108 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/chips/BaseChip.vue                   | Vue        |         52 |          0 |         10 |         62 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/chips/BaseChips.vue                  | Vue        |        141 |          0 |         20 |        161 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/cvThumbnail.vue                      | Vue        |         68 |          0 |         12 |         80 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/dropdown/BaseDropdown.vue            | Vue        |        258 |          1 |         53 |        312 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/dropdown/BaseDropdownContent.vue     | Vue        |         32 |          0 |          4 |         36 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/dropdown/BaseDropdownItem.vue        | Vue        |         45 |          0 |          9 |         54 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/dropdown/CalendarDropdownContent.vue | Vue        |         30 |          0 |          4 |         34 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/dropdown/CalendarDropdownItem.vue    | Vue        |         48 |          0 |         10 |         58 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/inputs/BaseInput.vue                 | Vue        |        216 |          1 |         45 |        262 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/inputs/CvInput.vue                   | Vue        |        151 |          1 |         31 |        183 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/wizzard/BaseWizzard.vue              | Vue        |         50 |          0 |          6 |         56 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/components/wizzard/wizzardPoint.vue             | Vue        |         82 |          0 |         12 |         94 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/helpers/dateFormat.ts                           | TypeScript |         27 |          0 |          4 |         31 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/helpers/pinia.ts                                | TypeScript |         12 |          0 |          1 |         13 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/helpers/user.ts                                 | TypeScript |        175 |          1 |         31 |        207 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/main.ts                                         | TypeScript |         11 |          0 |          5 |         16 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/pages/DashBoard.vue                             | Vue        |        286 |          1 |         48 |        335 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/pages/LoggedIn.vue                              | Vue        |         40 |          0 |         11 |         51 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/pages/NotFound.vue                              | Vue        |          3 |          0 |          1 |          4 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/pages/SignIn.vue                                | Vue        |        112 |          0 |         22 |        134 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/pages/SignUp.vue                                | Vue        |        148 |          0 |         27 |        175 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/pages/StepThree.vue                             | Vue        |        141 |          0 |         25 |        166 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/pages/StepTwo.vue                               | Vue        |         53 |          0 |         11 |         64 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/pages/WizzardView.vue                           | Vue        |          9 |          0 |          3 |         12 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/router/index.ts                                 | TypeScript |         48 |          4 |          4 |         56 |
+| /Users/ivankordonets/Documents/projectCss/easycv-work-app/src/shims-vue.d.ts                                  | TypeScript |          5 |          1 |          1 |          7 |
+| Total                                                                                                         |            |      3,387 |         45 |        619 |      4,051 |
++---------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
