@@ -7,6 +7,7 @@ import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
 import cvThumbnail from "@/components/cvThumbnail.vue";
 import CvInput from "@/components/inputs/CvInput.vue";
+import CvJobItem from "@/components/CvJobItem.vue";
 
 const { mainCV, user, jobs } = storeToRefs(
   useUserData()
@@ -166,7 +167,7 @@ const handleClickThumbnail = ( index ) => {
             Completed Vue - The Complete Guide and Agile Planning for Software Products Course.
         </p>
 
-      </div>
+      <!-- </div>
         <div v-for="job in jobs" class="cvContent">
           <h2 class="cvContentTitle">Work Experience</h2>
           
@@ -179,8 +180,23 @@ const handleClickThumbnail = ( index ) => {
 
           <p class="summary">{{ job.description }}</p>
         </div>
+      </div> -->
+
+      <div class="cvContent">
+        <h2 class="cvContentTitle">Work Experience</h2>
+
+        <CvJobItem 
+          v-for="job in jobs"
+          :job-employer="job.employer"
+          :work-period="dateFormatation([job.startDate, job.endDate ])"
+          :job-position="job.position"
+          :job-description="job.description"
+        />
+      </div>
     </div>
   </div>
+</div>
+
 </template>
 
 <style scoped lang="scss">
@@ -218,13 +234,6 @@ const handleClickThumbnail = ( index ) => {
   padding-right: 40px;
 }
 
-.summary {
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 25px;
-  color: $black;
-}
-
 .bio {
   width: 170px;
 }
@@ -235,12 +244,6 @@ const handleClickThumbnail = ( index ) => {
   color: $black;
   margin-bottom: 2px;
   margin-top: 8px;
-}
-
-.jobTitle {
-  font-weight: 600;
-  font-size: 16px;
-  margin: 0;
 }
 
 .contact {
@@ -302,27 +305,6 @@ const handleClickThumbnail = ( index ) => {
 .skill{
   height: 22px;
   margin: 0;
-}
-
-.jobPositionContainer {
-  display: flex;
-  align-items: center;
-
-  p{
-    padding-right: 6px;
-    margin: 0;
-  }
-}
-
-.workPeriod {
-  font-weight: 400;
-  font-size: 14px;
-  color: $black;
-}
-
-.employerTitle {
-  font-weight: 600;
-  font-size: 14px;
 }
 
 .cvThumbnailsContainer {
