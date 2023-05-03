@@ -157,7 +157,6 @@ const handleClickThumbnail = ( index ) => {
 
       <div class="cvContent">
         <h2 class="cvContentTitle">Experience Summary</h2>
-        <!-- <p class="addContact">+ Add Objective</p> -->
         <p class="summary"> Experienced product designer skilled in wireframing, prototyping, and creating design systems.
             Strong background in conducting user research, usability testing, and analyzing user behavior to improve product features.
             Proficient in various design tools, including Sketch, Figma, Zeplin, and Vue.js.
@@ -263,6 +262,8 @@ const handleClickThumbnail = ( index ) => {
     font-weight: 700;
     font-size: 18px;
     color: $black;
+    margin-top: 16px;
+    margin-bottom: 8px;
   }
 
   .skillsContainer {
@@ -291,6 +292,13 @@ const handleClickThumbnail = ( index ) => {
   display: flex;
   flex-wrap: wrap;
   margin-left: 21px;
+  }
+
+  .summary {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 25px;
+    color: $black;
   }
 
 </style>
