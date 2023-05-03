@@ -8,10 +8,12 @@ import BaseToaster from "@/components/BaseToaster.vue";
 import cvThumbnail from "@/components/cvThumbnail.vue";
 import CvInput from "@/components/inputs/CvInput.vue";
 import CvJobItem from "@/components/CvJobItem.vue";
+import BaseForm from "@/components/BaseForm.vue";
 
-const { mainCV, user, jobs } = storeToRefs(
+const { mainCV, user, jobs, mainCVid } = storeToRefs(
   useUserData()
 );
+
 const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillUserSocial, updateUser } = useUserData();
 
 const userStore = useUserData();
@@ -21,7 +23,7 @@ const userSocials = computed(() => {
 });
 
 onMounted(() => {
-  console.log('user onMounted', userSocials.value);
+  console.log('mainCVid', mainCVid.value);
 })
 
 fillToken();
@@ -167,31 +169,21 @@ const handleClickThumbnail = ( index ) => {
             Completed Vue - The Complete Guide and Agile Planning for Software Products Course.
         </p>
 
-      <!-- </div>
-        <div v-for="job in jobs" class="cvContent">
-          <h2 class="cvContentTitle">Work Experience</h2>
-          
-          <div class="jobPositionContainer">
-            <p class="employerTitle">{{ job.employer }}</p>
-            <p class="workPeriod">{{ dateFormatation([job.startDate, job.endDate ]) }}</p>
-          </div>
-          
-          <p class="jobTitle">{{ job.position }}</p>
-
-          <p class="summary">{{ job.description }}</p>
-        </div>
-      </div> -->
-
       <div class="cvContent">
         <h2 class="cvContentTitle">Work Experience</h2>
 
-        <CvJobItem 
+        <BaseForm :isJobEdit="true" />
+
+        <!-- <CvJobItem 
           v-for="job in jobs"
           :job-employer="job.employer"
           :work-period="dateFormatation([job.startDate, job.endDate ])"
           :job-position="job.position"
           :job-description="job.description"
-        />
+          :cvID="mainCVid"
+          :jobID="job._id"
+        /> -->
+
       </div>
     </div>
   </div>

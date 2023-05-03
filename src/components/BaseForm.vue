@@ -11,6 +11,12 @@ import BaseSecondaryButton from "@/components/BaseSecondaryButton.vue";
 import BaseJob from "./BaseJob.vue";
 import BaseButton from "@/components/BaseButton.vue";
 
+const props = defineProps<{
+    isJobEdit: false,
+}>()
+
+console.log('props.isJobEdit from Base Form', props.isJobEdit );
+
 const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillJob, addJob, removeJob } =
   useUserData();
 
@@ -20,10 +26,9 @@ fillMainCvId();
 fillMainCv();
 
 const { mainCVid, jobs, showCTAbtn } = storeToRefs(useUserData());
-
 const isShowPrimaryBtn = showCTAbtn;
-
 const selectedPeriod = ref(["Start Date", "End Date"]);
+
 provide(
   "selectedPeriod",
   computed(() => selectedPeriod.value)
@@ -56,6 +61,14 @@ const isEndDateValid = ref(false);
 
 const descriptionValue = ref("");
 const isDescriptonValid = ref();
+
+const editJobFromDashboard = () => {
+  if (props.isJobEdit) {
+    console.log('editJobFromDashboard')
+  }
+}
+
+editJobFromDashboard();
 
 const onChildValidation = (isValueValid, label, inputValue) => {
   if (label === "position") {
@@ -116,6 +129,8 @@ const childDate = (date, label, isDateValid, dropdownLabel) => {
 
 const showHideForm = (arg, cvID, jobID) => {
   isJobEdit.value = false;
+
+  console.log('show hide form');
 
   if (arg === "Edit Job") {
     isJobEdit.value = true;
@@ -213,6 +228,7 @@ const onSubmit = (arg) => {
   <template v-if="!isFormShow">
     <BaseJob
       v-for="(job, index) in jobs"
+      :cvJobEdit="props.isJobEdit"
       :cvID="mainCVid"
       :jobID="job._id"
       :jobTitle="job.position"
@@ -312,7 +328,8 @@ const onSubmit = (arg) => {
     </template>
   </form>
 
-  <base-button
+  <BaseButton
+    v-if="!props.isJobEdit"
     label="Next"
     :class="{ primaryBtn: isShowPrimaryBtn }"
     type="submit"

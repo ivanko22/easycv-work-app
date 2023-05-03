@@ -44,7 +44,13 @@ const routes: Array<RouteRecordRaw> = [
     path: '/dashboard',
     name: 'Dashboard',
     component: () => import(/* webpackChunkName: "step three" */ '@/pages/DashBoard.vue')
+  },
+  {
+    path: '/edit-job',
+    name: 'Edit Job',
+    component: () => import(/* webpackChunkName: "step three" */ '@/pages/EditJob.vue')
   }
+  
 ]
 
 const router = createRouter({

@@ -72,7 +72,7 @@ export const useUserData = defineStore("userStore", {
 
     fillMainCvId() {
       this.mainCvId = axios.get("/api/user", this.config).then((response) => {
-        this.mainCVid = response.data.cvs[0];
+      this.mainCVid = response.data.cvs[0];
       });
     },
 

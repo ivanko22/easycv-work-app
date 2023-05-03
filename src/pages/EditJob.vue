@@ -3,12 +3,12 @@ import { ref } from "vue";
 
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
-import BaseWizzard from "@/components/wizzard/BaseWizzard.vue";
 import BaseForm from "@/components/BaseForm.vue";
 
 const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
+
 </script>
 
 <template>
@@ -21,15 +21,9 @@ const toasterMessage = ref();
   <header-main label="Log Out" hrefUrl="/logout" />
 
   <div class="stepTwoForm">
-    <h1 class="title-tell-us">Tell Us About Yourself</h1>
+    <h1 class="title-tell-us">Edit Job</h1>
 
-    <base-wizzard
-      :experience="true"
-      :isRegistered="true"
-      :isExperienced="false"
-    />
-
-    <base-form/>
+    <base-form :editJob="true"/>
   </div>
 </template>
 
