@@ -4,12 +4,15 @@ import { useUserData } from "@/helpers/user";
 import { dateFormatation } from "@/helpers/dateFormat";
 import { ref, provide, computed } from "vue";
 import router from "@/router";
-import axios from "axios";
 import BaseInput from "@/components/inputs/BaseInput.vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
 import BaseSecondaryButton from "@/components/BaseSecondaryButton.vue";
 import BaseJob from "./BaseJob.vue";
 import BaseButton from "@/components/BaseButton.vue";
+
+const props = defineProps<{
+    isJobEdit: false,
+}>()
 
 const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillJob, addJob, removeJob } =
   useUserData();
@@ -20,10 +23,9 @@ fillMainCvId();
 fillMainCv();
 
 const { mainCVid, jobs, showCTAbtn } = storeToRefs(useUserData());
-
 const isShowPrimaryBtn = showCTAbtn;
-
 const selectedPeriod = ref(["Start Date", "End Date"]);
+
 provide(
   "selectedPeriod",
   computed(() => selectedPeriod.value)
@@ -213,6 +215,7 @@ const onSubmit = (arg) => {
   <template v-if="!isFormShow">
     <BaseJob
       v-for="(job, index) in jobs"
+      :cvJobEdit="props.isJobEdit"
       :cvID="mainCVid"
       :jobID="job._id"
       :jobTitle="job.position"
@@ -312,7 +315,8 @@ const onSubmit = (arg) => {
     </template>
   </form>
 
-  <base-button
+  <BaseButton
+    v-if="!props.isJobEdit"
     label="Next"
     :class="{ primaryBtn: isShowPrimaryBtn }"
     type="submit"

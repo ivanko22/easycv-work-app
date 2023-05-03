@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useUserData } from "@/helpers/user";
-import { ref } from "vue";
+import { defineProps, ref } from "vue";
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
 import BaseWizzard from "@/components/wizzard/BaseWizzard.vue";
@@ -9,6 +9,7 @@ import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
 import BaseSlider from "@/components/BaseSlider.vue";
 import Chips from "@/components/chips/BaseChips.vue";
 import BaseButton from "@/components/BaseButton.vue";
+import router from "@/router";
 
 const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillJob, addJob, removeJob, updateCv } =
   useUserData();
@@ -74,6 +75,7 @@ const onSubmit = () => {
   };
 
   updateCv(sendData);
+  router.push('/dashboard');
 };
 
 </script>
@@ -138,7 +140,7 @@ const onSubmit = () => {
       <chips v-on:update:skills="getSkills" />
     </form>
 
-    <base-button
+    <BaseButton
       label="Next"
       :class="{ primaryBtn: isShowPrimaryBtn }"
       @click="onSubmit"

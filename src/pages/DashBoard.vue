@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useUserData } from "@/helpers/user";
-import { dateFormatation } from "@/helpers/dateFormat";
 import { ref, onMounted, computed } from "vue";
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
 import cvThumbnail from "@/components/cvThumbnail.vue";
 import CvInput from "@/components/inputs/CvInput.vue";
+import BaseForm from "@/components/BaseForm.vue";
 
-const { mainCV, user, jobs } = storeToRefs(
+const { mainCV, user, jobs, mainCVid } = storeToRefs(
   useUserData()
 );
-const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillUserSocial, updateUser } = useUserData();
+
+const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillUserSocial } = useUserData();
 
 const userStore = useUserData();
 
@@ -19,9 +20,9 @@ const userSocials = computed(() => {
   return userStore.getUserSocial;
 });
 
-onMounted(() => {
-  console.log('user onMounted', userSocials.value);
-})
+// onMounted(() => {
+//   console.log('mainCVid', mainCVid.value);
+// })
 
 fillToken();
 fillConfig();
@@ -166,169 +167,130 @@ const handleClickThumbnail = ( index ) => {
             Completed Vue - The Complete Guide and Agile Planning for Software Products Course.
         </p>
 
-      </div>
-        <div v-for="job in jobs" class="cvContent">
-          <h2 class="cvContentTitle">Work Experience</h2>
-          
-          <div class="jobPositionContainer">
-            <p class="employerTitle">{{ job.employer }}</p>
-            <p class="workPeriod">{{ dateFormatation([job.startDate, job.endDate ]) }}</p>
-          </div>
-          
-          <p class="jobTitle">{{ job.position }}</p>
+      <div class="cvContent">
+        <h2 class="cvContentTitle">Work Experience</h2>
 
-          <p class="summary">{{ job.description }}</p>
-        </div>
+        <BaseForm :isJobEdit="true" />
+
+      </div>
     </div>
   </div>
+</div>
+
 </template>
 
 <style scoped lang="scss">
-.dashboardTitle {
-  text-align: center;
-}
-.dashboard {
-  display: flex;
-  justify-content: center;
-}
-
-.allTemplatesContainer {
-  width: 330px;
-  background: $white;
-  margin-right: 34px;
-  padding-top: 18px;
-}
-
-.cvContainer {
-  width: 800px;
-  height: 1114px;
-  background: $white;
-  padding: 56px;
-  padding-top: 46px;
-}
-
-.cvHeaderContainer {
-  display: flex;
-  flex-flow: wrap;
-  height: 232px;
-}
-
-.uploadImage {
-  width: 200px;
-  padding-right: 40px;
-}
-
-.summary {
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 25px;
-  color: $black;
-}
-
-.bio {
-  width: 170px;
-}
-.firstLastName {
-  font-style: normal;
-  font-weight: 700;
-  font-size: 24px;
-  color: $black;
-  margin-bottom: 2px;
-  margin-top: 8px;
-}
-
-.jobTitle {
-  font-weight: 600;
-  font-size: 16px;
-  margin: 0;
-}
-
-.contact {
-  font-weight: 500;
-  font-size: 14px;
-  margin: 0;
-  margin-top: 10px;
-  padding-left: 2px;
-}
-
-.addContact {
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 15px;
-  color: $grey;
-  margin: 0;
-  margin-bottom: 5px;
-  cursor: pointer;
-
-  &:hover {
-    color: $primary;
-    font-weight: 500;
+  .dashboardTitle {
+    text-align: center;
   }
-}
+  .dashboard {
+    display: flex;
+    justify-content: center;
+  }
 
-.initials {
-  position: relative;
-  bottom: 205px;
-  width: 206px;
-  font-weight: 600;
-  font-size: 61px;
-  color: $grey;
-  text-align: center;
-}
+  .allTemplatesContainer {
+    width: 330px;
+    background: $white;
+    margin-right: 34px;
+    padding-top: 18px;
+  }
 
-.cvContentTitle {
-  font-weight: 700;
-  font-size: 18px;
-  color: $black;
-}
+  .cvContainer {
+    width: 800px;
+    height: 1114px;
+    background: $white;
+    padding: 56px;
+    padding-top: 46px;
+  }
 
-.skillsContainer {
-  display: flex;
-  flex-flow: column;
-  padding-top: 10px;
-  margin-left: 10px;
-  justify-content: center;
-  height: 205px;
-  width: 270px;
-}
-.skillsTagsContainer{
-  display: flex;
-  flex-flow: wrap;
-  align-content: flex-start;
-  font-size: 12px;
-  width: 304px;
-}
+  .cvHeaderContainer {
+    display: flex;
+    flex-flow: wrap;
+    height: 232px;
+  }
 
-.skill{
-  height: 22px;
-  margin: 0;
-}
+  .uploadImage {
+    width: 200px;
+    padding-right: 40px;
+  }
 
-.jobPositionContainer {
-  display: flex;
-  align-items: center;
+  .bio {
+    width: 170px;
+  }
+  .firstLastName {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    color: $black;
+    margin-bottom: 2px;
+    margin-top: 8px;
+  }
 
-  p{
-    padding-right: 6px;
+  .contact {
+    font-weight: 500;
+    font-size: 14px;
+    margin: 0;
+    margin-top: 10px;
+    padding-left: 2px;
+  }
+
+  .addContact {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    color: $grey;
+    margin: 0;
+    margin-bottom: 5px;
+    cursor: pointer;
+
+    &:hover {
+      color: $primary;
+      font-weight: 500;
+    }
+  }
+
+  .initials {
+    position: relative;
+    bottom: 205px;
+    width: 206px;
+    font-weight: 600;
+    font-size: 61px;
+    color: $grey;
+    text-align: center;
+  }
+
+  .cvContentTitle {
+    font-weight: 700;
+    font-size: 18px;
+    color: $black;
+  }
+
+  .skillsContainer {
+    display: flex;
+    flex-flow: column;
+    padding-top: 10px;
+    margin-left: 10px;
+    justify-content: center;
+    height: 205px;
+    width: 270px;
+  }
+  .skillsTagsContainer{
+    display: flex;
+    flex-flow: wrap;
+    align-content: flex-start;
+    font-size: 12px;
+    width: 304px;
+  }
+
+  .skill{
+    height: 22px;
     margin: 0;
   }
-}
 
-.workPeriod {
-  font-weight: 400;
-  font-size: 14px;
-  color: $black;
-}
-
-.employerTitle {
-  font-weight: 600;
-  font-size: 14px;
-}
-
-.cvThumbnailsContainer {
- display: flex;
- flex-wrap: wrap;
- margin-left: 21px;
-}
+  .cvThumbnailsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 21px;
+  }
 
 </style>
