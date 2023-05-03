@@ -250,6 +250,9 @@ const updateJobPosition = (arg, cvID, jobID) => {
   padding: 10px;
   cursor: pointer;
   border: 1px solid #ffffff;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 15px;
 
   &:hover {
     border: 1px solid $ultraLightGrey;
@@ -261,9 +264,11 @@ const updateJobPosition = (arg, cvID, jobID) => {
 
 }
 .jobPositionContainer {
+    position: relative;
+    top: -6px;
     display: flex;
     align-items: center;
-    height: 34px;
+    height: 22px;
   }
 
   .editIconContainer {
@@ -271,7 +276,7 @@ const updateJobPosition = (arg, cvID, jobID) => {
     opacity: 0;
     align-items: center;
     justify-content: center;
-    top: -20px;
+    top: -11px;
     position: relative;
     
     div {
@@ -313,6 +318,6 @@ const updateJobPosition = (arg, cvID, jobID) => {
     font-size: 14px;
     line-height: 25px;
     color: $black;
-    margin-top: 6px;
+    margin-top: 10px;
   }
 </style>
