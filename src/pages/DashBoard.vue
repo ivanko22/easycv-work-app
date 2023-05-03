@@ -180,117 +180,117 @@ const handleClickThumbnail = ( index ) => {
 </template>
 
 <style scoped lang="scss">
-.dashboardTitle {
-  text-align: center;
-}
-.dashboard {
-  display: flex;
-  justify-content: center;
-}
-
-.allTemplatesContainer {
-  width: 330px;
-  background: $white;
-  margin-right: 34px;
-  padding-top: 18px;
-}
-
-.cvContainer {
-  width: 800px;
-  height: 1114px;
-  background: $white;
-  padding: 56px;
-  padding-top: 46px;
-}
-
-.cvHeaderContainer {
-  display: flex;
-  flex-flow: wrap;
-  height: 232px;
-}
-
-.uploadImage {
-  width: 200px;
-  padding-right: 40px;
-}
-
-.bio {
-  width: 170px;
-}
-.firstLastName {
-  font-style: normal;
-  font-weight: 700;
-  font-size: 24px;
-  color: $black;
-  margin-bottom: 2px;
-  margin-top: 8px;
-}
-
-.contact {
-  font-weight: 500;
-  font-size: 14px;
-  margin: 0;
-  margin-top: 10px;
-  padding-left: 2px;
-}
-
-.addContact {
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 15px;
-  color: $grey;
-  margin: 0;
-  margin-bottom: 5px;
-  cursor: pointer;
-
-  &:hover {
-    color: $primary;
-    font-weight: 500;
+  .dashboardTitle {
+    text-align: center;
   }
-}
+  .dashboard {
+    display: flex;
+    justify-content: center;
+  }
 
-.initials {
-  position: relative;
-  bottom: 205px;
-  width: 206px;
-  font-weight: 600;
-  font-size: 61px;
-  color: $grey;
-  text-align: center;
-}
+  .allTemplatesContainer {
+    width: 330px;
+    background: $white;
+    margin-right: 34px;
+    padding-top: 18px;
+  }
 
-.cvContentTitle {
-  font-weight: 700;
-  font-size: 18px;
-  color: $black;
-}
+  .cvContainer {
+    width: 800px;
+    height: 1114px;
+    background: $white;
+    padding: 56px;
+    padding-top: 46px;
+  }
 
-.skillsContainer {
+  .cvHeaderContainer {
+    display: flex;
+    flex-flow: wrap;
+    height: 232px;
+  }
+
+  .uploadImage {
+    width: 200px;
+    padding-right: 40px;
+  }
+
+  .bio {
+    width: 170px;
+  }
+  .firstLastName {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    color: $black;
+    margin-bottom: 2px;
+    margin-top: 8px;
+  }
+
+  .contact {
+    font-weight: 500;
+    font-size: 14px;
+    margin: 0;
+    margin-top: 10px;
+    padding-left: 2px;
+  }
+
+  .addContact {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    color: $grey;
+    margin: 0;
+    margin-bottom: 5px;
+    cursor: pointer;
+
+    &:hover {
+      color: $primary;
+      font-weight: 500;
+    }
+  }
+
+  .initials {
+    position: relative;
+    bottom: 205px;
+    width: 206px;
+    font-weight: 600;
+    font-size: 61px;
+    color: $grey;
+    text-align: center;
+  }
+
+  .cvContentTitle {
+    font-weight: 700;
+    font-size: 18px;
+    color: $black;
+  }
+
+  .skillsContainer {
+    display: flex;
+    flex-flow: column;
+    padding-top: 10px;
+    margin-left: 10px;
+    justify-content: center;
+    height: 205px;
+    width: 270px;
+  }
+  .skillsTagsContainer{
+    display: flex;
+    flex-flow: wrap;
+    align-content: flex-start;
+    font-size: 12px;
+    width: 304px;
+  }
+
+  .skill{
+    height: 22px;
+    margin: 0;
+  }
+
+  .cvThumbnailsContainer {
   display: flex;
-  flex-flow: column;
-  padding-top: 10px;
-  margin-left: 10px;
-  justify-content: center;
-  height: 205px;
-  width: 270px;
-}
-.skillsTagsContainer{
-  display: flex;
-  flex-flow: wrap;
-  align-content: flex-start;
-  font-size: 12px;
-  width: 304px;
-}
-
-.skill{
-  height: 22px;
-  margin: 0;
-}
-
-.cvThumbnailsContainer {
- display: flex;
- flex-wrap: wrap;
- margin-left: 21px;
-}
+  flex-wrap: wrap;
+  margin-left: 21px;
+  }
 
 </style>
