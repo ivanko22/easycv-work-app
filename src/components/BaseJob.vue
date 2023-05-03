@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { defineProps, ref } from 'vue';
-import BaseToaster from "@/components/BaseToaster.vue";
 
 const props = defineProps<{
     cvJobEdit: string,
@@ -11,10 +10,6 @@ const props = defineProps<{
     workPeriod?: string,
     jobDescription?: string
 }>()
-
-///!!!Unify this component for wizzard and CV, they has same functionality.
-
-console.log('cvJobEdit from base job', props.cvJobEdit);
 
 const isBaseJobOpen = ref(false)
 const isShowIcons = ref(false)

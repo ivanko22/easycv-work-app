@@ -61,7 +61,6 @@ const handleInput = (arg) => {
     }
 
     if (arg === 'blur' && inputValue.value.length < 1) {
-        console.log('blur');
 
         nextTick(() => {
             myInput.value.unfocus();

@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useUserData } from "@/helpers/user";
-import { dateFormatation } from "@/helpers/dateFormat";
 import { ref, onMounted, computed } from "vue";
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
 import cvThumbnail from "@/components/cvThumbnail.vue";
 import CvInput from "@/components/inputs/CvInput.vue";
-import CvJobItem from "@/components/CvJobItem.vue";
 import BaseForm from "@/components/BaseForm.vue";
 
 const { mainCV, user, jobs, mainCVid } = storeToRefs(
@@ -22,9 +20,9 @@ const userSocials = computed(() => {
   return userStore.getUserSocial;
 });
 
-onMounted(() => {
-  console.log('mainCVid', mainCVid.value);
-})
+// onMounted(() => {
+//   console.log('mainCVid', mainCVid.value);
+// })
 
 fillToken();
 fillConfig();
@@ -173,16 +171,6 @@ const handleClickThumbnail = ( index ) => {
         <h2 class="cvContentTitle">Work Experience</h2>
 
         <BaseForm :isJobEdit="true" />
-
-        <!-- <CvJobItem 
-          v-for="job in jobs"
-          :job-employer="job.employer"
-          :work-period="dateFormatation([job.startDate, job.endDate ])"
-          :job-position="job.position"
-          :job-description="job.description"
-          :cvID="mainCVid"
-          :jobID="job._id"
-        /> -->
 
       </div>
     </div>

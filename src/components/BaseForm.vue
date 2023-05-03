@@ -4,7 +4,6 @@ import { useUserData } from "@/helpers/user";
 import { dateFormatation } from "@/helpers/dateFormat";
 import { ref, provide, computed } from "vue";
 import router from "@/router";
-import axios from "axios";
 import BaseInput from "@/components/inputs/BaseInput.vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
 import BaseSecondaryButton from "@/components/BaseSecondaryButton.vue";
@@ -14,8 +13,6 @@ import BaseButton from "@/components/BaseButton.vue";
 const props = defineProps<{
     isJobEdit: false,
 }>()
-
-console.log('props.isJobEdit from Base Form', props.isJobEdit );
 
 const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillJob, addJob, removeJob } =
   useUserData();
@@ -61,14 +58,6 @@ const isEndDateValid = ref(false);
 
 const descriptionValue = ref("");
 const isDescriptonValid = ref();
-
-const editJobFromDashboard = () => {
-  if (props.isJobEdit) {
-    console.log('editJobFromDashboard')
-  }
-}
-
-editJobFromDashboard();
 
 const onChildValidation = (isValueValid, label, inputValue) => {
   if (label === "position") {
@@ -129,8 +118,6 @@ const childDate = (date, label, isDateValid, dropdownLabel) => {
 
 const showHideForm = (arg, cvID, jobID) => {
   isJobEdit.value = false;
-
-  console.log('show hide form');
 
   if (arg === "Edit Job") {
     isJobEdit.value = true;
