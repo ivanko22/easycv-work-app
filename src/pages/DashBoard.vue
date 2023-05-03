@@ -12,7 +12,7 @@ const { mainCV, user, jobs, mainCVid } = storeToRefs(
   useUserData()
 );
 
-const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillUserSocial, updateUser } = useUserData();
+const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillUserSocial } = useUserData();
 
 const userStore = useUserData();
 
