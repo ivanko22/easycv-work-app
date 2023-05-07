@@ -20,9 +20,9 @@ const userSocials = computed(() => {
   return userStore.getUserSocial;
 });
 
-// onMounted(() => {
-//   console.log('mainCVid', mainCVid.value);
-// })
+onMounted(() => {
+  console.log('mainCVid', mainCVid.value, 'mainCV.value', mainCV, mainCV.languages);
+})
 
 fillToken();
 fillConfig();
@@ -97,7 +97,7 @@ const handleClickThumbnail = ( index ) => {
           <h1 class="firstLastName">
             {{ user.firstName }} {{ user.lastName }}
           </h1>
-          <p class="jobTitle"> {{ mainCV.jobTitle }}</p>
+          <p class="skillsTitle"> {{ mainCV.jobTitle }}</p>
           
           <CvInput 
             :placeholder="'Add Your Phone'" 
@@ -143,13 +143,13 @@ const handleClickThumbnail = ( index ) => {
 
         </div>
           <div class="skillsContainer">
-            <p class="jobTitle">Skills</p>
+            <p class="skillsTitle">Skills</p>
             <div class="skillsTagsContainer">
               <p class="skill" v-for="skill in mainCV.skills"> {{ skill }},&nbsp;</p>
             </div>
-            <p class="jobTitle">languages</p>
+            <p class="skillsTitle">languages</p>
             <div class="skillsTagsContainer"> 
-              <p class="skill"> English - Fluent, Ukranian - Native, Russian - Native </p>
+              <p class="skill"> {{ mainCV.languages[0].language }} - {{ mainCV.languages[0].level }} </p>
          </div>
 
         </div>
@@ -299,6 +299,12 @@ const handleClickThumbnail = ( index ) => {
     font-size: 14px;
     line-height: 25px;
     color: $black;
+  }
+
+  .skillsTitle {
+    margin-bottom: 3px;
+    font-weight: 500;
+    font-size: 14px;
   }
 
 </style>
