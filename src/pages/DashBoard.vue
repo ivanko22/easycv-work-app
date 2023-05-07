@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import router from "@/router";
 import { storeToRefs } from "pinia";
 import { useUserData } from "@/helpers/user";
 import { ref, onMounted, computed } from "vue";
@@ -20,9 +21,9 @@ const userSocials = computed(() => {
   return userStore.getUserSocial;
 });
 
-// onMounted(() => {
-//   console.log('mainCVid', mainCVid.value);
-// })
+onMounted(() => {
+  console.log('mainCVid', mainCVid.value, 'mainCV.value', mainCV, mainCV.languages);
+})
 
 fillToken();
 fillConfig();
@@ -97,7 +98,7 @@ const handleClickThumbnail = ( index ) => {
           <h1 class="firstLastName">
             {{ user.firstName }} {{ user.lastName }}
           </h1>
-          <p class="jobTitle"> {{ mainCV.jobTitle }}</p>
+          <p class="skillsTitle"> {{ mainCV.jobTitle }}</p>
           
           <CvInput 
             :placeholder="'Add Your Phone'" 
@@ -143,14 +144,18 @@ const handleClickThumbnail = ( index ) => {
 
         </div>
           <div class="skillsContainer">
-            <p class="jobTitle">Skills</p>
-            <div class="skillsTagsContainer">
+
+            <p class="skillsTitle">Skills</p>
+            <div @click="router.push('/step-three')" class="skillsTagsContainer">
               <p class="skill" v-for="skill in mainCV.skills"> {{ skill }},&nbsp;</p>
+              <img class="editIcon" src="@/assets/svg/edit.svg" alt="edit">
             </div>
-            <p class="jobTitle">languages</p>
-            <div class="skillsTagsContainer"> 
-              <p class="skill"> English - Fluent, Ukranian - Native, Russian - Native </p>
-         </div>
+
+            <p class="skillsTitle">languages</p>
+            <div @click="router.push('/step-three')" class="skillsTagsContainer"> 
+              <p class="skill"> {{ mainCV.languages[0].language }} - {{ mainCV.languages[0].level }} </p>
+              <img class="editIcon" src="@/assets/svg/edit.svg" alt="edit">
+            </div>
 
         </div>
       </div>
@@ -277,10 +282,15 @@ const handleClickThumbnail = ( index ) => {
   }
   .skillsTagsContainer{
     display: flex;
+    cursor: pointer;
     flex-flow: wrap;
     align-content: flex-start;
     font-size: 12px;
     width: 304px;
+
+    &:hover .editIcon {
+      display: inline;
+    }
   }
 
   .skill{
@@ -299,6 +309,18 @@ const handleClickThumbnail = ( index ) => {
     font-size: 14px;
     line-height: 25px;
     color: $black;
+  }
+
+  .skillsTitle {
+    margin-bottom: 3px;
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  .editIcon {
+    display: none;
+    margin-bottom: 4px;
+    margin-left: 6px;
   }
 
 </style>
