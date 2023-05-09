@@ -1,5 +1,3 @@
-//check JEST for automatizatioin test
-
 <script setup lang="ts">
 import router from "@/router";
 import { storeToRefs } from "pinia";
@@ -11,6 +9,7 @@ import cvThumbnail from "@/components/cvThumbnail.vue";
 import CvInput from "@/components/inputs/CvInput.vue";
 import BaseForm from "@/components/BaseForm.vue";
 import axios from 'axios';
+import BaseJob from "@/components/BaseJob.vue";
 
 const cvSummary = ref('');
 const isShowGhost = ref(false);
@@ -33,7 +32,7 @@ onMounted(() => {
     const employer = mainCV.value.workHistory[index].employer;
     workHistory.value.push(employer);
   }
-  console.log('mainCV.value', mainCV.value.workHistory, workHistory.value);
+  // console.log('mainCV.value', mainCV.value.workHistory, workHistory.value, import.meta.env.VITE_OPENAI_API_KEY);
 })
 
 fillToken();
@@ -42,17 +41,28 @@ fillMainCvId();
 fillMainCv();
 fillUserSocial();
 
-const generateText = async (inputData: any) => {
+const requestToOpenAi = ref([{
+      model: "text-davinci-003",
+      prompt: `'Please generate Experience Summary for CV. Use first person, but leave out the pronoun “I.”: ${ mainCV.value.experience } years of expirience as a ${ mainCV.value.jobTitle } with job category ${ mainCV.value.jobCategory } 
+  | Frontend Developer with this skills: ${ mainCV.value.skills }. Worked in several startups, up to A level invistments. Worked ${ workHistory.value }, and others.`,
+      max_tokens: 256,
+      temperature: 0.5,
+      n: 1,
+      stop: null
+    }
+]);
+
+const generateText = async () => {  
   isShowGhost.value = true;
 
   try {
     const response = await axios.post('https://api.openai.com/v1/completions', {
-      model: inputData.model,
-      prompt: inputData.prompt,
-      max_tokens: inputData.max_tokens,
-      n: inputData.numOutputs,
-      temperature: inputData.temperature,
-      stop: inputData.stop
+      model: requestToOpenAi.value[0].model,
+      prompt: requestToOpenAi.value[0].prompt,
+      max_tokens: requestToOpenAi.value[0].max_tokens,
+      n: requestToOpenAi.value[0].n,
+      temperature: requestToOpenAi.value[0].temperature,
+      stop: requestToOpenAi.value[0].stop
     }, {
       headers: {
         'Content-Type': 'application/json',
@@ -60,7 +70,7 @@ const generateText = async (inputData: any) => {
       }
     });
 
-    cvSummary.value = response.data.choices[0].text.split('\n').slice(3).join('\n');
+    cvSummary.value = response.data.choices[0].text;
   
   } catch (error) {
         console.error(error);
@@ -69,16 +79,7 @@ const generateText = async (inputData: any) => {
       }
 };
 
-generateText({
-  "model": "text-davinci-003",
-  "prompt": `'Please generate Experience Summary for CV based on: ${ mainCV.value.experience } years of expirience as a ${ mainCV.value.jobTitle } with job category ${ mainCV.value.jobCategory } 
-  | Frontend Developer with this skills: ${ mainCV.value.skills }. Worked in several startups, up to A level invistments. Worked ${ workHistory.value }, and others.`,
-  "max_tokens": 256,
-  "temperature": 0.5,
-  "n": 1,
-  "stream": false,
-  "logprobs": null,
-});
+generateText();
 
 const isShowToaster = ref(false);
 const toasterType = ref();
@@ -210,9 +211,16 @@ const handleClickThumbnail = ( index ) => {
       </div>
 
       <div class="cvContent">
-        <h2 class="cvContentTitle">Experience Summary</h2>
-        <h1 v-if="isShowGhost"> Loading... </h1>
-        <p class="summary"> {{ cvSummary }} </p>
+        <!-- <h2 class="cvContentTitle">Experience Summary</h2> -->
+        <h1 class="loading" v-if="isShowGhost"> Loading... </h1>
+
+        <BaseJob 
+          v-if="!isShowGhost"
+          @generate-text="generateText"
+          :type="'summary'"
+          :jobDescription="cvSummary"
+        />
+
       <div class="cvContent">
         <h2 class="cvContentTitle">Work Experience</h2>
         <BaseForm :isJobEdit="true" />
@@ -347,14 +355,6 @@ const handleClickThumbnail = ( index ) => {
   margin-left: 21px;
   }
 
-  .summary {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 25px;
-    color: $black;
-    padding: 10px;
-  }
-
   .skillsTitle {
     margin-bottom: 3px;
     font-weight: 500;
@@ -365,6 +365,10 @@ const handleClickThumbnail = ( index ) => {
     display: none;
     margin-bottom: 4px;
     margin-left: 6px;
+  }
+
+  .loading {
+    padding: 10px;
   }
 
 </style>
