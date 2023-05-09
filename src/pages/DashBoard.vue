@@ -1,3 +1,5 @@
+//check JEST for automatizatioin test
+
 <script setup lang="ts">
 import router from "@/router";
 import { storeToRefs } from "pinia";
@@ -8,6 +10,11 @@ import BaseToaster from "@/components/BaseToaster.vue";
 import cvThumbnail from "@/components/cvThumbnail.vue";
 import CvInput from "@/components/inputs/CvInput.vue";
 import BaseForm from "@/components/BaseForm.vue";
+import axios from 'axios';
+
+const cvSummary = ref('');
+const isShowGhost = ref(false);
+const workHistory = ref([]);
 
 const { mainCV, user, jobs, mainCVid } = storeToRefs(
   useUserData()
@@ -22,7 +29,11 @@ const userSocials = computed(() => {
 });
 
 onMounted(() => {
-  console.log('mainCVid', mainCVid.value, 'mainCV.value', mainCV, mainCV.languages);
+  for (let index = 0; index < mainCV.value.workHistory.length; index++) {
+    const employer = mainCV.value.workHistory[index].employer;
+    workHistory.value.push(employer);
+  }
+  console.log('mainCV.value', mainCV.value.workHistory, workHistory.value);
 })
 
 fillToken();
@@ -30,6 +41,44 @@ fillConfig();
 fillMainCvId();
 fillMainCv();
 fillUserSocial();
+
+const generateText = async (inputData: any) => {
+  isShowGhost.value = true;
+
+  try {
+    const response = await axios.post('https://api.openai.com/v1/completions', {
+      model: inputData.model,
+      prompt: inputData.prompt,
+      max_tokens: inputData.max_tokens,
+      n: inputData.numOutputs,
+      temperature: inputData.temperature,
+      stop: inputData.stop
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `'Bearer ${import.meta.env.VITE_OPENAI_API_KEY}'`
+      }
+    });
+
+    cvSummary.value = response.data.choices[0].text.split('\n').slice(3).join('\n');
+  
+  } catch (error) {
+        console.error(error);
+      } finally {
+        isShowGhost.value = false;
+      }
+};
+
+generateText({
+  "model": "text-davinci-003",
+  "prompt": `'Please generate Experience Summary for CV based on: ${ mainCV.value.experience } years of expirience as a ${ mainCV.value.jobTitle } with job category ${ mainCV.value.jobCategory } 
+  | Frontend Developer with this skills: ${ mainCV.value.skills }. Worked in several startups, up to A level invistments. Worked ${ workHistory.value }, and others.`,
+  "max_tokens": 256,
+  "temperature": 0.5,
+  "n": 1,
+  "stream": false,
+  "logprobs": null,
+});
 
 const isShowToaster = ref(false);
 const toasterType = ref();
@@ -162,22 +211,14 @@ const handleClickThumbnail = ( index ) => {
 
       <div class="cvContent">
         <h2 class="cvContentTitle">Experience Summary</h2>
-        <p class="summary"> Experienced product designer skilled in wireframing, prototyping, and creating design systems.
-            Strong background in conducting user research, usability testing, and analyzing user behavior to improve product features.
-            Proficient in various design tools, including Sketch, Figma, Zeplin, and Vue.js.
-            Collaborative team player who can work with different teams, including developers, QA, marketing, and sales.
-            Designed mobile apps for clients like NASCAR, Indycar, and ECHL hockey league, and created UX/UI solutions from scratch to optimize user experience.
-            Knowledgeable in AWS cloud services, databases, and Python data structures.
-            Completed Vue - The Complete Guide and Agile Planning for Software Products Course.
-        </p>
-
+        <h1 v-if="isShowGhost"> Loading... </h1>
+        <p class="summary"> {{ cvSummary }} </p>
       <div class="cvContent">
         <h2 class="cvContentTitle">Work Experience</h2>
-
         <BaseForm :isJobEdit="true" />
-
       </div>
     </div>
+
   </div>
 </div>
 
@@ -269,6 +310,8 @@ const handleClickThumbnail = ( index ) => {
     color: $black;
     margin-top: 16px;
     margin-bottom: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   .skillsContainer {
@@ -309,6 +352,7 @@ const handleClickThumbnail = ( index ) => {
     font-size: 14px;
     line-height: 25px;
     color: $black;
+    padding: 10px;
   }
 
   .skillsTitle {
