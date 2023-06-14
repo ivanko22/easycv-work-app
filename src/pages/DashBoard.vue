@@ -140,7 +140,7 @@ const avaToggleShow = () => {
 }
 
 const cropSuccess = (imgDataUrl, field) => {
-  console.log('-------- crop success --------');
+  // console.log('-------- crop success --------');
 
   const formAvaData = new FormData();
   formAvaData.append("image", imgDataUrl);
