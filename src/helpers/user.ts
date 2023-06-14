@@ -204,7 +204,6 @@ export const useUserData = defineStore("userStore", {
     },
 
     addAva(dataSend) {
-      // console.log('dataSendAva', dataSend);
 
       axios
         .post(`/api/cv/${this.mainCVid}/profile-image`, dataSend, this.config)
