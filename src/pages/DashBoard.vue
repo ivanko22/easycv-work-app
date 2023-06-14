@@ -140,25 +140,13 @@ const avaToggleShow = () => {
 }
 
 const cropSuccess = (imgDataUrl, field) => {
-  console.log('-------- crop success --------');
+  // console.log('-------- crop success --------');
 
   const formAvaData = new FormData();
   formAvaData.append("image", imgDataUrl);
   avaData.value.imgDataUrl = imgDataUrl;
   addAva(formAvaData.get('image'));
 }
-
-// const cropUploadSuccess = (jsonData, field) => {
-//   console.log('-------- upload success --------');
-//   console.log(jsonData);
-//   console.log('field: ' + field);
-// }
-
-// const cropUploadFail = (status, field) => {
-//   console.log('-------- upload fail --------');
-//   console.log(status);
-//   console.log('field: ' + field);
-// }
 
 </script>
 
