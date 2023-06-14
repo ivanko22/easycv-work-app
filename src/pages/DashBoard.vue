@@ -148,18 +148,6 @@ const cropSuccess = (imgDataUrl, field) => {
   addAva(formAvaData.get('image'));
 }
 
-// const cropUploadSuccess = (jsonData, field) => {
-//   console.log('-------- upload success --------');
-//   console.log(jsonData);
-//   console.log('field: ' + field);
-// }
-
-// const cropUploadFail = (status, field) => {
-//   console.log('-------- upload fail --------');
-//   console.log(status);
-//   console.log('field: ' + field);
-// }
-
 </script>
 
 <template>
