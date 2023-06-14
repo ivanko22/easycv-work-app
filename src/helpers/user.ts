@@ -202,5 +202,30 @@ export const useUserData = defineStore("userStore", {
           }
         });
     },
+
+    addAva(dataSend) {
+      // console.log('dataSendAva', dataSend);
+
+      axios
+        .post(`/api/cv/${this.mainCVid}/profile-image`, dataSend, this.config)
+        .then((response) => {
+          console.log('response', response.data)
+
+          switch(response.data){
+            case "User does not own this CV":
+              console.log('User does not own this CV');
+              break;
+
+            case "ERROR: unable remove work history from CV":
+              console.log("ERROR: unable remove work history from CV");
+              break;
+          }
+
+          if (typeof response.data !== "string") {
+            this.fillMainCv();
+            console.log('this.mainCV', this.mainCV);
+          }
+        });
+    },
   },
 });

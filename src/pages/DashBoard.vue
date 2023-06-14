@@ -3,13 +3,14 @@ import router from "@/router";
 import { storeToRefs } from "pinia";
 import { useUserData } from "@/helpers/user";
 import { ref, onMounted, computed } from "vue";
+import axios from 'axios';
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
 import cvThumbnail from "@/components/cvThumbnail.vue";
 import CvInput from "@/components/inputs/CvInput.vue";
 import BaseForm from "@/components/BaseForm.vue";
-import axios from 'axios';
 import BaseJob from "@/components/BaseJob.vue";
+import myUpload from 'vue-image-crop-upload';
 
 const cvSummary = ref('');
 const isShowGhost = ref(false);
@@ -19,7 +20,7 @@ const { mainCV, user, jobs, mainCVid } = storeToRefs(
   useUserData()
 );
 
-const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillUserSocial } = useUserData();
+const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillUserSocial, addAva } = useUserData();
 
 const userStore = useUserData();
 
@@ -32,7 +33,6 @@ onMounted(() => {
     const employer = mainCV.value.workHistory[index].employer;
     workHistory.value.push(employer);
   }
-  // console.log('mainCV.value', mainCV.value.workHistory, workHistory.value, import.meta.env.VITE_OPENAI_API_KEY);
 })
 
 fillToken();
@@ -40,6 +40,47 @@ fillConfig();
 fillMainCvId();
 fillMainCv();
 fillUserSocial();
+
+const avaData = ref(
+  {
+    show: false,
+    en: {
+      hint: 'Click or drag the file here to upload',
+      loading: 'Uploading…',
+      noSupported: 'Browser is not supported, please use IE10+ or other browsers',
+      success: 'Upload success',
+      fail: 'Upload failed',
+      preview: 'Preview',
+      btn: {
+        off: 'Cancel',
+        close: 'Close',
+        back: 'Back',
+        save: 'Save'
+      },
+      error: {
+        onlyImg: 'Image only',
+        outOfSize: 'Image exceeds size limit: ',
+        lowestPx: 'Image\'s size is too low. Expected at least: '
+      }
+    },
+    params: {
+      token: '12321',
+      name: 'avatar'
+    },
+    headers: {
+      smail: '*_~'
+    },
+    imgDataUrl: '',
+    langType: {
+      type: String,
+      'default': 'en'
+    },
+    langExt: {
+      type: Object,
+      'default': ()=>null
+    }
+  }
+)
 
 const requestToOpenAi = ref([{
       model: "text-davinci-003",
@@ -76,7 +117,7 @@ const generateText = async () => {
         console.error(error);
       } finally {
         isShowGhost.value = false;
-      }
+    }
 };
 
 generateText();
@@ -93,6 +134,31 @@ const handleClickThumbnail = ( index ) => {
   selectedCv.value = index;
   cvImages.value[selectedCv.value] = true;
 }
+
+const avaToggleShow = () => {
+  avaData.value.show = true;
+}
+
+const cropSuccess = (imgDataUrl, field) => {
+  console.log('-------- crop success --------');
+
+  const formAvaData = new FormData();
+  formAvaData.append("image", imgDataUrl);
+  avaData.value.imgDataUrl = imgDataUrl;
+  addAva(formAvaData.get('image'));
+}
+
+// const cropUploadSuccess = (jsonData, field) => {
+//   console.log('-------- upload success --------');
+//   console.log(jsonData);
+//   console.log('field: ' + field);
+// }
+
+// const cropUploadFail = (status, field) => {
+//   console.log('-------- upload fail --------');
+//   console.log(status);
+//   console.log('field: ' + field);
+// }
 
 </script>
 
@@ -120,30 +186,47 @@ const handleClickThumbnail = ( index ) => {
 
     <div class="cvContainer">
       <div class="cvHeaderContainer">
-        <div class="uploadImage">
-          <svg
-            width="201"
-            height="205"
-            viewBox="0 0 201 205"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              opacity="0.3"
-              d="M9.99967 10.6667V15.6667H8.33301V32.3333H34.9997V12.3333H28.2497L25.1997 9H14.9997V10.6667H9.99967ZM21.6663 14C26.2663 14 29.9997 17.7333 29.9997 22.3333C29.9997 26.9333 26.2663 30.6667 21.6663 30.6667C17.0663 30.6667 13.333 26.9333 13.333 22.3333C13.333 17.7333 17.0663 14 21.6663 14Z"
-              fill="#DADADA"
-            />
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M29.7167 8.99935H35C36.4743 8.99935 37.7331 9.96939 38.1695 11.3027H200.245V204.303H7.24512V35.4825C5.94187 35.0289 5 33.7854 5 32.3327V15.666H8.33333V32.3327H35V12.3327H28.25L25.2 8.99935H15V5.66602H26.6667L29.7167 8.99935ZM10.2451 35.666V201.303H197.245V14.3027H38.3333V32.3327C38.3333 34.166 36.8333 35.666 35 35.666H10.2451ZM21.6667 30.666C17.0667 30.666 13.3333 26.9327 13.3333 22.3327C13.3333 17.7327 17.0667 13.9993 21.6667 13.9993C26.2667 13.9993 30 17.7327 30 22.3327C30 26.9327 26.2667 30.666 21.6667 30.666ZM26.6667 22.3327C26.6667 19.5827 24.4167 17.3327 21.6667 17.3327C18.9167 17.3327 16.6667 19.5827 16.6667 22.3327C16.6667 25.0827 18.9167 27.3327 21.6667 27.3327C24.4167 27.3327 26.6667 25.0827 26.6667 22.3327ZM8.33333 8.99935V13.9993H5V8.99935H0V5.66602H5V0.666016H8.33333V5.66602H13.3333V8.99935H8.33333Z"
-              fill="#DADADA"
-            />
-          </svg>
-          <p class="initials">
-            {{ user.firstName[0] }}{{ user.lastName[0] }}
-          </p>
+
+        <div class="uploadImage" @click="avaToggleShow">
+
+          <my-upload 
+            field="img"
+            @crop-success="cropSuccess"
+            v-model="avaData.show"
+            :width="200"
+            :height="200"
+            :langExt="avaData.en"
+            img-format="png">
+          </my-upload>  
+
+          <img :src="avaData.imgDataUrl" style="margin-top = 30px;">
+
+          <div v-if="!avaData.imgDataUrl">
+            <svg
+              width="201"
+              height="205"
+              viewBox="0 0 201 205"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                opacity="0.3"
+                d="M9.99967 10.6667V15.6667H8.33301V32.3333H34.9997V12.3333H28.2497L25.1997 9H14.9997V10.6667H9.99967ZM21.6663 14C26.2663 14 29.9997 17.7333 29.9997 22.3333C29.9997 26.9333 26.2663 30.6667 21.6663 30.6667C17.0663 30.6667 13.333 26.9333 13.333 22.3333C13.333 17.7333 17.0663 14 21.6663 14Z"
+                fill="#DADADA"
+              />
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M29.7167 8.99935H35C36.4743 8.99935 37.7331 9.96939 38.1695 11.3027H200.245V204.303H7.24512V35.4825C5.94187 35.0289 5 33.7854 5 32.3327V15.666H8.33333V32.3327H35V12.3327H28.25L25.2 8.99935H15V5.66602H26.6667L29.7167 8.99935ZM10.2451 35.666V201.303H197.245V14.3027H38.3333V32.3327C38.3333 34.166 36.8333 35.666 35 35.666H10.2451ZM21.6667 30.666C17.0667 30.666 13.3333 26.9327 13.3333 22.3327C13.3333 17.7327 17.0667 13.9993 21.6667 13.9993C26.2667 13.9993 30 17.7327 30 22.3327C30 26.9327 26.2667 30.666 21.6667 30.666ZM26.6667 22.3327C26.6667 19.5827 24.4167 17.3327 21.6667 17.3327C18.9167 17.3327 16.6667 19.5827 16.6667 22.3327C16.6667 25.0827 18.9167 27.3327 21.6667 27.3327C24.4167 27.3327 26.6667 25.0827 26.6667 22.3327ZM8.33333 8.99935V13.9993H5V8.99935H0V5.66602H5V0.666016H8.33333V5.66602H13.3333V8.99935H8.33333Z"
+                fill="#DADADA"
+              />
+            </svg>
+            <p class="initials">
+              {{ user.firstName[0] }}{{ user.lastName[0] }}
+            </p>
+          </div>
         </div>
+
         <div class="bio">
           <h1 class="firstLastName">
             {{ user.firstName }} {{ user.lastName }}
