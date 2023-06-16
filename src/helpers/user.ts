@@ -204,9 +204,14 @@ export const useUserData = defineStore("userStore", {
     },
 
     addAva(dataSend) {
+      console.log('dataSend', dataSend);
 
       axios
-        .post(`/api/cv/${this.mainCVid}/profile-image`, dataSend, this.config)
+        .post(`/api/cv/${this.mainCVid}/profile-image`, dataSend, {       
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+      })
         .then((response) => {
           console.log('response', response.data)
 
