@@ -140,12 +140,11 @@ const avaToggleShow = () => {
 }
 
 const cropSuccess = (imgDataUrl, field) => {
-  // console.log('-------- crop success --------');
-
   const formAvaData = new FormData();
   formAvaData.append("image", imgDataUrl);
+  addAva(formAvaData);
+
   avaData.value.imgDataUrl = imgDataUrl;
-  addAva(formAvaData.get('image'));
 }
 
 </script>
@@ -174,7 +173,6 @@ const cropSuccess = (imgDataUrl, field) => {
 
     <div class="cvContainer">
       <div class="cvHeaderContainer">
-
         <div class="uploadImage" @click="avaToggleShow">
 
           <my-upload 
