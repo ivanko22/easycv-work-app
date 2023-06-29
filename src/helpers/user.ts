@@ -14,7 +14,7 @@ export const useUserData = defineStore("userStore", {
     jobs: [],
     user: [],
     userSocial: [
-      {name: 'Cell', link: '38 067 605 78 58'}, 
+      {name: '+ Cell', link: '+ Cell'}, 
       {name: '+ Portfolio', link: '+ Portfolio'},
       {name: '+ Linkedin', link: '+ Linkedin'},
       {name: '+ Location', link: '+ Location'},
@@ -130,9 +130,12 @@ export const useUserData = defineStore("userStore", {
         ],
         skills: null
       });
+
+      console.log('sendData', sendData);
       
       axios.put('api/user', sendData.value, this.config)
       .then((response) => {
+        console.log('response', response.data);
         this.userSocial = response.data.socials;
 
       }).catch((err) => {
