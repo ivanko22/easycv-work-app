@@ -206,11 +206,15 @@ export const useUserData = defineStore("userStore", {
         });
     },
 
-    addAva(dataSend) {
-      console.log('dataSend', dataSend);
+    addAva(imgDataUrl) {
+
+      const formAvaData = new FormData();
+      formAvaData.append("image", imgDataUrl);
+
+      console.log('dataSend', formAvaData.get('image'));
 
       axios
-        .post(`/api/cv/${this.mainCVid}/profile-image`, dataSend, {       
+        .post(`/api/cv/${this.mainCVid}/profile-image`, formAvaData, {       
           headers: {
             Authorization: `Bearer ${this.token}`,
           },

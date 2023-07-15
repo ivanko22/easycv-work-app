@@ -140,11 +140,8 @@ const avaToggleShow = () => {
 }
 
 const cropSuccess = (imgDataUrl, field) => {
-  const formAvaData = new FormData();
-  formAvaData.append("image", imgDataUrl);
-  addAva(formAvaData);
-
   avaData.value.imgDataUrl = imgDataUrl;
+  addAva(imgDataUrl);
 }
 
 </script>
