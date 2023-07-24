@@ -12,11 +12,12 @@ import BaseForm from "@/components/BaseForm.vue";
 import BaseJob from "@/components/BaseJob.vue";
 import myUpload from 'vue-image-crop-upload';
 
+const urlBackend = import.meta.env.VITE_BACKEND_API_URL;
 const cvSummary = ref('');
 const isShowGhost = ref(false);
 const workHistory = ref([]);
 
-const { mainCV, user, jobs, mainCVid } = storeToRefs(
+const { mainCV, user, profileImage, jobs, mainCVid } = storeToRefs(
   useUserData()
 );
 
@@ -70,7 +71,7 @@ const avaData = ref(
     headers: {
       smail: '*_~'
     },
-    imgDataUrl: '',
+    imgDataUrl: profileImage,
     langType: {
       type: String,
       'default': 'en'
@@ -84,8 +85,10 @@ const avaData = ref(
 
 const requestToOpenAi = ref([{
       model: "text-davinci-003",
-      prompt: `'Please generate Experience Summary for CV. Use first person, but leave out the pronoun “I.”: ${ mainCV.value.experience } years of expirience as a ${ mainCV.value.jobTitle } with job category ${ mainCV.value.jobCategory } 
-  | Frontend Developer with this skills: ${ mainCV.value.skills }. Worked in several startups, up to A level invistments. Worked ${ workHistory.value }, and others.`,
+      prompt: `'Please generate Experience Summary for CV. Use first person, but leave out the pronoun “I.”: 
+      ${ mainCV.value.experience } years of expirience as a ${ mainCV.value.jobTitle } with job category ${ mainCV.value.jobCategory } 
+      | Frontend Developer with this skills: ${ mainCV.value.skills }. Worked in several startups, up to A level invistments. Worked 
+      ${ workHistory.value }, and others.`,
       max_tokens: 256,
       temperature: 0.5,
       n: 1,
@@ -141,7 +144,15 @@ const avaToggleShow = () => {
 
 const cropSuccess = (imgDataUrl, field) => {
   avaData.value.imgDataUrl = imgDataUrl;
-  addAva(imgDataUrl);
+  asyncFnAva(imgDataUrl);
+}
+
+const asyncFnAva = async (imgDataUrl) => {
+    const formAvaData = new FormData();
+    const blob = await (await fetch(imgDataUrl)).blob();
+    formAvaData.append('image', blob);
+
+    addAva(formAvaData);
 }
 
 </script>
@@ -182,7 +193,7 @@ const cropSuccess = (imgDataUrl, field) => {
             img-format="png">
           </my-upload>  
 
-          <img :src="avaData.imgDataUrl" style="margin-top = 30px;">
+          <img :src="avaData.imgDataUrl" style="margin-top = 30px;" width="200" height="200">
 
           <div v-if="!avaData.imgDataUrl">
             <svg

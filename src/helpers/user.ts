@@ -13,6 +13,7 @@ export const useUserData = defineStore("userStore", {
     mainCV: [],
     jobs: [],
     user: [],
+    profileImage: "",
     userSocial: [
       {name: '+ Cell', link: '+ Cell'}, 
       {name: '+ Portfolio', link: '+ Portfolio'},
@@ -88,7 +89,9 @@ export const useUserData = defineStore("userStore", {
     fillMainCv() {
       axios.get("/api/cv", this.config, this.mainCVid).then((response) => {
         this.mainCV = response.data[0];
-        this.jobs = response.data[0].workHistory
+        this.jobs = response.data[0].workHistory;
+        this.profileImage = `${'http://localhost:8000/api'+response.data[0].profileImage}`;
+
         if (this.jobs.length > 0) {
           this.showCTAbtn = true;
         }else{
@@ -130,12 +133,9 @@ export const useUserData = defineStore("userStore", {
         ],
         skills: null
       });
-
-      console.log('sendData', sendData);
       
       axios.put('api/user', sendData.value, this.config)
       .then((response) => {
-        console.log('response', response.data);
         this.userSocial = response.data.socials;
 
       }).catch((err) => {
@@ -146,7 +146,6 @@ export const useUserData = defineStore("userStore", {
     updateCv(dataSend) {
       axios.put('/api/cv', dataSend, this.config)
       .then((response) => {
-        console.log('response.data', response.data)
         switch(response.data){
           case "User does not own this CV":
             console.log('User does not own this CV');
@@ -206,15 +205,9 @@ export const useUserData = defineStore("userStore", {
         });
     },
 
-    addAva(imgDataUrl) {
-
-      const formAvaData = new FormData();
-      formAvaData.append("image", imgDataUrl);
-
-      console.log('dataSend', formAvaData.get('image'));
-
+    addAva(formDataAva) {
       axios
-        .post(`/api/cv/${this.mainCVid}/profile-image`, formAvaData, {       
+        .post(`/api/cv/${this.mainCVid}/profile-image`, formDataAva, {       
           headers: {
             Authorization: `Bearer ${this.token}`,
           },
