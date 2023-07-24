@@ -83,7 +83,6 @@ const handleInput = (arg) => {
 handleInput(inputValue.value);
 
 const onSubmit = () => {    
-    console.log('inputValue.value', inputValue.value)
     updateUser(props.param, inputValue.value);
 }
 
