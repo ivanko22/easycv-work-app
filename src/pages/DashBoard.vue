@@ -12,7 +12,7 @@ import BaseForm from "@/components/BaseForm.vue";
 import BaseJob from "@/components/BaseJob.vue";
 import myUpload from 'vue-image-crop-upload';
 
-const urlBackend = import.meta.env.VITE_BACKEND_API_URL;
+// const urlBackend = import.meta.env.VITE_BACKEND_API_URL;
 const cvSummary = ref('');
 const isShowGhost = ref(false);
 const workHistory = ref([]);
@@ -155,6 +155,8 @@ const asyncFnAva = async (imgDataUrl) => {
     addAva(formAvaData);
 }
 
+console.log('mainCV', mainCV.value, mainCV);
+
 </script>
 
 <template>
@@ -193,7 +195,7 @@ const asyncFnAva = async (imgDataUrl) => {
             img-format="png">
           </my-upload>  
 
-          <img :src="avaData.imgDataUrl" style="margin-top = 30px;" width="200" height="200">
+          <img class="ava" :src="avaData.imgDataUrl" style="margin-top = 30px;" width="200" height="200">
 
           <div v-if="!avaData.imgDataUrl">
             <svg
@@ -225,8 +227,12 @@ const asyncFnAva = async (imgDataUrl) => {
           <h1 class="firstLastName">
             {{ user.firstName }} {{ user.lastName }}
           </h1>
-          <p class="skillsTitle"> {{ mainCV.jobTitle }}</p>
-          
+
+          <div class="jobTitleContainer">
+            <p @click="router.push('/step-three')" class="skillsTitle"> {{ mainCV.jobTitle }}</p>
+            <img class="editIcon" src="@/assets/svg/edit.svg" alt="edit">
+          </div>
+         
           <CvInput 
             :placeholder="'Add Your Phone'" 
             :label="'+ Add Phone'" 
@@ -310,6 +316,9 @@ const asyncFnAva = async (imgDataUrl) => {
 </template>
 
 <style scoped lang="scss">
+  .ava{
+    cursor: pointer;
+  }
   .dashboardTitle {
     text-align: center;
   }
@@ -424,6 +433,17 @@ const asyncFnAva = async (imgDataUrl) => {
   .skill{
     height: 22px;
     margin: 0;
+  }
+
+  .jobTitleContainer{
+    display: flex;
+    cursor: pointer;
+    flex-flow: wrap;
+    align-items: flex-end;
+
+    &:hover .editIcon{
+      display: inline;
+    }
   }
 
   .cvThumbnailsContainer {

@@ -6,6 +6,7 @@ import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
 import BaseWizzard from "@/components/wizzard/BaseWizzard.vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
+import BaseInput from "@/components/inputs/BaseInput.vue";
 import BaseSlider from "@/components/BaseSlider.vue";
 import Chips from "@/components/chips/BaseChips.vue";
 import BaseButton from "@/components/BaseButton.vue";
@@ -26,6 +27,7 @@ const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
 
+const jobTitleValue = ref('');
 const jobCategoryValue = ref("Select Job Category");
 const yearsExperience = ref();
 const englishLevelValue = ref("Select Your English Level");
@@ -36,12 +38,20 @@ const getSkills = (emitedSkills) => {
   handlePrimaryBtn();
 };
 
-const handleDropdown = (value, type) => {
+const handleDropdownInput = (value, type) => {
   if (type === "jobCategory") {
     jobCategoryValue.value = value;
-  } else {
+  }
+
+  if(type === "Job Title"){
+    console.log('job title', value);
+    jobTitleValue.value = value;
+  }
+  
+  if(type === "englishLevel") {
     englishLevelValue.value = value;
   }
+
   handlePrimaryBtn();
 };
 
@@ -65,7 +75,7 @@ const handlePrimaryBtn = () => {
 const onSubmit = () => {
   const sendData = {
     cv: mainCVid.value,
-    jobTitle: "Product Designer",
+    jobTitle: jobTitleValue.value,
     jobCategory: jobCategoryValue.value,
     experience: yearsExperience.value,
     skills: skills.value,
@@ -100,12 +110,20 @@ const onSubmit = () => {
     />
 
     <form v-on:submit.prevent="onSubmit" autocomplete="off">
+
+      <BaseInput 
+        :label="'Job Title'"
+        :type="'text'"
+        v-on:update:typeValue="handleDropdownInput"
+      />
+
       <base-dropdown
+        class="margin-top0"
         :dropdown-type="'jobCategory'"
         :width="'longDropdown'"
         :label="'Job Category'"
         :is-valid-dropdown="true"
-        v-on:update:dropdownValue="handleDropdown"
+        v-on:update:dropdownValue="handleDropdownInput"
       >
         <p
           :class="{
@@ -124,7 +142,7 @@ const onSubmit = () => {
         :width="'longDropdown'"
         :label="'English Level'"
         :is-valid-dropdown="true"
-        v-on:update:dropdownValue="handleDropdown"
+        v-on:update:dropdownValue="handleDropdownInput"
       >
         <p
           :class="{
@@ -163,5 +181,9 @@ const onSubmit = () => {
 .dropdownTitleInitial {
   font-weight: 400;
   color: $grey;
+}
+
+.margin-top0{
+  margin-top: 0;
 }
 </style>
