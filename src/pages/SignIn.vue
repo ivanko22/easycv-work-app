@@ -14,15 +14,11 @@ user.count++;
 const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();
-
 const isFormValid = ref(false);
-
 const isEmailValid = ref(false);
 const emailValue = ref();
-
 const isPasswordValid = ref(false);
 const passwordValue = ref();
-
 const passwordShow = ref(false);
 
 const onChildValidation = (isValueValid, label, inputValue, IsPasswordShow) => {
@@ -40,7 +36,7 @@ const onChildValidation = (isValueValid, label, inputValue, IsPasswordShow) => {
 };
 
 const formValidation = () => {
-  if (isEmailValid.value && isPasswordValid.value) {
+  if (isEmailValid.value === true && isPasswordValid.value === true) {
     return true;
   } else {
     return false;
@@ -52,7 +48,8 @@ const onSubmit = () => {
   toasterType.value = "";
   toasterMessage.value = "";
 
-  axios
+  if (isFormValid.value) {
+    axios
     .post("/api/login", {
       email: emailValue.value,
       password: passwordValue.value,
@@ -82,6 +79,7 @@ const onSubmit = () => {
         router.push("/logged-in");
       }
     });
+  }
 };
 </script>
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, withDefaults, defineEmits, ref } from 'vue'
+import { defineProps, withDefaults, defineEmits, ref, computed } from 'vue'
 import eyeOpen from '@/assets/svg/eyeOpen.svg'
 import eyeClose from '@/assets/svg/eyeClose.svg'
 
@@ -43,7 +43,7 @@ const typingHandle = () => {
 }
 
 const notFocus = () => {
-  if (watchInpute.length < 1) {
+  if (watchInpute.length < 1 || watchInpute.value === undefined) {
     activeInput.value = false
   }else{
     activeInput.value = true
@@ -103,10 +103,13 @@ const inputValidation = (inputValue) => {
 
 const emit = defineEmits<{
   (e: 'update:isValid', value: boolean, label: string): void;
+  (e: 'update:typeValue', value: string): void;
+
   }>()
 
 const updateInputValue = () => {
-  emit('update:isValid', isValidInput.value, props.label, watchInpute.value, isPasswordOpen.value)
+  emit('update:isValid', isValidInput.value, props.label, watchInpute.value, isPasswordOpen.value);
+  emit('update:typeValue', watchInpute.value, props.label );
 }
 
 const checkAnimation = (e: { animationName: string }) => {
@@ -130,6 +133,8 @@ const showPassword = () => {
 </script>
 
 <template>
+
+  <!-- <p> {{ watchInpute.length }}</p> -->
   <div class="input-container" :class="{error: !isValidInput }">
 
     <input
