@@ -35,6 +35,7 @@ const props = withDefaults(
   font-size: 16px;
   color: $lightGrey;
   background-color: unset;
+  cursor: text;
 }
 
 .primaryBtn {
