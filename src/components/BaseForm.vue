@@ -59,6 +59,12 @@ const isEndDateValid = ref(false);
 const descriptionValue = ref("");
 const isDescriptonValid = ref();
 
+const baseButtonHandler = () => {
+  if (jobs.value.length > 0) {
+    router.push("/step-three");
+  }
+}
+
 const onChildValidation = (isValueValid, label, inputValue) => {
   if (label === "position") {
     isJobPositionValid.value = isValueValid;
@@ -178,7 +184,10 @@ const editJob = (arg, cvID, jobID) => {
 };
 
 const onSubmit = (arg) => {
-  const sendData = {
+  console.log('jobs.length', jobs.value.length);
+
+  if (isShowPrimaryBtn.value || isJobValid.value || jobs.value.length > 0) {
+    const sendData = {
     position: jobPositionValue.value,
     employer: employerValue.value,
     startDate: new Date(startDateValue.value).toString(),
@@ -186,26 +195,27 @@ const onSubmit = (arg) => {
     description: descriptionValue.value,
   };
 
-  addJobForm.value.reset();
+    addJobForm.value.reset();
 
-  jobPositionValue.value = "";
-  employerValue.value = "";
-  descriptionValue.value = "";
-  endDateLabel.value = "Select Date";
-  startDateLabel.value = "Select Date";
+    jobPositionValue.value = "";
+    employerValue.value = "";
+    descriptionValue.value = "";
+    endDateLabel.value = "Select Date";
+    startDateLabel.value = "Select Date";
 
-  if (arg === "Add Job") {
-    addJob(sendData);
-    isAddJobFormShow.value = false;
-    isShowBaseJob.value = true;
-    isFormShow.value = false;
-  }
+    if (arg === "Add Job") {
+      addJob(sendData);
+      isAddJobFormShow.value = false;
+      isShowBaseJob.value = true;
+      isFormShow.value = false;
+    }
 
-  if (arg === "Edit Job") {
-    fillJob(sendData, editJobID.value);
-    isAddJobFormShow.value = false;
-    isShowBaseJob.value = true;
-    isFormShow.value = false;
+    if (arg === "Edit Job") {
+      fillJob(sendData, editJobID.value);
+      isAddJobFormShow.value = false;
+      isShowBaseJob.value = true;
+      isFormShow.value = false;
+    }
   }
 };
 
@@ -232,7 +242,7 @@ const onSubmit = (arg) => {
       @click="showHideForm('Add Job')"
       :disabled="isJobValid"
       type="submit"
-      label="Add Another Job"
+      label="Add Job"
     />
   </template>
 
@@ -320,7 +330,7 @@ const onSubmit = (arg) => {
     label="Next"
     :class="{ primaryBtn: isShowPrimaryBtn }"
     type="submit"
-    @click="router.push('/step-three')"
+    @click="baseButtonHandler()"
   />
 </template>
 

@@ -84,8 +84,10 @@ const onSubmit = () => {
       level: englishLevelValue.value}]
   };
 
-  updateCv(sendData);
-  router.push('/dashboard');
+  if (isShowPrimaryBtn.value) {
+    updateCv(sendData);
+    router.push('/dashboard');
+  }
 };
 
 </script>

@@ -32,7 +32,7 @@ const allSkills = ref([
   "Amazon Web Services",
 ]);
 
-const selectedSkills = ref(["JS", "Vue.js", "HTML", "CSS", "SASS"]);
+const selectedSkills = ref([]);
 
 const handleInputStatus = (status) => {
   isInputActive.value = status;
