@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useUserData } from "@/helpers/user";
-import { dateFormatation } from "@/helpers/dateFormat";
+import { dateFormatation, formatMonth } from "@/helpers/dateFormat";
 import { ref, provide, computed } from "vue";
 import router from "@/router";
 import BaseInput from "@/components/inputs/BaseInput.vue";
@@ -150,6 +150,8 @@ const showHideForm = (arg, cvID, jobID) => {
     descriptionValue.value = "";
     endDateLabel.value = "Select Date";
     startDateLabel.value = "Select Date";
+    isJobEdit.value = false;
+    isShowPrimaryBtn.value = true;
   }
 
   if (arg === "Remove Job") {
@@ -326,7 +328,7 @@ const onSubmit = (arg) => {
   </form>
 
   <BaseButton
-    v-if="!props.isJobEdit"
+    v-if="!isJobEdit"
     label="Next"
     :class="{ primaryBtn: isShowPrimaryBtn }"
     type="submit"
