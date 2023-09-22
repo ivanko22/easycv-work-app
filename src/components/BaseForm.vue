@@ -25,6 +25,7 @@ fillMainCv();
 const { mainCVid, jobs, showCTAbtn } = storeToRefs(useUserData());
 const isShowPrimaryBtn = showCTAbtn;
 const selectedPeriod = ref(["Start Date", "End Date"]);
+const years = ref([2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022])
 
 provide(
   "selectedPeriod",
@@ -34,7 +35,6 @@ provide(
 const isJobEdit = ref(false);
 const isAddJobFormShow = ref(false);
 const isShowBaseJob = ref(true);
-
 const selectedJobEdit = ref("");
 const editJobID = ref();
 
@@ -45,7 +45,6 @@ const isJobValid = ref(false);
 
 const jobPositionValue = ref("");
 const isJobPositionValid = ref();
-
 const employerValue = ref("");
 const isEmployerValid = ref();
 
@@ -186,7 +185,6 @@ const editJob = (arg, cvID, jobID) => {
 };
 
 const onSubmit = (arg) => {
-  console.log('jobs.length', jobs.value.length);
 
   if (isShowPrimaryBtn.value || isJobValid.value || jobs.value.length > 0) {
     const sendData = {
@@ -217,6 +215,7 @@ const onSubmit = (arg) => {
       isAddJobFormShow.value = false;
       isShowBaseJob.value = true;
       isFormShow.value = false;
+      isShowPrimaryBtn.value = true;
     }
   }
 };
@@ -283,6 +282,7 @@ const onSubmit = (arg) => {
           :width="'shortDropdown'"
           v-on:update:currentPeriod="childDate"
           :label="'startDate'"
+          :years="years"
           :isValidDropdown="isStartDateValid"
         >
           <p class="dropdown">{{ startDateLabel }}</p>
@@ -293,6 +293,7 @@ const onSubmit = (arg) => {
           :width="'shortDropdown'"
           v-on:update:currentPeriod="childDate"
           :label="'endDate'"
+          :years="years"
           :isValidDropdown="isEndDateValid"
         >
           <p class="dropdown">{{ endDateLabel }}</p>
@@ -328,7 +329,7 @@ const onSubmit = (arg) => {
   </form>
 
   <BaseButton
-    v-if="!isJobEdit"
+    v-if="isJobEdit"
     label="Next"
     :class="{ primaryBtn: isShowPrimaryBtn }"
     type="submit"

@@ -12,11 +12,19 @@ const props = withDefaults(
     isValidDropdown: false;
     dropdownType: string;
     width: string;
+    years: [string, number];
   }>(),
   {
     label: 'Start Date'
   }
 )
+
+// for (let i = 0; i < props.years.length; i++) {
+//   const year = props.years[i];
+//   console.log('year,', year);
+// }
+
+console.log('year,', props.years);
 
 const isShowLabel = ref(false)
 const isDropdownOpen = ref(false)
@@ -29,10 +37,8 @@ const selectedYear = ref(2000)
 const currentPeriod = ref()
 const isDateValid = ref(false)
 
-const selectedJobCategory = ref('')
-
 const months = { id01: 'Jan', id02: 'Feb', id03: 'Mar', id04: 'Apr', id05: 'May', id06: 'June', id07: 'July', id08: 'Aug', id09: 'Sept', id10: 'Oct', id11: 'Nov', id12: 'Dec' }
-const years = ref([2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022])
+// const years = ref([2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022])
 
 const jobCategories = { id01: 'JavaScript', id02: 'Java', id03: '.NET', id04: 'Python', id05: 'PHP', id06: 'Node.js', id07: 'iOS', id08: 'Android', id09: 'C++', 
   id10: 'Flutter', id11: 'Golang', id12: 'Ruby', id13: 'Scala', id14: 'Salesforce', id15: 'Rust',
@@ -141,7 +147,7 @@ const updateDropdownValue = (value, type) => {
 
         <template v-if="isYearsShow" #slotYears>
           <CalendarDropdownItem
-            v-for="year in years"
+            v-for="year in props.years"
             v-bind:key="year.toString()"
             :selected="year.toString()"
             @click="openYearsOrMonthsDropdown(['selectedYear', year])"
