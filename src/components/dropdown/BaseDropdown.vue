@@ -9,22 +9,15 @@ import CalendarDropdownItem from '@/components/dropdown/CalendarDropdownItem.vue
 const props = withDefaults(
   defineProps<{
     label?: string;
-    isValidDropdown: false;
     dropdownType: string;
     width: string;
     years: [string, number];
+    error: string;
   }>(),
   {
     label: 'Start Date'
   }
 )
-
-// for (let i = 0; i < props.years.length; i++) {
-//   const year = props.years[i];
-//   console.log('year,', year);
-// }
-
-console.log('year,', props.years);
 
 const isShowLabel = ref(false)
 const isDropdownOpen = ref(false)
@@ -69,7 +62,9 @@ const openYearsOrMonthsDropdown = (selected) => {
     if (props.label === 'startDate') {
       selectedPeriod.value[0] = selected[2].slice(2)
       dropdownLabel.value = selected[1]
-    } else {
+    } 
+    
+    if (props.label === 'endDate'){
       selectedPeriod.value[1] = selected[2].slice(2)
       dropdownLabel.value = selected[1]
     }
@@ -87,7 +82,9 @@ const openYearsOrMonthsDropdown = (selected) => {
       dropdownLabel.value = dropdownLabel.value + ' ' + selectedYear.value.toString()
 
       dateValidation(currentPeriod.value)
-    } else {
+    } 
+    
+    if (props.label === 'endDate'){
       selectedPeriod.value[1] = selectedYear.value.toString() + '-' + selectedPeriod.value[1] + '-01'
       currentPeriod.value = selectedPeriod.value[1]
       dropdownLabel.value = dropdownLabel.value + ' ' + selectedYear.value.toString()
@@ -121,7 +118,7 @@ const updateDropdownValue = (value, type) => {
   <template v-if="props.dropdownType === 'calendar'">
     <div class="dropdownContainer categoryPosition">
 
-      <label v-if="isValidDropdown" class="dropdownLabel dropdownLabelCalendar">
+      <label v-if="isShowLabel" class="dropdownLabel dropdownLabelCalendar">
           {{ label }}
       </label>
 
@@ -155,7 +152,7 @@ const updateDropdownValue = (value, type) => {
         </template>
       </CalendarDropdownContent>
 
-      <p v-if="!isValidDropdown" class="errorMessage"> {{ 'Required' }} </p>
+      <p v-if="!isValidDropdown" class="errorMessage"> {{ props.error }} </p>
 
     </div>
   </template>
@@ -304,7 +301,7 @@ const updateDropdownValue = (value, type) => {
     width: 192px;
     font-weight: 400;
     font-size: 12px;
-    margin-top: 96px;
+    margin-top: 57px;
     text-align: right;
     color: $error;
   }

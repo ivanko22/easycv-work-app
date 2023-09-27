@@ -58,6 +58,8 @@ const isEndDateValid = ref(false);
 const descriptionValue = ref("");
 const isDescriptonValid = ref();
 
+const errorMessage = ref('');
+
 const baseButtonHandler = () => {
   if (jobs.value.length > 0) {
     router.push("/step-three");
@@ -65,31 +67,22 @@ const baseButtonHandler = () => {
 }
 
 const onChildValidation = (isValueValid, label, inputValue) => {
+
+  console.log('isValueValid, label, inputValue', isValueValid, label, inputValue)
+
   if (label === "position") {
     isJobPositionValid.value = isValueValid;
     jobPositionValue.value = inputValue;
   }
 
-  if (label === "employer") {
+  else if(label === "employer") {
     isEmployerValid.value = isValueValid;
     employerValue.value = inputValue;
   }
 
-  if (label === "description") {
+  else if(label === "description") {
     isDescriptonValid.value = isValueValid;
     descriptionValue.value = inputValue;
-
-    if (startDateValue.value === "Start Date") {
-      isStartDateValid.value = false;
-    } else {
-      isStartDateValid.value = true;
-    }
-
-    if (endDateValue.value === "End Date") {
-      isEndDateValid.value = false;
-    } else {
-      isEndDateValid.value = true;
-    }
   }
 
   isJobValid.value = jobValdiation();
@@ -109,15 +102,44 @@ const jobValdiation = () => {
   }
 };
 
+const compareDates = () => {
+  if (startDateValue.value < endDateValue.value) {
+    isStartDateValid.value = true;
+    errorMessage.value = '';
+
+  } else if (startDateValue.value > endDateValue.value) {
+    isStartDateValid.value = false;
+    errorMessage.value = 'Error. The start date bigger then end date';
+  } else {
+    isStartDateValid.value = false;
+    isEndDateValid.value = false;
+    errorMessage.value = 'Error. Both dates are the same';
+
+    console.log('Error. Both dates are the same');
+  }
+}
+
 const childDate = (date, label, isDateValid, dropdownLabel) => {
-  if (label === "startDate") {
+  console.log('date, label, isDateValid, dropdownLabel', date, label, isDateValid, dropdownLabel )
+
+  if (label === "startDate" && isDateValid) {
     isStartDateValid.value = isDateValid;
     startDateLabel.value = dropdownLabel;
     startDateValue.value = date;
-  } else {
+
+    console.log('start years')
+
+    compareDates()
+  } 
+  
+  if (label === "endDate" && isDateValid) {
+    console.log('end years')
+
     isEndDateValid.value = isDateValid;
     endDateLabel.value = dropdownLabel;
     endDateValue.value = date;
+
+    compareDates()
   }
 };
 
@@ -190,8 +212,8 @@ const onSubmit = (arg) => {
     const sendData = {
     position: jobPositionValue.value,
     employer: employerValue.value,
-    startDate: new Date(startDateValue.value).toString(),
-    endDate: new Date(endDateValue.value).toString(),
+    startDate: startDateValue.value.toString(),
+    endDate: endDateValue.value.toString(),
     description: descriptionValue.value,
   };
 
@@ -283,7 +305,7 @@ const onSubmit = (arg) => {
           v-on:update:currentPeriod="childDate"
           :label="'startDate'"
           :years="years"
-          :isValidDropdown="isStartDateValid"
+          :error="errorMessage"
         >
           <p class="dropdown">{{ startDateLabel }}</p>
         </base-dropdown>
@@ -294,7 +316,6 @@ const onSubmit = (arg) => {
           v-on:update:currentPeriod="childDate"
           :label="'endDate'"
           :years="years"
-          :isValidDropdown="isEndDateValid"
         >
           <p class="dropdown">{{ endDateLabel }}</p>
         </base-dropdown>
@@ -373,7 +394,7 @@ h1 {
   display: flex;
   width: 410px;
   height: 90px;
-  margin-bottom: 14px;
+  margin-bottom: 40px;
   justify-content: space-around;
 }
 
