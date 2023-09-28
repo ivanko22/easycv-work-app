@@ -20,14 +20,12 @@ const openCloseJobAcc = () => {
 }
 
 const handleIconClick = (arg, cvID, jobID) => {
-
-    if (arg === 'remove') {
-        updateJobPosition('Remove Job', cvID, jobID)
-    }
-
-    if (arg === 'Edit Job') {
-        updateJobPosition('Edit Job', cvID, jobID)
-    }
+  if (arg === 'remove') {
+    updateJobPosition('Remove Job', cvID, jobID)
+  }
+  else if (arg === 'Edit Job') {
+    updateJobPosition('Edit Job', cvID, jobID)
+  }
 }
 
 const emit = defineEmits<{

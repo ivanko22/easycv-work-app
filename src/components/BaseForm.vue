@@ -24,13 +24,16 @@ fillMainCv();
 
 const { mainCVid, jobs, showCTAbtn } = storeToRefs(useUserData());
 const isShowPrimaryBtn = showCTAbtn;
+
 const selectedPeriod = ref(["Start Date", "End Date"]);
-const years = ref([2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022])
+const years = ref([2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]);
 
 provide(
   "selectedPeriod",
   computed(() => selectedPeriod.value)
 );
+
+// console.log('jobs', jobs);
 
 const isJobEdit = ref(false);
 const isAddJobFormShow = ref(false);

@@ -50,6 +50,8 @@ const dateValidation = (date) => {
 }
 
 const openYearsOrMonthsDropdown = (selected) => {
+  console.log('selected', selected);
+
   if (selected[0] === 'monthDropdown') {
     isMonthsShow.value = !isMonthsShow.value
     isDropdownOpen.value = true
