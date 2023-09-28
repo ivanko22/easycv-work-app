@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { useUserData } from "@/helpers/user";
-import { dateFormatation } from "@/helpers/dateFormat";
+import { dateFormatation, formatMonth } from "@/helpers/dateFormat";
 import { ref, provide, computed } from "vue";
 import router from "@/router";
 import BaseInput from "@/components/inputs/BaseInput.vue";
@@ -24,7 +24,9 @@ fillMainCv();
 
 const { mainCVid, jobs, showCTAbtn } = storeToRefs(useUserData());
 const isShowPrimaryBtn = showCTAbtn;
+
 const selectedPeriod = ref(["Start Date", "End Date"]);
+const years = ref([2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]);
 
 provide(
   "selectedPeriod",
@@ -34,7 +36,6 @@ provide(
 const isJobEdit = ref(false);
 const isAddJobFormShow = ref(false);
 const isShowBaseJob = ref(true);
-
 const selectedJobEdit = ref("");
 const editJobID = ref();
 
@@ -45,7 +46,6 @@ const isJobValid = ref(false);
 
 const jobPositionValue = ref("");
 const isJobPositionValid = ref();
-
 const employerValue = ref("");
 const isEmployerValid = ref();
 
@@ -59,6 +59,8 @@ const isEndDateValid = ref(false);
 const descriptionValue = ref("");
 const isDescriptonValid = ref();
 
+const errorMessage = ref('');
+
 const baseButtonHandler = () => {
   if (jobs.value.length > 0) {
     router.push("/step-three");
@@ -71,26 +73,14 @@ const onChildValidation = (isValueValid, label, inputValue) => {
     jobPositionValue.value = inputValue;
   }
 
-  if (label === "employer") {
+  else if(label === "employer") {
     isEmployerValid.value = isValueValid;
     employerValue.value = inputValue;
   }
 
-  if (label === "description") {
+  else if(label === "description") {
     isDescriptonValid.value = isValueValid;
     descriptionValue.value = inputValue;
-
-    if (startDateValue.value === "Start Date") {
-      isStartDateValid.value = false;
-    } else {
-      isStartDateValid.value = true;
-    }
-
-    if (endDateValue.value === "End Date") {
-      isEndDateValid.value = false;
-    } else {
-      isEndDateValid.value = true;
-    }
   }
 
   isJobValid.value = jobValdiation();
@@ -110,15 +100,36 @@ const jobValdiation = () => {
   }
 };
 
+const compareDates = () => {
+  if (startDateValue.value < endDateValue.value) {
+    isStartDateValid.value = true;
+    errorMessage.value = '';
+
+  } else if (startDateValue.value > endDateValue.value) {
+    isStartDateValid.value = false;
+    errorMessage.value = 'Error. The start date bigger then end date';
+  } else {
+    isStartDateValid.value = false;
+    isEndDateValid.value = false;
+    errorMessage.value = 'Error. Both dates are the same';
+  }
+}
+
 const childDate = (date, label, isDateValid, dropdownLabel) => {
-  if (label === "startDate") {
+  if (label === "startDate" && isDateValid) {
     isStartDateValid.value = isDateValid;
     startDateLabel.value = dropdownLabel;
     startDateValue.value = date;
-  } else {
+
+    compareDates()
+  } 
+  
+  else if (label === "endDate" && isDateValid) {
     isEndDateValid.value = isDateValid;
     endDateLabel.value = dropdownLabel;
     endDateValue.value = date;
+
+    compareDates()
   }
 };
 
@@ -150,6 +161,8 @@ const showHideForm = (arg, cvID, jobID) => {
     descriptionValue.value = "";
     endDateLabel.value = "Select Date";
     startDateLabel.value = "Select Date";
+    isJobEdit.value = false;
+    isShowPrimaryBtn.value = true;
   }
 
   if (arg === "Remove Job") {
@@ -184,14 +197,13 @@ const editJob = (arg, cvID, jobID) => {
 };
 
 const onSubmit = (arg) => {
-  console.log('jobs.length', jobs.value.length);
 
   if (isShowPrimaryBtn.value || isJobValid.value || jobs.value.length > 0) {
     const sendData = {
     position: jobPositionValue.value,
     employer: employerValue.value,
-    startDate: new Date(startDateValue.value).toString(),
-    endDate: new Date(endDateValue.value).toString(),
+    startDate: startDateValue.value.toString(),
+    endDate: endDateValue.value.toString(),
     description: descriptionValue.value,
   };
 
@@ -215,6 +227,7 @@ const onSubmit = (arg) => {
       isAddJobFormShow.value = false;
       isShowBaseJob.value = true;
       isFormShow.value = false;
+      isShowPrimaryBtn.value = true;
     }
   }
 };
@@ -281,7 +294,8 @@ const onSubmit = (arg) => {
           :width="'shortDropdown'"
           v-on:update:currentPeriod="childDate"
           :label="'startDate'"
-          :isValidDropdown="isStartDateValid"
+          :years="years"
+          :error="errorMessage"
         >
           <p class="dropdown">{{ startDateLabel }}</p>
         </base-dropdown>
@@ -291,7 +305,7 @@ const onSubmit = (arg) => {
           :width="'shortDropdown'"
           v-on:update:currentPeriod="childDate"
           :label="'endDate'"
-          :isValidDropdown="isEndDateValid"
+          :years="years"
         >
           <p class="dropdown">{{ endDateLabel }}</p>
         </base-dropdown>
@@ -326,7 +340,7 @@ const onSubmit = (arg) => {
   </form>
 
   <BaseButton
-    v-if="!props.isJobEdit"
+    v-if="isJobEdit"
     label="Next"
     :class="{ primaryBtn: isShowPrimaryBtn }"
     type="submit"
@@ -370,7 +384,7 @@ h1 {
   display: flex;
   width: 410px;
   height: 90px;
-  margin-bottom: 14px;
+  margin-bottom: 40px;
   justify-content: space-around;
 }
 

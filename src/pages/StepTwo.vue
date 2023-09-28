@@ -29,7 +29,7 @@ const toasterMessage = ref();
       :isExperienced="false"
     />
 
-    <base-form/>
+    <base-form />
   </div>
 </template>
 

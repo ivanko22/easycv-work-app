@@ -154,9 +154,6 @@ const asyncFnAva = async (imgDataUrl) => {
 
     addAva(formAvaData);
 }
-
-console.log('mainCV', mainCV.value, mainCV);
-
 </script>
 
 <template>
@@ -294,7 +291,6 @@ console.log('mainCV', mainCV.value, mainCV);
       </div>
 
       <div class="cvContent">
-        <!-- <h2 class="cvContentTitle">Experience Summary</h2> -->
         <h1 class="loading" v-if="isShowGhost"> Loading... </h1>
 
         <BaseJob 

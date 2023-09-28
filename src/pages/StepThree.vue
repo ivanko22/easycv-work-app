@@ -44,7 +44,6 @@ const handleDropdownInput = (value, type) => {
   }
 
   if(type === "Job Title"){
-    console.log('job title', value);
     jobTitleValue.value = value;
   }
   
