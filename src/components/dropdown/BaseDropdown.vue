@@ -50,8 +50,6 @@ const dateValidation = (date) => {
 }
 
 const openYearsOrMonthsDropdown = (selected) => {
-  console.log('selected', selected);
-
   if (selected[0] === 'monthDropdown') {
     isMonthsShow.value = !isMonthsShow.value
     isDropdownOpen.value = true
@@ -66,7 +64,7 @@ const openYearsOrMonthsDropdown = (selected) => {
       dropdownLabel.value = selected[1]
     } 
     
-    if (props.label === 'endDate'){
+    else if (props.label === 'endDate'){
       selectedPeriod.value[1] = selected[2].slice(2)
       dropdownLabel.value = selected[1]
     }
@@ -86,7 +84,7 @@ const openYearsOrMonthsDropdown = (selected) => {
       dateValidation(currentPeriod.value)
     } 
     
-    if (props.label === 'endDate'){
+    else if (props.label === 'endDate'){
       selectedPeriod.value[1] = selectedYear.value.toString() + '-' + selectedPeriod.value[1] + '-01'
       currentPeriod.value = selectedPeriod.value[1]
       dropdownLabel.value = dropdownLabel.value + ' ' + selectedYear.value.toString()

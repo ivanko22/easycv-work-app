@@ -33,8 +33,6 @@ provide(
   computed(() => selectedPeriod.value)
 );
 
-// console.log('jobs', jobs);
-
 const isJobEdit = ref(false);
 const isAddJobFormShow = ref(false);
 const isShowBaseJob = ref(true);
@@ -70,9 +68,6 @@ const baseButtonHandler = () => {
 }
 
 const onChildValidation = (isValueValid, label, inputValue) => {
-
-  console.log('isValueValid, label, inputValue', isValueValid, label, inputValue)
-
   if (label === "position") {
     isJobPositionValid.value = isValueValid;
     jobPositionValue.value = inputValue;
@@ -117,27 +112,19 @@ const compareDates = () => {
     isStartDateValid.value = false;
     isEndDateValid.value = false;
     errorMessage.value = 'Error. Both dates are the same';
-
-    console.log('Error. Both dates are the same');
   }
 }
 
 const childDate = (date, label, isDateValid, dropdownLabel) => {
-  console.log('date, label, isDateValid, dropdownLabel', date, label, isDateValid, dropdownLabel )
-
   if (label === "startDate" && isDateValid) {
     isStartDateValid.value = isDateValid;
     startDateLabel.value = dropdownLabel;
     startDateValue.value = date;
 
-    console.log('start years')
-
     compareDates()
   } 
   
-  if (label === "endDate" && isDateValid) {
-    console.log('end years')
-
+  else if (label === "endDate" && isDateValid) {
     isEndDateValid.value = isDateValid;
     endDateLabel.value = dropdownLabel;
     endDateValue.value = date;

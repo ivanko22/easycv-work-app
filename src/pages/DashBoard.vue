@@ -154,9 +154,6 @@ const asyncFnAva = async (imgDataUrl) => {
 
     addAva(formAvaData);
 }
-
-console.log('mainCV', mainCV.value, mainCV);
-
 </script>
 
 <template>
