@@ -220,6 +220,7 @@ const onSubmit = (arg) => {
       isAddJobFormShow.value = false;
       isShowBaseJob.value = true;
       isFormShow.value = false;
+      isJobValid.value = false;
     }
 
     if (arg === "Edit Job") {
@@ -228,6 +229,7 @@ const onSubmit = (arg) => {
       isShowBaseJob.value = true;
       isFormShow.value = false;
       isShowPrimaryBtn.value = true;
+      isJobValid.value = false;
     }
   }
 };
@@ -253,7 +255,7 @@ const onSubmit = (arg) => {
     <BaseSecondaryButton
       icon="plus"
       @click="showHideForm('Add Job')"
-      :disabled="isJobValid"
+      :disabled="true"
       type="submit"
       label="Add Job"
     />
