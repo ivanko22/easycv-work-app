@@ -105,11 +105,11 @@ const compareDates = () => {
 
   } else if (startDateValue.value > endDateValue.value) {
     isStartDateValid.value = false;
-    errorMessage.value = 'Error. The start date bigger then end date';
-  } else {
+    errorMessage.value = 'The start date bigger then end date';
+  } else if (startDateValue.value === endDateValue.value) {
     isStartDateValid.value = false;
     isEndDateValid.value = false;
-    errorMessage.value = 'Error. Both dates are the same';
+    errorMessage.value = 'Both dates are the same';
   }
 }
 
