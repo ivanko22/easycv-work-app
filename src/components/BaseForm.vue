@@ -72,12 +72,10 @@ const onChildValidation = (isValueValid, label, inputValue) => {
     isJobPositionValid.value = isValueValid;
     jobPositionValue.value = inputValue;
   }
-
   else if(label === "employer") {
     isEmployerValid.value = isValueValid;
     employerValue.value = inputValue;
   }
-
   else if(label === "description") {
     isDescriptonValid.value = isValueValid;
     descriptionValue.value = inputValue;
@@ -162,6 +160,7 @@ const showHideForm = (arg, cvID, jobID) => {
     endDateLabel.value = "Select Date";
     startDateLabel.value = "Select Date";
     isJobEdit.value = false;
+    isJobValid.value = false;
     isShowPrimaryBtn.value = true;
   }
 
@@ -171,7 +170,6 @@ const showHideForm = (arg, cvID, jobID) => {
 
 };
 
-// edit Job Position
 const editJob = (arg, cvID, jobID) => {
   for (let i = 0; i < jobs.value.length; i++) {
     const selectedJob = jobs.value[i];

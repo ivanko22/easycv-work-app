@@ -133,10 +133,7 @@ const showPassword = () => {
 </script>
 
 <template>
-
-  <!-- <p> {{ watchInpute.length }}</p> -->
   <div class="input-container" :class="{error: !isValidInput }">
-
     <input
       @keyup="typingHandle"
       @keydown="typingHandle"
