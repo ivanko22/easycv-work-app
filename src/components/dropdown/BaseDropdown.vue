@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { defineProps, defineEmits, withDefaults, provide, inject, computed, ref } from 'vue'
-import { directive as vClickAway } from 'vue3-click-away'
 import BaseDropdownContent from '@/components/dropdown/BaseDropdownContent.vue'
 import BaseDropdownItem from '@/components/dropdown/BaseDropdownItem.vue'
 import CalendarDropdownContent from './CalendarDropdownContent.vue'
@@ -31,7 +30,6 @@ const currentPeriod = ref()
 const isDateValid = ref(false)
 
 const months = { id01: 'Jan', id02: 'Feb', id03: 'Mar', id04: 'Apr', id05: 'May', id06: 'June', id07: 'July', id08: 'Aug', id09: 'Sept', id10: 'Oct', id11: 'Nov', id12: 'Dec' }
-// const years = ref([2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022])
 
 const jobCategories = { id01: 'JavaScript', id02: 'Java', id03: '.NET', id04: 'Python', id05: 'PHP', id06: 'Node.js', id07: 'iOS', id08: 'Android', id09: 'C++', 
   id10: 'Flutter', id11: 'Golang', id12: 'Ruby', id13: 'Scala', id14: 'Salesforce', id15: 'Rust',
@@ -109,7 +107,7 @@ const updateCurrentPeriod = () => {
 
 const updateDropdownValue = (value, type) => {
   isDropdownOpen.value = false
-  emit('update:dropdownValue', value, type )
+  emit('update:dropdownValue', value, type)
 }
 
 </script>
@@ -132,7 +130,7 @@ const updateDropdownValue = (value, type) => {
 
       </div>
 
-      <CalendarDropdownContent v-if="isDropdownOpen && props.dropdownType === 'calendar'" v-click-away="onClickAway">
+      <CalendarDropdownContent v-if="isDropdownOpen && props.dropdownType === 'calendar'">
         <template v-if="isMonthsShow" #slotMonths>
           <CalendarDropdownItem
             v-for="(month, key) in months"
@@ -152,7 +150,7 @@ const updateDropdownValue = (value, type) => {
         </template>
       </CalendarDropdownContent>
 
-      <p v-if="!isValidDropdown" class="errorMessage"> {{ props.error }} </p>
+      <p class="errorMessage"> {{ props.error }} </p>
 
     </div>
   </template>
@@ -160,7 +158,7 @@ const updateDropdownValue = (value, type) => {
   <template v-if="props.dropdownType === 'jobCategory' || props.dropdownType === 'englishLevel'">
     
     <div class="dropdownContainer categoryPosition">
-      <label v-if="isValidDropdown" class="dropdownLabel">
+      <label class="dropdownLabel">
           {{ label }}
       </label>
 
@@ -220,7 +218,7 @@ const updateDropdownValue = (value, type) => {
         </template>
       </base-dropdown-content>
 
-    <p v-if="!isValidDropdown" class="errorMessage"> {{ 'Required' }} </p>
+    <p class="errorMessage"> {{ 'Required' }} </p>
 
   </div>
   </template>
