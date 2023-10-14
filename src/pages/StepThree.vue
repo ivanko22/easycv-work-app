@@ -42,17 +42,18 @@ const handleDropdownInput = (value, type) => {
   if (type === "jobCategory") {
     jobCategoryValue.value = value;
   }
-
-  if(type === "Job Title"){
-    jobTitleValue.value = value;
-  }
-  
-  if(type === "englishLevel") {
+  else if(type === "englishLevel") {
     englishLevelValue.value = value;
   }
 
   handlePrimaryBtn();
 };
+
+const handleInput = (isValueValid, label, inputValue) => {
+  if (label === 'Job Title') {
+    console.log('inputValue', inputValue, isValueValid)
+  }
+}
 
 const handleSlider = (value) => {
   yearsExperience.value = value;
@@ -113,9 +114,11 @@ const onSubmit = () => {
     <form v-on:submit.prevent="onSubmit" autocomplete="off">
 
       <BaseInput 
+        :input-props-value="jobTitleValue"
         :label="'Job Title'"
         :type="'text'"
-        v-on:update:typeValue="handleDropdownInput"
+        v-on:update:is-valid="handleInput"
+        required
       />
 
       <base-dropdown
@@ -123,8 +126,8 @@ const onSubmit = () => {
         :dropdown-type="'jobCategory'"
         :width="'longDropdown'"
         :label="'Job Category'"
-        :is-valid-dropdown="true"
         v-on:update:dropdownValue="handleDropdownInput"
+        required
       >
         <p
           :class="{
@@ -144,6 +147,7 @@ const onSubmit = () => {
         :label="'English Level'"
         :is-valid-dropdown="true"
         v-on:update:dropdownValue="handleDropdownInput"
+        required
       >
         <p
           :class="{
