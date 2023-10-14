@@ -33,6 +33,7 @@ const allSkills = ref([
 ]);
 
 const selectedSkills = ref([]);
+const errorMessage = ref('Required');
 
 const handleInputStatus = (status) => {
   isInputActive.value = status;
@@ -69,6 +70,8 @@ const updateSkills = (skills) => {
   <p class="skillsLabel">Skills</p>
 
   <div class="chipsContainer" :class="{ chipsContainerActive: isInputActive }">
+
+
     <Chip
       v-for="(chip, index) in selectedSkills"
       type="selected"
@@ -86,6 +89,7 @@ const updateSkills = (skills) => {
       @keydown.delete="removeChip(selectedSkills.length - 1)"
     />
   </div>
+  <p v-if="selectedSkills.length === 0" class="errorMessage"> {{ errorMessage }} </p>
 
   <div class="skillsChipsContainer">
     <Chip
@@ -156,5 +160,11 @@ const updateSkills = (skills) => {
   outline: none;
   padding-left: 10px;
   margin-top: 8px;
+}
+.errorMessage{
+    font-weight: 400;
+    font-size: 12px;
+    text-align: right;
+    color: $error;
 }
 </style>

@@ -102,7 +102,6 @@ const compareDates = () => {
   if (startDateValue.value < endDateValue.value) {
     isStartDateValid.value = true;
     errorMessage.value = '';
-
   } else if (startDateValue.value > endDateValue.value) {
     isStartDateValid.value = false;
     errorMessage.value = 'The start date bigger then end date';
@@ -340,7 +339,7 @@ const onSubmit = (arg) => {
   </form>
 
   <BaseButton
-    v-if="isJobEdit"
+    v-if="!isJobEdit"
     label="Next"
     :class="{ primaryBtn: isShowPrimaryBtn }"
     type="submit"

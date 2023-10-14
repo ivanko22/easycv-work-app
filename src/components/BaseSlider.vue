@@ -4,6 +4,7 @@ import { ref } from "vue";
 const currentValue = ref("0");
 const sliderTitlePosition = ref("4px");
 const yearYears = ref("Years");
+const errorMessage = ref('Required');
 
 const sliderThumbPosition = [
   4, 22, 41, 60, 78, 97, 116, 135, 153, 172, 190, 209, 227, 245, 264, 283, 302,
@@ -12,11 +13,13 @@ const sliderThumbPosition = [
 
 const onInput = () => {
   sliderTitlePosition.value = `${sliderThumbPosition[currentValue.value]}px`;
-
   if (currentValue.value === "1") {
     yearYears.value = "Year";
-  } else {
+    errorMessage.value = '';
+  } 
+  else {
     yearYears.value = "Years";
+    errorMessage.value = '';
   }
 
   emitSliderValue();
@@ -49,6 +52,7 @@ const emitSliderValue = () => {
       {{ currentValue }}
       <p class="sliderThumbTitleYears">{{ yearYears }}</p>
     </div>
+    <p class="errorMessage"> {{ errorMessage }} </p>
   </div>
 </template>
 
@@ -149,5 +153,14 @@ const emitSliderValue = () => {
   font-size: 14px;
   color: $grey;
   pointer-events: none;
+}
+.errorMessage{
+    position: absolute;
+    right: 0px;
+    font-weight: 400;
+    font-size: 12px;
+    margin-top: 57px;
+    text-align: right;
+    color: $error;
 }
 </style>

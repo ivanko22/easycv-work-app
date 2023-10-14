@@ -18,16 +18,17 @@ const props = withDefaults(
   }
 )
 
-const isShowLabel = ref(false)
-const isDropdownOpen = ref(false)
-const dropdownLabel = ref()
-const isMonthsShow = ref(false)
-const selectedMonth = ref()
-const selectedPeriod = inject('selectedPeriod')
-const isYearsShow = ref(false)
-const selectedYear = ref(2000)
-const currentPeriod = ref()
-const isDateValid = ref(false)
+const isShowLabel = ref(false);
+const isDropdownOpen = ref(false);
+const dropdownLabel = ref();
+const isMonthsShow = ref(false);
+const selectedMonth = ref();
+const selectedPeriod = inject('selectedPeriod');
+const isYearsShow = ref(false);
+const selectedYear = ref(2000);
+const currentPeriod = ref();
+const isDateValid = ref(false);
+const errorMessage = ref('Required');
 
 const months = { id01: 'Jan', id02: 'Feb', id03: 'Mar', id04: 'Apr', id05: 'May', id06: 'June', id07: 'July', id08: 'Aug', id09: 'Sept', id10: 'Oct', id11: 'Nov', id12: 'Dec' }
 
@@ -106,8 +107,9 @@ const updateCurrentPeriod = () => {
 }
 
 const updateDropdownValue = (value, type) => {
-  isDropdownOpen.value = false
-  emit('update:dropdownValue', value, type)
+  isDropdownOpen.value = false;
+  errorMessage.value = '';
+  emit('update:dropdownValue', value, type);
 }
 
 </script>
@@ -218,7 +220,7 @@ const updateDropdownValue = (value, type) => {
         </template>
       </base-dropdown-content>
 
-    <p class="errorMessage"> {{ 'Required' }} </p>
+    <p class="errorMessage"> {{ errorMessage }} </p>
 
   </div>
   </template>
@@ -296,7 +298,8 @@ const updateDropdownValue = (value, type) => {
 
   .errorMessage{
     position: absolute;
-    width: 192px;
+    left: 22px;
+    top: 43px;
     font-weight: 400;
     font-size: 12px;
     margin-top: 57px;
