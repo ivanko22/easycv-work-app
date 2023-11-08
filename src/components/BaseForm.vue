@@ -11,7 +11,8 @@ import BaseJob from "./BaseJob.vue";
 import BaseButton from "@/components/BaseButton.vue";
 
 const props = defineProps<{
-    isJobEdit: false,
+    // isJobEdit: boolean,
+    JobTypeCard: string,
 }>()
 
 const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillJob, addJob, removeJob } =
@@ -133,6 +134,8 @@ const childDate = (date, label, isDateValid, dropdownLabel) => {
 const showHideForm = (arg, cvID, jobID) => {
   isJobEdit.value = false;
 
+  console.log('isJobEdit.value', isJobEdit.value);
+
   if (arg === "Edit Job") {
     isJobEdit.value = true;
     isAddJobFormShow.value = false;
@@ -168,6 +171,8 @@ const showHideForm = (arg, cvID, jobID) => {
   }
 
 };
+
+// showHideForm();
 
 const editJob = (arg, cvID, jobID) => {
   for (let i = 0; i < jobs.value.length; i++) {
@@ -237,7 +242,8 @@ const onSubmit = (arg) => {
   <template v-if="!isFormShow">
     <BaseJob
       v-for="(job, index) in jobs"
-      :cvJobEdit="props.isJobEdit"
+      :baseJobType="props.JobTypeCard"
+      :cvJobEdit="false"
       :cvID="mainCVid"
       :jobID="job._id"
       :jobTitle="job.position"
@@ -339,7 +345,7 @@ const onSubmit = (arg) => {
   </form>
 
   <BaseButton
-    v-if="!isJobEdit"
+    v-if="isJobEdit"
     label="Next"
     :class="{ primaryBtn: isShowPrimaryBtn }"
     type="submit"

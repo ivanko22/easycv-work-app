@@ -181,7 +181,6 @@ const asyncFnAva = async (imgDataUrl) => {
     <div class="cvContainer">
       <div class="cvHeaderContainer">
         <div class="uploadImage" @click="avaToggleShow">
-
           <my-upload 
             field="img"
             @crop-success="cropSuccess"
@@ -292,20 +291,19 @@ const asyncFnAva = async (imgDataUrl) => {
 
       <div class="cvContent">
         <h1 class="loading" v-if="isShowGhost"> Loading... </h1>
-
         <BaseJob 
           v-if="!isShowGhost"
           @generate-text="generateText"
-          :type="'summary'"
+          :baseJobType="'cVdashboardSummary'"
           :jobDescription="cvSummary"
         />
-
-      <div class="cvContent">
+      
         <h2 class="cvContentTitle">Work Experience</h2>
-        <BaseForm :isJobEdit="true" />
+        <BaseForm 
+          :isJobEdit="false"
+          :JobTypeCard="'dashboardJobCard'" 
+        />    
       </div>
-    </div>
-
   </div>
 </div>
 
