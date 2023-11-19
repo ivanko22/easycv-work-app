@@ -300,8 +300,7 @@ const asyncFnAva = async (imgDataUrl) => {
       
         <h2 class="cvContentTitle">Work Experience</h2>
         <BaseForm 
-          :isJobEdit="false"
-          :JobTypeCard="'dashboardJobCard'" 
+          :jobTypeCard="'dashboardJobCard'" 
         />    
       </div>
   </div>

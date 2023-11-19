@@ -3,7 +3,7 @@ import { defineProps, ref } from 'vue';
 
 const props = defineProps<{
   baseJobType: string
-  cvJobEdit: boolean,
+  // cvJobEdit: boolean,
   cvID: string,
   jobID: string,
   jobTitle?: string,
@@ -78,7 +78,7 @@ const updateJobPosition = (arg, cvID, jobID) => {
   </div> 
 
   <!-- jobCardWizzard -->
-  <div v-if="!props.cvJobEdit && props.baseJobType === 'jobCardWizzard'" 
+  <div v-if="props.baseJobType === 'jobCardWizzard'" 
     @click="openCloseJobAcc" 
     class="jobContainer"
   >
