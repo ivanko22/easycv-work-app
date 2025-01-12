@@ -36,7 +36,7 @@ const toasterMessage = ref();
 
     <base-wizzard :isRegistered="true" :experience="true"></base-wizzard>
 
-    <base-form />
+    <base-form :jobTypeCard="'jobCardWizzard'" />
   </div>
 </template>
 

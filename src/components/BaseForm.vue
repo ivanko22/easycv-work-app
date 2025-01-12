@@ -2,7 +2,7 @@
 import { storeToRefs } from "pinia";
 import { useUserData } from "@/helpers/user";
 import { dateFormatation, formatMonth } from "@/helpers/dateFormat";
-import { ref, provide, computed } from "vue";
+import { ref, provide, computed, toRaw, watch, onMounted } from "vue";
 import router from "@/router";
 import BaseInput from "@/components/inputs/BaseInput.vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
@@ -11,7 +11,7 @@ import BaseJob from "./BaseJob.vue";
 import BaseButton from "@/components/BaseButton.vue";
 
 const props = defineProps<{
-    isJobEdit: false,
+    jobTypeCard: string,
 }>()
 
 const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillJob, addJob, removeJob } =
@@ -20,10 +20,9 @@ const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillJob, addJob, remove
 fillToken();
 fillConfig();
 fillMainCvId();
-fillMainCv();
 
-const { mainCVid, jobs, showCTAbtn } = storeToRefs(useUserData());
-const isShowPrimaryBtn = showCTAbtn;
+const { mainCVid, jobs, mainCV } = storeToRefs(useUserData());
+const isShowPrimaryBtn = ref(false);
 
 const selectedPeriod = ref(["Start Date", "End Date"]);
 const years = ref([2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]);
@@ -133,12 +132,25 @@ const childDate = (date, label, isDateValid, dropdownLabel) => {
 const showHideForm = (arg, cvID, jobID) => {
   isJobEdit.value = false;
 
+  if(arg === 'initial'){
+    if (jobs.value.length === 0) {
+      isShowBaseJob.value = false;
+      isFormShow.value = true;
+      isShowPrimaryBtn.value = false;
+    } else if(router.currentRoute.value.path !== '/dashboard'){
+      isShowBaseJob.value = true;
+      isFormShow.value = false;
+      isShowPrimaryBtn.value = true;
+    }
+  }
+
   if (arg === "Edit Job") {
     isJobEdit.value = true;
     isAddJobFormShow.value = false;
     formTitle.value = "Edit Job";
     isFormShow.value = true;
     isShowPrimaryBtn.value = false;
+    isShowBaseJob.value = false;
 
     editJob(arg, cvID, jobID);
   }
@@ -149,6 +161,7 @@ const showHideForm = (arg, cvID, jobID) => {
     startDateLabel.value = "Start Date";
     endDateLabel.value = "End Date";
     isShowPrimaryBtn.value = false;
+    isShowBaseJob.value = false;
   }
 
   if (arg === "add job cancel") {
@@ -161,6 +174,7 @@ const showHideForm = (arg, cvID, jobID) => {
     isJobEdit.value = false;
     isJobValid.value = false;
     isShowPrimaryBtn.value = true;
+    isShowBaseJob.value = true;
   }
 
   if (arg === "Remove Job") {
@@ -168,6 +182,11 @@ const showHideForm = (arg, cvID, jobID) => {
   }
 
 };
+
+onMounted(async () => {
+  await fillMainCv();
+  showHideForm('initial', 'cvID', 'jobID');
+});
 
 const editJob = (arg, cvID, jobID) => {
   for (let i = 0; i < jobs.value.length; i++) {
@@ -194,7 +213,6 @@ const editJob = (arg, cvID, jobID) => {
 };
 
 const onSubmit = (arg) => {
-
   if (isShowPrimaryBtn.value || isJobValid.value || jobs.value.length > 0) {
     const sendData = {
     position: jobPositionValue.value,
@@ -234,10 +252,11 @@ const onSubmit = (arg) => {
 </script>
 
 <template>
-  <template v-if="!isFormShow">
+  <template v-if="isShowBaseJob">
     <BaseJob
       v-for="(job, index) in jobs"
-      :cvJobEdit="props.isJobEdit"
+      :baseJobType="props.jobTypeCard"
+      :cvJobEdit="false"
       :cvID="mainCVid"
       :jobID="job._id"
       :jobTitle="job.position"
@@ -264,7 +283,7 @@ const onSubmit = (arg) => {
     class="signUpForm"
     autocomplete="off"
   >
-    <template v-if="isFormShow">
+    <template v-if="isFormShow || jobs.length === 0">
       <p class="addJobTittle">{{ formTitle }}</p>
 
       <base-input
@@ -339,7 +358,7 @@ const onSubmit = (arg) => {
   </form>
 
   <BaseButton
-    v-if="!isJobEdit"
+    v-if="isShowPrimaryBtn"
     label="Next"
     :class="{ primaryBtn: isShowPrimaryBtn }"
     type="submit"

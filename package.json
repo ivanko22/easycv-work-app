@@ -12,7 +12,7 @@
     "dotenv": "^16.0.3",
     "jsonwebtoken": "^8.5.1",
     "openai": "^3.2.1",
-    "pinia": "^2.0.33",
+    "pinia": "^2.1.7",
     "svgo": "^3.0.2",
     "vue": "^3.2.38",
     "vue-image-crop-upload": "^3.0.3",

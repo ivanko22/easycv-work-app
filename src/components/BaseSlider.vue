@@ -156,7 +156,7 @@ const emitSliderValue = () => {
 }
 .errorMessage{
     position: absolute;
-    right: 0px;
+    right: 0px  ;
     font-weight: 400;
     font-size: 12px;
     margin-top: 57px;
