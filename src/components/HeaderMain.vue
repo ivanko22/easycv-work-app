@@ -2,6 +2,7 @@
 import { useUserData } from '@/helpers/user'
 import { defineProps, withDefaults, ref } from 'vue'
 import router from "@/router";
+import { logout } from "@/services/auth";
 
 const user = useUserData()
 const isUserOnDashboard = ref(false);
@@ -17,9 +18,11 @@ const props = withDefaults(
   }
 )
 
-const handleLogout = () => {
+const handleLogout = async () => {
   if(props.hrefUrl === '/logout'){
-    localStorage.removeItem("user")
+    await logout()
+
+    // localStorage.removeItem("user")
     router.push("/logout")
     router.push("/")
   }
