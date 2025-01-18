@@ -1,42 +1,41 @@
 <script setup lang="ts">
-import { defineProps, ref } from 'vue';
+  import { defineProps, ref } from 'vue';
 
-const props = defineProps<{
-  baseJobType: string
-  // cvJobEdit: boolean,
-  cvID: string,
-  jobID: string,
-  jobTitle?: string,
-  companyName?: string,
-  workPeriod?: string,
-  jobDescription?: string
-}>()
+  const props = defineProps<{
+      type: string
+      cvJobEdit: string,
+      cvID: string,
+      jobID: string,
+      jobTitle?: string,
+      companyName?: string,
+      workPeriod?: string,
+      jobDescription?: string
+  }>()
 
-const isBaseJobOpen = ref(false)
-const isShowIcons = ref(false)
+  const isBaseJobOpen = ref(false)
+  const isShowIcons = ref(false)
 
-const openCloseJobAcc = () => {
-    isBaseJobOpen.value = !isBaseJobOpen.value
-}
-
-const handleIconClick = (arg, cvID, jobID) => {
-  if (arg === 'remove') {
-    updateJobPosition('Remove Job', cvID, jobID)
+  const openCloseJobAcc = () => {
+      isBaseJobOpen.value = !isBaseJobOpen.value
   }
-  else if (arg === 'Edit Job') {
-    updateJobPosition('Edit Job', cvID, jobID)
+
+  const handleIconClick = (arg, cvID, jobID) => {
+    if (arg === 'remove') {
+      updateJobPosition('Remove Job', cvID, jobID)
+    }
+    else if (arg === 'Edit Job') {
+      updateJobPosition('Edit Job', cvID, jobID)
+    }
   }
-}
 
-const emit = defineEmits<{
-  (e: 'update:jobsList', value: boolean): void;
-  (e: 'update:editJobPositon', value: string): void;
-}>()
+  const emit = defineEmits<{
+    (e: 'update:jobsList', value: boolean): void;
+    (e: 'update:editJobPositon', value: string): void;
+  }>()
 
-const updateJobPosition = (arg, cvID, jobID) => {
-  emit('update:editJobPositon', arg, cvID, jobID);
-}
-
+  const updateJobPosition = (arg, cvID, jobID) => {
+    emit('update:editJobPositon', arg, cvID, jobID);
+  }
 </script>
 
 <template>
@@ -157,151 +156,151 @@ const updateJobPosition = (arg, cvID, jobID) => {
 </template>
 
 <style scoped lang="scss">
-.iconsContainer {
-  display: flex;
-  justify-content: flex-end;
-  width: 90px;
-  padding-right: 6px;
-}
-
-.iconContainer {
-  display: block;
-  width: 18px;
-  height: 18px;
-  margin: 6px;
-
-  &:hover .iconColor {
-    fill: $primary;
-  }
-}
-
-.iconColor {
-  fill: $lightGrey;
-}
-
-.accordionIconColor {
-  fill: $lightGrey;
-}
-
-.jobContainer {
-  display: flex;
-  flex-flow: column;
-  cursor: pointer;
-  width: 408px;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.25);
-  background: #ffffff;
-  border: 1px solid #d5d5d5;
-  border-radius: 6px;
-
-  &:hover {
-    border: 1px solid $grey;
+  .iconsContainer {
+    display: flex;
+    justify-content: flex-end;
+    width: 90px;
+    padding-right: 6px;
   }
 
-  &:hover .accordionIconColor {
-    fill: $primary;
-  }
-}
+  .iconContainer {
+    display: block;
+    width: 18px;
+    height: 18px;
+    margin: 6px;
 
-.jobHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  height: 80px;
-}
-
-.jobDescriptionContainer {
-  padding-right: 15px;
-  padding-left: 15px;
-  padding-bottom: 19px;
-  font-size: 12px;
-  line-height: 16px;
-}
-
-.companyPosition {
-  display: flex;
-  flex-flow: column;
-  height: 50px;
-  justify-content: space-evenly;
-  padding-left: 12px;
-}
-.jobPosition {
-  font-weight: 400;
-  font-size: 14px;
-  color: $grey;
-  margin: 0;
-}
-
-.company {
-  width: 140px;
-  font-weight: 600;
-  font-size: 18px;
-  color: $black;
-  margin: 0;
-}
-
-.date {
-  width: 166px;
-  font-weight: 400;
-  font-size: 14px;
-  color: $grey;
-}
-
-.rotateIconUp {
-  transform: rotate(-90deg);
-}
-
-.editIconLabel {
-  font-weight: 600;
-  font-size: 14px;
-  color: $primary;
-  padding-right: 6px;
-  margin: 0;
+    &:hover .iconColor {
+      fill: var(--primary);
+    }
   }
 
-.jobContainerCv {
-  padding: 10px;
-  cursor: pointer;
-  border: 1px solid #ffffff;
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-top: 15px;
-
-  &:hover {
-    border: 1px solid $ultraLightGrey;
+  .iconColor {
+    fill: var(--lightGrey);
   }
 
-  &:hover .editIconContainer {
-    opacity: 1;
+  .accordionIconColor {
+    fill: var(--lightGrey);
   }
 
-}
-.jobPositionContainer {
-    position: relative;
-    top: -6px;
+  .jobContainer {
+    display: flex;
+    flex-flow: column;
+    cursor: pointer;
+    width: 408px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.25);
+    background: #ffffff;
+    border: 1px solid #d5d5d5;
+    border-radius: 6px;
+
+    &:hover {
+      border: 1px solid var(--grey);
+    }
+
+    &:hover .accordionIconColor {
+      fill: var(--primary);
+    }
+  }
+
+  .jobHeader {
     display: flex;
     align-items: center;
-    height: 22px;
+    justify-content: space-around;
+    height: 80px;
   }
 
-  .editIconContainer {
+  .jobDescriptionContainer {
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 19px;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .companyPosition {
     display: flex;
-    opacity: 0;
-    align-items: center;
-    justify-content: center;
-    top: -11px;
-    position: relative;
-    
-    div {
-      display: flex;
-      align-items: center;
-      background: white;
-      padding-left: 12px;
-      padding-right: 12px;
+    flex-flow: column;
+    height: 50px;
+    justify-content: space-evenly;
+    padding-left: 12px;
+  }
+  .jobPosition {
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--grey);
+    margin: 0;
+  }
+
+  .company {
+    width: 140px;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--black);
+    margin: 0;
+  }
+
+  .date {
+    width: 166px;
+    font-weight: 400;
+    font-size: 14px;
+    color: var(--grey);
+  }
+
+  .rotateIconUp {
+    transform: rotate(-90deg);
+  }
+
+  .editIconLabel {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--primary);
+    padding-right: 6px;
+    margin: 0;
+    }
+
+  .jobContainerCv {
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid #ffffff;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 15px;
+
+    &:hover {
+      border: 1px solid var(--ultraLightGrey);
+    }
+
+    &:hover .editIconContainer {
+      opacity: 1;
     }
 
   }
+  .jobPositionContainer {
+      position: relative;
+      top: -6px;
+      display: flex;
+      align-items: center;
+      height: 22px;
+    }
+
+    .editIconContainer {
+      display: flex;
+      opacity: 0;
+      align-items: center;
+      justify-content: center;
+      top: -11px;
+      position: relative;
+      
+      div {
+        display: flex;
+        align-items: center;
+        background: white;
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+    }
 
   .summaryTop30 {
     margin-top: 30px;
@@ -311,14 +310,14 @@ const updateJobPosition = (arg, cvID, jobID) => {
     padding-right: 10px;
 
     path {
-      fill: $primary;
+      fill: var(--primary);
     }
   }
 
   .workPeriod {
     font-weight: 400;
     font-size: 13px;
-    color: $black;
+    color: var(--black);
   }
   .jobTitle {
     font-weight: 500;
@@ -335,14 +334,14 @@ const updateJobPosition = (arg, cvID, jobID) => {
     font-weight: 400;
     font-size: 14px;
     line-height: 25px;
-    color: $black;
+    color: var(--black);
     cursor: pointer;
   }
 
   .cvSummaryTitle {
     font-weight: 700;
     font-size: 18px;
-    color: $black;
+    color: var(--black);
     margin-bottom: 20px;
     margin-top: 0px;
   }

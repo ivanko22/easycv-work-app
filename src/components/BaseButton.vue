@@ -27,21 +27,21 @@ const props = withDefaults(
 <style scoped lang="scss">
 .disabled-btn {
   margin-top: 60px;
-  border: 1px solid $lightGrey;
+  border: 1px solid var(--lightGrey);
   border-radius: 2px;
   width: 410px;
   height: 50px;
   font-weight: 600;
   font-size: 16px;
-  color: $lightGrey;
+  color: var(--lightGrey);
   background-color: unset;
   cursor: text;
 }
 
 .primaryBtn {
-  border: 1px solid $primary;
-  background-color: $primary;
-  color: $white;
+  border: 1px solid var(--primary);
+  background-color: var(--primary);
+  color: var(--white);
   cursor: pointer;
   transition: .25s;
   margin-bottom: 60px;

@@ -47,12 +47,12 @@ setTimeout(() => {
   line-height: 110px;
   text-transform: uppercase;
   text-align: left;
-  color: $black;
+  color: var(--black);
   margin: 0;
 }
 
 .colorBlack {
-  color: $black;
+  color: var(--black);
   position: relative;
   animation: firstBlock 800ms;
   animation-timing-function: ease-out;
@@ -61,7 +61,7 @@ setTimeout(() => {
 .colorGreen {
   position: relative;
   transform: translateY(-100%);
-  color: $primary;
+  color: var(--primary);
   transition: all 0.75s;
 }
 
@@ -91,12 +91,12 @@ setTimeout(() => {
   font-weight: 600;
   font-size: 20px;
   text-decoration: none;
-  color: $black;
+  color: var(--black);
   cursor: pointer;
   transition: all 0.5s;
 
   &:hover {
-    color: $primaryHover;
+    color: var(--primary)Hover;
     padding-left: 16px;
   }
 

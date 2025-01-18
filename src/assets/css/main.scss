@@ -3,21 +3,36 @@ $primaryHover: #28B22A;
 
 $black: #000000;
 $grey: #7A7A7A;
-$middleGrey:#888888;
+$middleGrey: #888888;
 $ultraLightGrey: #DADADA;
 $lightGrey: #C2C2C2;
 $secondGrey: #EBEDED;
-
 $white: #ffffff;
-
 $error: #E17777;
 
-:root{
-  background-color: $secondGrey;
+:root {
+  --primary: #{$primary};
+  --primaryHover: #{$primaryHover};
+
+  --black: #{$black};
+  --grey: #{$grey};
+  --middleGrey: #{$middleGrey};
+  --ultraLightGrey: #{$ultraLightGrey};
+  --lightGrey: #{$lightGrey};
+  --secondGrey: #{$secondGrey};
+  --white: #{$white};
+  --error: #{$error};
+
+  background-color: var(--secondGrey);
   margin: 0;
 
-  a, a:link, a:visited, a:focus, a:hover, a:active{
-    text-decoration:none;
+  a,
+  a:link,
+  a:visited,
+  a:focus,
+  a:hover,
+  a:active {
+    text-decoration: none;
     cursor: pointer;
   }
 }

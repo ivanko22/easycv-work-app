@@ -178,23 +178,23 @@ const showPassword = () => {
 
 input{
   height: 50px;
-  background: $white;
+  background: var(--white);
   box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.25);
   border-radius: 2px;
   text-align: left;
   outline: none;
   border: none;
-  border: 1px solid $ultraLightGrey;
+  border: 1px solid var(--ultraLightGrey);
   padding-left: 10px;
   font-size: 16px;
 }
 
 input:focus {
-  border: 1.5px solid $primary !important;
+  border: 1.5px solid var(--primary) !important;
 }
 
 input:hover {
-  border: 1px solid $middleGrey;
+  border: 1px solid var(--middleGrey);
 }
 
 .input-container{
@@ -214,7 +214,7 @@ input:hover {
 
 .error input, .error input:focus,
 .error input:active, .error input:visited, .error input:hover{
-  border: 1px solid $error !important;
+  border: 1px solid var(--error) !important;
   transition: .75s;
 }
 
@@ -222,7 +222,7 @@ input:hover {
   font-weight: 400;
   font-size: 12px;
   text-align: right;
-  color: $error;
+  color: var(--error);
   transition: .75s;
 }
 
@@ -231,21 +231,21 @@ input:hover {
   left: 10px;
   top: 16px;
   font-size: 16px;
-  color: $lightGrey;
+  color: var(--lightGrey);
   transition: .25s;
   pointer-events: none;
 }
 
 .inputLabelActive{
   font-size: 14px;
-  color: $grey;
+  color: var(--grey);
   transform: translateY(-52px);
 }
 
 input[type=text]:visited, input[type=email]:visited,
 input[type=password]:visited
 {
-    background: $white;
+    background: var(--white);
 }
 
 .show-password-icon{

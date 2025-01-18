@@ -72,6 +72,8 @@ export const useUserData = defineStore("userStore", {
     },
 
     fillMainCvId() {
+      console.log('this.config', this.config);
+
       this.mainCvId = axios.get("/api/user", this.config).then((response) => {
       this.mainCVid = response.data.cvs[0];
       });
@@ -175,28 +177,6 @@ export const useUserData = defineStore("userStore", {
           router.push("/dashboard");
         }
       })
-    },
-
-    addJob(dataSend) {
-      console.log('addJob from pinia', dataSend);
-      axios
-        .post(`/api/cv/${this.mainCVid}/employment`, dataSend, this.config)
-        .then((response) => {
-          console.log('response', response);
-          switch(response.data){
-            case "User does not own this CV":
-              console.log('User does not own this CV');
-              break;
-
-            case "ERROR: Unable to update user's CV":
-              console.log("ERROR: Unable to update user's CV");
-              break;
-          }
-
-          if (typeof response.data !== "string") {
-            this.fillMainCv();
-          }
-        });
     },
 
     removeJob(dataSend, cvID, jobID) {

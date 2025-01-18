@@ -1,86 +1,61 @@
 <script setup lang="ts">
-import { useUserData } from "@/helpers/user";
-import { ref } from "vue";
-import router from "@/router";
-import axios from "axios";
-import HeaderMain from "@/components/HeaderMain.vue";
-import BaseInput from "@/components/inputs/BaseInput.vue";
-import BaseButton from "@/components/BaseButton.vue";
-import BaseToaster from "@/components/BaseToaster.vue";
+  import { useUserData } from "@/helpers/user";
+  import { ref } from "vue";
+  import router from "@/router";
+  import { login } from "@/services/auth";
 
-const user = useUserData();
-user.count++;
+  import HeaderMain from "@/components/HeaderMain.vue";
+  import BaseInput from "@/components/inputs/BaseInput.vue";
+  import BaseButton from "@/components/BaseButton.vue";
+  import BaseToaster from "@/components/BaseToaster.vue";
 
-const isShowToaster = ref(false);
-const toasterType = ref();
-const toasterMessage = ref();
-const isFormValid = ref(false);
-const isEmailValid = ref(false);
-const emailValue = ref();
-const isPasswordValid = ref(false);
-const passwordValue = ref();
-const passwordShow = ref(false);
+  const user = useUserData();
+  user.count++;
 
-const onChildValidation = (isValueValid, label, inputValue, IsPasswordShow) => {
-  if (label === "Email") {
-    isEmailValid.value = isValueValid;
-    emailValue.value = inputValue;
-  }
-  if (label === "Password") {
-    isPasswordValid.value = isValueValid;
-    passwordValue.value = inputValue;
-    passwordShow.value = IsPasswordShow;
-  }
+  const isShowToaster = ref(false);
+  const toasterType = ref("");
+  const toasterMessage = ref("");
+  const isFormValid = ref(false);
+  const emailValue = ref("");
+  const passwordValue = ref("");
+  const passwordShow = ref(false);
+  const isEmailValid = ref(false);
+  const isPasswordValid = ref(false);
 
-  isFormValid.value = formValidation();
-};
+  const onChildValidation = (isValueValid, label, inputValue, isPasswordVisible) => {
+    if (label === "Email") {
+      isEmailValid.value = isValueValid;
+      emailValue.value = inputValue;
+    } else if (label === "Password") {
+      isPasswordValid.value = isValueValid;
+      passwordValue.value = inputValue;
+      passwordShow.value = isPasswordVisible;
+    }
 
-const formValidation = () => {
-  if (isEmailValid.value === true && isPasswordValid.value === true) {
-    return true;
-  } else {
-    return false;
-  }
-};
+    isFormValid.value = isEmailValid.value && isPasswordValid.value;
+  };
 
-const onSubmit = () => {
-  isShowToaster.value = false;
-  toasterType.value = "";
-  toasterMessage.value = "";
+  const onSubmit = async () => {
+    isShowToaster.value = false;
+    toasterType.value = "";
+    toasterMessage.value = "";
 
-  if (isFormValid.value) {
-    axios
-    .post("/api/login", {
-      email: emailValue.value,
-      password: passwordValue.value,
-    })
-
-    .then(function (response) {
-      switch (response.data) {
-        case "User with that email doesn't exist":
-          toasterType.value = "warning";
-          toasterMessage.value = "User with that email doesn't exist";
-          isShowToaster.value = true;
-          break;
-
-        case "Incorrect password":
-          toasterType.value = "error";
-          toasterMessage.value = "Incorrect password";
-          isShowToaster.value = true;
-          break;
-      }
-
-      if (typeof response.data !== "string") {
-        let token = response.data.jwt;
-        localStorage.setItem("user", token);
-
+    if (isFormValid.value) {
+      try {
+        await login(emailValue.value, passwordValue.value);
         user.isLogIn = true;
-        user.getToken;
-        router.push("/logged-in");
+        router.push("/logged-in"); 
+
+      } catch (error) {
+        console.error("Login failed:", error);
+
+        toasterType.value = "error";
+        toasterMessage.value = error.response?.data?.detail || "Login failed. Please try again.";
+        isShowToaster.value = true;
       }
-    });
-  }
-};
+    }
+  };
+
 </script>
 
 <template>
