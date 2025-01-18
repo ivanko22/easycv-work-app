@@ -39,7 +39,45 @@
 </script>
 
 <template>
-  <div v-if="!cvJobEdit  && type !== 'summary'" 
+  <!-- cVdashboardSummary -->
+  <div v-if="props.baseJobType === 'cVdashboardSummary'" 
+    @click="$emit('generate-text')"
+    class="jobContainerCv summaryTop30"
+  >
+  <div class="editIconContainer">
+    <div>
+      <img class="editIcon" src="@/assets/svg/edit.svg">
+        <p class="editIconLabel"> Regenerate Summary </p>
+      </div> 
+    </div>
+    <h2 class="cvSummaryTitle">Experience Summary</h2>
+
+    <p class="summary">{{ jobDescription }}</p>
+  </div> 
+
+  <!-- dashboardJobCard -->
+  <div v-if="props.baseJobType === 'dashboardJobCard'"
+    @click="handleIconClick('Edit Job', cvID, jobID)" 
+    class="jobContainerCv"
+  >
+    <div class="editIconContainer">
+      <div>
+        <img class="editIcon" src="@/assets/svg/edit.svg">
+        <p class="editIconLabel"> Edit </p>
+      </div> 
+    </div>
+
+    <div class="jobPositionContainer">
+      <p class="employerTitle">{{ companyName }}</p>
+      <p class="workPeriod">{{ workPeriod }}</p>
+    </div>
+
+    <p class="jobTitle">{{ jobTitle }}</p>
+    <p class="summary">{{ jobDescription }}</p>
+  </div> 
+
+  <!-- jobCardWizzard -->
+  <div v-if="props.baseJobType === 'jobCardWizzard'" 
     @click="openCloseJobAcc" 
     class="jobContainer"
   >
@@ -114,41 +152,6 @@
       {{ jobDescription }}
     </div>
   </div>
-
-  <div v-if="cvJobEdit && type !== 'summary'" 
-    @click="handleIconClick('Edit Job', cvID, jobID)" 
-    class="jobContainerCv"
-  >
-      <div class="editIconContainer">
-        <div>
-          <img class="editIcon" src="@/assets/svg/edit.svg">
-          <p class="editIconLabel"> Edit </p>
-        </div> 
-      </div>
-
-      <div class="jobPositionContainer">
-        <p class="employerTitle">{{ companyName }}</p>
-        <p class="workPeriod">{{ workPeriod }}</p>
-      </div>
-
-      <p class="jobTitle">{{ jobTitle }}</p>
-      <p class="summary">{{ jobDescription }}</p>
-  </div> 
-
-  <div v-if="props.type === 'summary'" 
-    @click="$emit('generate-text')"
-    class="jobContainerCv summaryTop30"
-  >
-      <div class="editIconContainer">
-        <div>
-        <img class="editIcon" src="@/assets/svg/edit.svg">
-          <p class="editIconLabel"> Regenerate Summary </p>
-        </div> 
-      </div>
-      <h2 class="cvSummaryTitle">Experience Summary</h2>
-
-      <p class="summary">{{ jobDescription }}</p>
-  </div> 
 
 </template>
 

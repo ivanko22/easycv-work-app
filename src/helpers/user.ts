@@ -88,19 +88,33 @@ export const useUserData = defineStore("userStore", {
       });
     },
 
-    fillMainCv() {
-      axios.get("/api/cv", this.config, this.mainCVid).then((response) => {
+    // fillMainCv() {
+    //   axios.get("/api/cv", this.config, this.mainCVid).then((response) => {
+    //     this.mainCV = response.data[0];
+    //     this.jobs = response.data[0].workHistory;
+    //     this.profileImage = `${'http://localhost:8000/api'+response.data[0].profileImage}`;
+
+    //     console.log('jobs in pinia', this.jobs.length);
+
+    //     if (this.jobs.length > 0) {
+    //       this.showCTAbtn = true;
+    //     }else{
+    //       this.showCTAbtn = false;
+    //     }
+
+    //   });
+    // },
+
+    async fillMainCv() {
+      try {
+        const response = await axios.get('/api/cv', this.config, this.mainCVid); // Your API endpoint
         this.mainCV = response.data[0];
         this.jobs = response.data[0].workHistory;
         this.profileImage = `${'http://localhost:8000/api'+response.data[0].profileImage}`;
 
-        if (this.jobs.length > 0) {
-          this.showCTAbtn = true;
-        }else{
-          this.showCTAbtn = false;
-        }
-
-      });
+      } catch (error) {
+        console.error('Error fetching main CV:', error);
+      }
     },
 
     //edit job
