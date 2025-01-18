@@ -39,7 +39,7 @@ const props = withDefaults(
         font-weight: 400;
         font-size: 10px;
         text-align: center;
-        color: $black;
+        color: var(--black);
     }
     .circle{
         display: flex;
@@ -48,7 +48,7 @@ const props = withDefaults(
         width: 26px;
         height: 26px;
         background: #FFFFFF;
-        border: 1px solid $primary;
+        border: 1px solid var(--primary);
         border-radius: 25.969px;
     }
 
@@ -56,14 +56,14 @@ const props = withDefaults(
         font-weight: 600;
         font-size: 12px;
         text-align: center;
-        color: $primary;
+        color: var(--primary);
     }
     .circleFilled{
-        background-color: $primary;
+        background-color: var(--primary);
     }
 
     .circleFilled p{
-        color: $white;
+        color: var(--white);
     }
 
     .circleInnactive{
@@ -71,23 +71,23 @@ const props = withDefaults(
         background-color: unset;
 
         p{
-            color: $grey;
+            color: var(--grey);
         }
     }
 
     .labelInnactive{
-        color: $grey;
+        color: var(--grey);
     }
     .wizzardRoute{
         width: 160px;
         height: 0px;
-        border: 1px dashed $ultraLightGrey;
+        border: 1px dashed var(--ultraLightGrey);
         margin-top: 14px;
         position: relative;
     }
 
     .wizzardRoutePassed{
-        border: 0.5px solid $primary;
+        border: 0.5px solid var(--primary);
     }
 
 </style>

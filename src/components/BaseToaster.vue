@@ -32,7 +32,7 @@ const props =
 .toaster {
   width: 420px;
   height: 60px;
-  background: $error;
+  background: var(--error);
   border-radius: 4px;
   display: flex;
   justify-content: start;

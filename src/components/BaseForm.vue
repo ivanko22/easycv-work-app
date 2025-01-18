@@ -4,6 +4,8 @@ import { useUserData } from "@/helpers/user";
 import { dateFormatation, formatMonth } from "@/helpers/dateFormat";
 import { ref, provide, computed, toRaw, watch, onMounted } from "vue";
 import router from "@/router";
+import { addJob } from "@/services/addJob";
+
 import BaseInput from "@/components/inputs/BaseInput.vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
 import BaseSecondaryButton from "@/components/BaseSecondaryButton.vue";
@@ -14,8 +16,7 @@ const props = defineProps<{
     jobTypeCard: string,
 }>()
 
-const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillJob, addJob, removeJob } =
-  useUserData();
+const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillJob, removeJob } = useUserData();
 
 fillToken();
 fillConfig();
@@ -25,7 +26,7 @@ const { mainCVid, jobs, mainCV } = storeToRefs(useUserData());
 const isShowPrimaryBtn = ref(false);
 
 const selectedPeriod = ref(["Start Date", "End Date"]);
-const years = ref([2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]);
+const years = ref([2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]);
 
 provide(
   "selectedPeriod",
@@ -215,12 +216,14 @@ const editJob = (arg, cvID, jobID) => {
 const onSubmit = (arg) => {
   if (isShowPrimaryBtn.value || isJobValid.value || jobs.value.length > 0) {
     const sendData = {
-    position: jobPositionValue.value,
-    employer: employerValue.value,
-    startDate: startDateValue.value.toString(),
-    endDate: endDateValue.value.toString(),
-    description: descriptionValue.value,
-  };
+      position: jobPositionValue.value,
+      employer: employerValue.value,
+      startDate: startDateValue.value.toString(),
+      endDate: endDateValue.value.toString(),
+      description: descriptionValue.value,
+    };
+
+    console.log("sendData:", sendData);
 
     addJobForm.value.reset();
 
@@ -231,7 +234,13 @@ const onSubmit = (arg) => {
     startDateLabel.value = "Select Date";
 
     if (arg === "Add Job") {
-      addJob(sendData);
+
+      try {
+        await addJob(sendData);
+      } catch (error) {
+        console.error("Add Job failed:", error);
+      }
+
       isAddJobFormShow.value = false;
       isShowBaseJob.value = true;
       isFormShow.value = false;
@@ -420,19 +429,19 @@ h1 {
   font-weight: 600;
   font-size: 14px;
   padding-left: 10px;
-  color: $lightGrey;
+  color: var(--primary);
 }
 
 .plusIcon {
-  fill: $primary;
-  color: $primary;
+  fill: var(--primary);
+  color: var(--primary);
   cursor: pointer;
 }
 
 .addJobTittle {
   font-weight: 600;
   font-size: 18px;
-  color: $black;
+  color: var(--black);
   text-align: left;
   width: 100%;
   padding-left: 28px;

@@ -56,8 +56,8 @@ const toasterMessage = ref();
   padding-left: 10px;
 }
 .plusIcon {
-  fill: $primary;
-  color: $primary;
+  fill: var(--primary);
+  color: var(--primary);
   cursor: pointer;
 }
 </style>

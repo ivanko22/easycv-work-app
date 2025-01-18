@@ -14,13 +14,6 @@ export default ({ mode }) => {
       port: 8080,
     },
     plugins: [vue()],
-    css: {
-      preprocessorOptions: {
-        scss: {
-          additionalData: `@import "@/assets/css/main.scss";`,
-        },
-      },
-    },
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
@@ -33,4 +26,3 @@ export default ({ mode }) => {
     }
   });
 }
-

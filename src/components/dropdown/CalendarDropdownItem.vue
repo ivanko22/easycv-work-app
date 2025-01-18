@@ -36,11 +36,11 @@ const isShowCircle = ref(false)
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
-    color: $black;
+    color: var(--black);
     cursor: pointer;
 
     &:hover{
-      color: $primary;
+      color: var(--primary);
       font-weight: 600;
     }
   }
@@ -49,9 +49,9 @@ const isShowCircle = ref(false)
     position: absolute;
     width: 46px;
     height: 46px;
-    border: 2px solid $primary;
+    border: 2px solid var(--primary);
     border-radius: 26px;
-    color: $primary;
+    color: var(--primary);
   }
 
 </style>

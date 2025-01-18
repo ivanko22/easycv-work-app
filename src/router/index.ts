@@ -1,18 +1,19 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
+// Function to check if the user is authenticated
+function isAuthenticated() {
+  return !!localStorage.getItem('accessToken');
+}
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Home',
     component: () => import(/* webpackChunkName: "sign up" */ '@/pages/WizzardView.vue'),
-    // alias: '/logout'
   },
   {
     path: '/sign-up',
     name: 'Sign Up',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "sign up" */ '@/pages/SignUp.vue')
   },
   {
@@ -28,29 +29,33 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/logged-in',
     name: 'Logged In',
-    component: () => import(/* webpackChunkName: "logged in" */ '@/pages/LoggedIn.vue')
+    component: () => import(/* webpackChunkName: "logged in" */ '@/pages/LoggedIn.vue'),
+    meta: { requiresAuth: true }, // Add authentication requirement
   },
   {
     path: '/step-two',
     name: 'Step Two',
-    component: () => import(/* webpackChunkName: "step two" */ '@/pages/StepTwo.vue')
+    component: () => import(/* webpackChunkName: "step two" */ '@/pages/StepTwo.vue'),
+    meta: { requiresAuth: true }, // Add authentication requirement
   },
   {
     path: '/step-three',
     name: 'Step Three',
-    component: () => import(/* webpackChunkName: "step three" */ '@/pages/StepThree.vue')
+    component: () => import(/* webpackChunkName: "step three" */ '@/pages/StepThree.vue'),
+    meta: { requiresAuth: true }, // Add authentication requirement
   },
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import(/* webpackChunkName: "step three" */ '@/pages/DashBoard.vue')
+    component: () => import(/* webpackChunkName: "dashboard" */ '@/pages/DashBoard.vue'),
+    meta: { requiresAuth: true }, // Add authentication requirement
   },
   {
     path: '/edit-job',
     name: 'Edit Job',
-    component: () => import(/* webpackChunkName: "step three" */ '@/pages/EditJob.vue')
+    component: () => import(/* webpackChunkName: "edit job" */ '@/pages/EditJob.vue'),
+    meta: { requiresAuth: true }, // Add authentication requirement
   }
-  
 ]
 
 const router = createRouter({
@@ -58,4 +63,14 @@ const router = createRouter({
   routes
 })
 
-export default router
+// Add a global navigation guard
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth && !isAuthenticated()) {
+    // Redirect to sign-in page if not authenticated
+    next({ name: 'Sign In' });
+  } else {
+    next(); // Allow navigation
+  }
+});
+
+export default router;

@@ -185,7 +185,7 @@ const onSubmit = () => {
 
 .dropdownTitleInitial {
   font-weight: 400;
-  color: $grey;
+  color: var(--grey);
 }
 
 .margin-top0{

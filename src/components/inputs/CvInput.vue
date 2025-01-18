@@ -129,10 +129,10 @@ const onSubmit = () => {
 
         &:hover .editIcon{
             display: block;
-            color: $primary;
+            color: var(--primary);
 
             path {
-                fill: $primary;
+                fill: var(--primary);
             }
             
         }   
@@ -145,13 +145,13 @@ const onSubmit = () => {
         font-weight: 400;
         font-size: 12px;
         line-height: 15px;
-        color: $grey;
+        color: var(--grey);
         margin: 0;
         margin-bottom: 5px;
         cursor: pointer;
 
         &:hover {
-            color: $primary;
+            color: var(--primary);
             font-weight: 500;
         }
     }
@@ -169,17 +169,17 @@ const onSubmit = () => {
 
     input[type=text]:focus, input[type=tel]:focus, input[type=url]:focus {
         border: none;
-        border-bottom: 1px solid $primary;
+        border-bottom: 1px solid var(--primary);
     }
 
     input[type=text]:active, input[type=tel]:active, input[type=url]:focus {
-        border-bottom: 1px solid $primary;
+        border-bottom: 1px solid var(--primary);
     }
 
     input[type=text]::placeholder, input[type=tel]::placeholder div {
         font-size: 13px !important;
         font-weight: 300;
-        color: $lightGrey;
+        color: var(--lightGrey);
     }
 
     .phone {

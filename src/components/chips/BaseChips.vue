@@ -109,12 +109,12 @@ const updateSkills = (skills) => {
   min-height: 50px;
   flex-wrap: wrap;
   align-content: space-between;
-  background: $white;
+  background: var(--white);
   box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.25);
   border-radius: 2px;
   outline: none;
   border: none;
-  border: 1px solid $ultraLightGrey;
+  border: 1px solid var(--ultraLightGrey);
   padding-left: 10px;
 
   input {
@@ -134,12 +134,12 @@ const updateSkills = (skills) => {
   }
 
   &:hover {
-    border: 1px solid $middleGrey;
+    border: 1px solid var(--middleGrey);
   }
 }
 
 .chipsContainerActive {
-  border: 1.5px solid $primary !important;
+  border: 1.5px solid var(--primary) !important;
 }
 
 .skillsLabel {
@@ -147,7 +147,7 @@ const updateSkills = (skills) => {
   left: 16px;
   bottom: 2px;
   font-size: 14px;
-  color: $grey;
+  color: var(--grey);
   pointer-events: none;
 }
 
@@ -165,6 +165,6 @@ const updateSkills = (skills) => {
     font-weight: 400;
     font-size: 12px;
     text-align: right;
-    color: $error;
+    color: var(--error);
 }
 </style>

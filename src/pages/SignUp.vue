@@ -2,6 +2,8 @@
 import { ref } from "vue";
 import axios from "axios";
 import router from "@/router";
+import { signUp } from "@/services/auth";
+
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseInput from "@/components/inputs/BaseInput.vue";
 import BaseButton from "@/components/BaseButton.vue";
@@ -63,32 +65,27 @@ const formValidation = () => {
   }
 };
 
-const onSubmit = () => {
+const onSubmit = async () => {
   isShowToaster.value = false;
 
-  const sendCreateUser = {
-    firstName: nameValue.value,
-    lastName: lastNameValue.value,
-    email: emailValue.value,
-    password: passwordValue.value,
-  };
+  const firstName = nameValue.value;
+  const lastName = lastNameValue.value;
+  const email = emailValue.value;
+  const password = passwordValue.value;
 
-  axios
-    .post("/api/user", sendCreateUser)
+  try {
+    await signUp(firstName, lastName, email, password);
+    router.push("/logged-in"); 
+  } catch (error) {
+    console.error("Sign up failed:", error);
 
-    .then((response) => {
-      if (typeof response.data === "string") {
-        toasterType.value = "error";
-        toasterMessage.value = response.data;
-        isShowToaster.value = true;
-      } else {
-        let token = response.data.jwt;
-        localStorage.setItem("user", token);
-
-        router.push("/logged-in");
-      }
-    });
+    toasterType.value = "error";
+    toasterMessage.value =
+      error.response?.data?.detail || "Sign up failed. Please try again.";
+    isShowToaster.value = true;
+  }
 };
+
 </script>
 
 <template>
@@ -105,7 +102,7 @@ const onSubmit = () => {
     <base-wizzard></base-wizzard>
 
     <div class="firstlastName">
-      <base-input
+      <BaseInput
         class="input-short"
         type="text"
         label="Given Name"
@@ -114,7 +111,7 @@ const onSubmit = () => {
         required
       />
 
-      <base-input
+      <BaseInput
         class="input-short"
         type="text"
         label="Last Name"
@@ -124,7 +121,7 @@ const onSubmit = () => {
       />
     </div>
 
-    <base-input
+    <BaseInput
       class="input-long"
       type="email"
       label="Email"
@@ -133,7 +130,7 @@ const onSubmit = () => {
       required
     />
 
-    <base-input
+    <BaseInput
       class="input-long"
       :type="passwordShow ? 'text' : 'password'"
       label="Password"

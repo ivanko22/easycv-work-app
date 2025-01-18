@@ -47,18 +47,18 @@ const getImageUrl = () => {
   width: 124px;
   height: 124px;
   box-sizing: border-box;
-  border: 2px solid $ultraLightGrey;
+  border: 2px solid var(--ultraLightGrey);
   margin: 10px;
 
   &:hover{
-    border: 3px  solid $primary;
+    border: 3px  solid var(--primary);
   }
 }
 
 .cvThumbnailTitle {
     font-weight: 500;
     font-size: 14px;
-    color: $grey;
+    color: var(--grey);
     margin-top: 2px;
 }
 .cvThumbnailSelectedContainer {
@@ -69,7 +69,7 @@ const getImageUrl = () => {
     width: 118px;
     height: 118px;
     background: rgba(255, 255, 255, 0.7);
-    border: 3px solid $ultraLightGrey;
+    border: 3px solid var(--ultraLightGrey);
 }
 
 .checkmarkIcon {
