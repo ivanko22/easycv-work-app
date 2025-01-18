@@ -22,7 +22,7 @@
   background: #ffffff;
   box-shadow: 0px 9px 10px rgba(0, 0, 0, 0.21);
   border-radius: 2px;
-  border: 1px $primary solid;
+  border: 1px var(--primary) solid;
   padding-top: 8px;
   padding-bottom: 8px;
 }

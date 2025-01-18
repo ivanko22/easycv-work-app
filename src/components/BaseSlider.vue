@@ -91,14 +91,14 @@ const emitSliderValue = () => {
   width: 30px;
   height: 30px;
   border-radius: 32px;
-  background: $primary;
+  background: var(--primary);
   cursor: pointer;
 }
 
 .slider::-webkit-slider-thumb:hover {
   -webkit-appearance: none;
   appearance: none;
-  background: $primaryHover;
+  background: var(--primary)Hover;
   cursor: pointer;
   box-shadow: 0px 0px 6px #4eab4f;
 }
@@ -122,7 +122,7 @@ const emitSliderValue = () => {
   left: 6px;
   height: 5px;
   width: v-bind(sliderTitlePosition);
-  background: $primary;
+  background: var(--primary);
   border-radius: 4px;
 }
 
@@ -135,7 +135,7 @@ const emitSliderValue = () => {
   text-align: center;
   font-weight: 600;
   font-size: 14px;
-  color: $white;
+  color: var(--white);
   pointer-events: none;
 }
 
@@ -143,7 +143,7 @@ const emitSliderValue = () => {
   margin-top: 8px;
   font-weight: 500;
   font-size: 12px;
-  color: $grey;
+  color: var(--grey);
 }
 
 .sliderLabel {
@@ -151,7 +151,7 @@ const emitSliderValue = () => {
   left: 10px;
   bottom: 56px;
   font-size: 14px;
-  color: $grey;
+  color: var(--grey);
   pointer-events: none;
 }
 .errorMessage{
@@ -161,6 +161,6 @@ const emitSliderValue = () => {
     font-size: 12px;
     margin-top: 57px;
     text-align: right;
-    color: $error;
+    color: var(--error);
 }
 </style>

@@ -34,8 +34,8 @@ const props = withDefaults(
         font-weight: 400;
         font-size: 11px;
         font-weight: 600;
-        color: $white;
-        background: $primary;
+        color: var(--white);
+        background: var(--primary);
         margin-top: 9px;
         margin-left: 4px;
         margin-right: 4px;
@@ -49,13 +49,13 @@ const props = withDefaults(
     }
 
     .chipNotSelected{
-        color: $grey;
-        background: $white;
+        color: var(--grey);
+        background: var(--white);
         font-weight: 500;
 
         &:hover{
-            background: $primary;
-            color: $white;
+            background: var(--primary);
+            color: var(--white);
         }
     }
     

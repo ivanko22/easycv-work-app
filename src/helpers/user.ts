@@ -72,6 +72,8 @@ export const useUserData = defineStore("userStore", {
     },
 
     fillMainCvId() {
+      console.log('this.config', this.config);
+
       this.mainCvId = axios.get("/api/user", this.config).then((response) => {
       this.mainCVid = response.data.cvs[0];
       });
@@ -163,26 +165,49 @@ export const useUserData = defineStore("userStore", {
       })
     },
 
-    addJob(dataSend) {
-      axios
-        .post(`/api/cv/${this.mainCVid}/employment`, dataSend, this.config)
-        .then((response) => {
+    // addJob(dataSend) {
 
-          switch(response.data){
-            case "User does not own this CV":
-              console.log('User does not own this CV');
-              break;
+    //   console.log('this.mainCVid:', this.mainCVid);
+    //   console.log('dataSend add job', dataSend);
+    //   console.log('this.mainCVid', this.mainCVid);
 
-            case "ERROR: Unable to update user's CV":
-              console.log("ERROR: Unable to update user's CV");
-              break;
-          }
+    //   if (!this.mainCVid) {
+    //       console.error('Error: mainCVid is missing');
+    //       return;
+    //   }
 
-          if (typeof response.data !== "string") {
-            this.fillMainCv();
-          }
-        });
-    },
+    //   axios
+    //     .post(`/api/cv/${this.mainCVid}/employment`, dataSend, this.config)
+    //     .then((response) => {
+
+    //       switch(response.data){
+    //         case "User does not own this CV":
+    //           console.log('User does not own this CV');
+    //           break;
+
+    //         case "ERROR: Unable to update user's CV":
+    //           console.log("ERROR: Unable to update user's CV");
+    //           break;
+    //       }
+
+    //       if (typeof response.data !== "string") {
+    //         this.fillMainCv();
+    //       }
+    //     });
+    // },
+
+    // async addJob(jobData) {
+    //   console.log("Sending data to API:", jobData);
+
+    //   try {
+    //     const response = await axios.post(`/api/user/employment`, jobData);
+    //     console.log("Job added successfully:", response.data);
+    //     return response.data;
+    //   } catch (error) {
+    //     console.error("Error adding job:", error.response?.data || error.message);
+    //     throw error;
+    //   }
+    // },
 
     removeJob(dataSend, cvID, jobID) {
       axios

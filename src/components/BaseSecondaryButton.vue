@@ -59,16 +59,16 @@ const props = withDefaults(
     padding-left: 10px;
   }
   .plusIcon{
-    fill: $primary;
-    color: $primary;
+    fill: var(--primary);
+    color: var(--primary);
   }
 
   .blackColor{
-    color: $black;
+    color: var(--black);
   }
 
   .greyColor{
-    color: $grey;
+    color: var(--grey);
   }
 
   .disabledBtn{

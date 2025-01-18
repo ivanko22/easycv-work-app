@@ -325,7 +325,7 @@ const asyncFnAva = async (imgDataUrl) => {
 
   .allTemplatesContainer {
     width: 330px;
-    background: $white;
+    background: var(--white);
     margin-right: 34px;
     padding-top: 18px;
   }
@@ -333,7 +333,7 @@ const asyncFnAva = async (imgDataUrl) => {
   .cvContainer {
     width: 800px;
     height: 1114px;
-    background: $white;
+    background: var(--white);
     padding: 56px;
     padding-top: 46px;
   }
@@ -356,7 +356,7 @@ const asyncFnAva = async (imgDataUrl) => {
     font-style: normal;
     font-weight: 700;
     font-size: 24px;
-    color: $black;
+    color: var(--black);
     margin-bottom: 2px;
     margin-top: 8px;
   }
@@ -373,13 +373,13 @@ const asyncFnAva = async (imgDataUrl) => {
     font-weight: 400;
     font-size: 12px;
     line-height: 15px;
-    color: $grey;
+    color: var(--grey);
     margin: 0;
     margin-bottom: 5px;
     cursor: pointer;
 
     &:hover {
-      color: $primary;
+      color: var(--primary);
       font-weight: 500;
     }
   }
@@ -390,14 +390,14 @@ const asyncFnAva = async (imgDataUrl) => {
     width: 206px;
     font-weight: 600;
     font-size: 61px;
-    color: $grey;
+    color: var(--grey);
     text-align: center;
   }
 
   .cvContentTitle {
     font-weight: 700;
     font-size: 18px;
-    color: $black;
+    color: var(--black);
     margin-top: 16px;
     margin-bottom: 8px;
     padding-left: 10px;

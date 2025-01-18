@@ -46,6 +46,10 @@
     if (isFormValid.value) {
       try {
         await login(emailValue.value, passwordValue.value);
+
+        user.isLogIn = true;
+        // localStorage.setItem("user", Response.data.jwt);
+
         router.push("/logged-in"); // Navigate to a protected route
       } catch (error) {
         console.error("Login failed:", error);
@@ -56,6 +60,15 @@
       }
     }
   };
+
+
+  // if (typeof response.data !== "string") {
+  //       let token = response.data.jwt;
+  //       localStorage.setItem("user", token);
+
+  //       user.isLogIn = true;
+  //       user.getToken;
+  //       router.push("/logged-in");
 </script>
 
 <template>

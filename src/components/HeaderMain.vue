@@ -104,11 +104,11 @@ handleIsOnDashboard();
     font-weight: 600;
     font-size: 14px;
     text-decoration: none;
-    color: $primary;
+    color: var(--primary);
     cursor: pointer;
 
     &:hover{
-      color: $primaryHover;
+      color: var(--primary)Hover;
     }
   }
   .iconBtnContainer{
@@ -124,23 +124,23 @@ handleIsOnDashboard();
     &:hover{
       
       .iconBtnColor{
-        fill: $primary;
+        fill: var(--primary);
       }
 
       .titleIcon{
-        color: $primary;
+        color: var(--primary);
       }
     }
   }
 
   .iconBtnColor{
-    fill: $grey;
+    fill: var(--grey);
   }
 
   .titleIcon{
     font-weight: 600;
     font-size: 14px;
-    color: $grey;
+    color: var(--grey);
     padding-left: 10px;
     cursor: pointer;
     }

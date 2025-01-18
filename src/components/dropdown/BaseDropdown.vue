@@ -238,13 +238,13 @@ const updateDropdownValue = (value, type) => {
 
   .dropdown{
     height: 50px;
-    background: $white;
+    background: var(--white);
     box-shadow: inset 0px 1px 4px rgba(0, 0, 0, 0.25);
     border-radius: 2px;
     text-align: left;
     outline: none;
     border: none;
-    border: 1px solid $ultraLightGrey;
+    border: 1px solid var(--ultraLightGrey);
     padding-left: 16px;
     font-size: 16px;
     display: flex;
@@ -269,11 +269,11 @@ const updateDropdownValue = (value, type) => {
   }
 
   .dropdown:focus {
-  border: 1.5px solid $primary !important;
+  border: 1.5px solid var(--primary) !important;
 }
 
   .dropdown:hover {
-    border: 1px solid $middleGrey;
+    border: 1px solid var(--middleGrey);
   }
 
   .dropdownLabel{
@@ -281,7 +281,7 @@ const updateDropdownValue = (value, type) => {
     margin-bottom: 16px;
     left: 16px;
     font-size: 14px;
-    color: $grey;
+    color: var(--grey);
     transition: .25s;
     pointer-events: none;
   }
@@ -304,7 +304,7 @@ const updateDropdownValue = (value, type) => {
     font-size: 12px;
     margin-top: 57px;
     text-align: right;
-    color: $error;
+    color: var(--error);
   }
 
   .categoryPosition{
