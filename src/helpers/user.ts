@@ -165,50 +165,6 @@ export const useUserData = defineStore("userStore", {
       })
     },
 
-    // addJob(dataSend) {
-
-    //   console.log('this.mainCVid:', this.mainCVid);
-    //   console.log('dataSend add job', dataSend);
-    //   console.log('this.mainCVid', this.mainCVid);
-
-    //   if (!this.mainCVid) {
-    //       console.error('Error: mainCVid is missing');
-    //       return;
-    //   }
-
-    //   axios
-    //     .post(`/api/cv/${this.mainCVid}/employment`, dataSend, this.config)
-    //     .then((response) => {
-
-    //       switch(response.data){
-    //         case "User does not own this CV":
-    //           console.log('User does not own this CV');
-    //           break;
-
-    //         case "ERROR: Unable to update user's CV":
-    //           console.log("ERROR: Unable to update user's CV");
-    //           break;
-    //       }
-
-    //       if (typeof response.data !== "string") {
-    //         this.fillMainCv();
-    //       }
-    //     });
-    // },
-
-    // async addJob(jobData) {
-    //   console.log("Sending data to API:", jobData);
-
-    //   try {
-    //     const response = await axios.post(`/api/user/employment`, jobData);
-    //     console.log("Job added successfully:", response.data);
-    //     return response.data;
-    //   } catch (error) {
-    //     console.error("Error adding job:", error.response?.data || error.message);
-    //     throw error;
-    //   }
-    // },
-
     removeJob(dataSend, cvID, jobID) {
       axios
         .delete(`/api/cv/${this.mainCVid}/employment/${jobID}`, this.config)

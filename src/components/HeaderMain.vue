@@ -22,7 +22,6 @@ const handleLogout = async () => {
   if(props.hrefUrl === '/logout'){
     await logout()
 
-    // localStorage.removeItem("user")
     router.push("/logout")
     router.push("/")
   }

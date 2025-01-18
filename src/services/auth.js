@@ -21,35 +21,23 @@ export async function signUp(firstName, lastName, email, password) {
 }
 
 export async function login(username, password) {
-    console.log('username, password', 'username, password');
-
     const response = await apiClient.post("token/", { username, password });
     const { access, refresh } = response.data;
 
-    // Save tokens to localStorage
     localStorage.setItem("accessToken", access);
     localStorage.setItem("refreshToken", refresh);
-
-    console.log('response.data', response.data);
 
     return response.data;
 }
 
 export async function logout() {
-    console.log('logout');
-
     const refreshToken = localStorage.getItem("refreshToken");
-
-    console.log('refreshToken', refreshToken);
 
     try {
         await apiClient.post("logout/", { refresh: refreshToken });
-
-        // Clear tokens from localStorage
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
 
-        console.log("Logged out successfully!");
     } catch (error) {
         console.error("Logout failed:", error.response?.data);
     }

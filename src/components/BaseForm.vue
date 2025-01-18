@@ -16,10 +16,7 @@ const props = defineProps<{
     isJobEdit: false,
 }>()
 
-// const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillJob, addJob, removeJob } =
-const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillJob, removeJob } =
-
-  useUserData();
+const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillJob, removeJob } = useUserData();
 
 fillToken();
 fillConfig();
@@ -30,7 +27,7 @@ const { mainCVid, jobs, showCTAbtn } = storeToRefs(useUserData());
 const isShowPrimaryBtn = showCTAbtn;
 
 const selectedPeriod = ref(["Start Date", "End Date"]);
-const years = ref([2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]);
+const years = ref([2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]);
 
 provide(
   "selectedPeriod",
@@ -221,9 +218,6 @@ const onSubmit = async (arg) => {
     startDateLabel.value = "Select Date";
 
     if (arg === "Add Job") {
-      console.log('addJob function is about to be called');
-
-      // addJob(sendData);
 
       try {
         await addJob(sendData);
