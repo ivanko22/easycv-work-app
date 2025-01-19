@@ -12,7 +12,7 @@ import Chips from "@/components/chips/BaseChips.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import router from "@/router";
 
-const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillJob, addJob, removeJob, updateCv } =
+const { fillToken, fillConfig, fillMainCvId, fillMainCv, editJob, addJob, removeJob, updateCv } =
   useUserData();
 
 fillToken();

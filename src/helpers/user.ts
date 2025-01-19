@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import router from "@/router";
 import { ref } from 'vue';
+import { getJobs } from "@/services/jobs";
 
 export const useUserData = defineStore("userStore", {
   state: () => ({
@@ -44,6 +45,10 @@ export const useUserData = defineStore("userStore", {
       return state.mainCV;
     },
 
+    getJobs: (state) => {
+      return state.jobs;
+    },
+
     getCTAbtnState: (state) => {
       return state.showCTAbtn;
     },
@@ -59,7 +64,8 @@ export const useUserData = defineStore("userStore", {
 
   actions: {
     fillToken() {
-      this.token = localStorage.getItem("user");
+      this.token = localStorage.getItem("accessToken");
+      console.log('this.token', this.token);
     },
 
     fillConfig() {
@@ -103,8 +109,21 @@ export const useUserData = defineStore("userStore", {
       });
     },
 
-    //edit job
-    fillJob(data, jobID) {
+    fillJobs: async function () {
+      console.log('Fetching jobs...');
+      try {
+        const response = await getJobs();
+
+        console.log('response fill jobs', response);
+
+        this.jobs = response;
+        console.log('Jobs fetched successfully:', this.jobs);
+      } catch (err) {
+        console.error('Error fetching jobs:', err);
+      }
+    },    
+
+    editJob(data, jobID) {
       axios
         .put(`/api/cv/${this.mainCVid}/employment/${jobID}`, data, this.config)
         .then((response) => {
@@ -114,6 +133,16 @@ export const useUserData = defineStore("userStore", {
         });
     },
 
+    async Job() {
+      console.log('Job');
+      try {
+        const response = await getJobs();
+        console.log('response', response.data);
+      } catch (err) {
+        console.error('Error fetching jobs:', err);
+      }
+    },
+    
     updateUser(param, data) {
       this.userSocial[param].link = data;
 

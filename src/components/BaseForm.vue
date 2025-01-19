@@ -2,9 +2,9 @@
 import { storeToRefs } from "pinia";
 import { useUserData } from "@/helpers/user";
 import { dateFormatation, formatMonth } from "@/helpers/dateFormat";
-import { ref, provide, computed } from "vue";
+import { ref, provide, computed, onMounted } from "vue";
 import router from "@/router";
-import { addJob } from "@/services/addJob";
+import { addJob } from "@/services/jobs";
 
 import BaseInput from "@/components/inputs/BaseInput.vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
@@ -16,15 +16,33 @@ const props = defineProps<{
     isJobEdit: false,
 }>()
 
-const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillJob, removeJob } = useUserData();
-
-fillToken();
-fillConfig();
-fillMainCvId();
-fillMainCv();
-
-const { mainCVid, jobs, showCTAbtn } = storeToRefs(useUserData());
+const userStore = useUserData();
+const { jobs, mainCVid, showCTAbtn } = storeToRefs(userStore);
 const isShowPrimaryBtn = showCTAbtn;
+const isFormShow = ref(false);
+const formTitle = ref("");
+const isJobValid = ref(false);
+const jobPositionValue = ref("");
+const employerValue = ref("");
+const startDateValue = ref("");
+const endDateValue = ref("");
+const descriptionValue = ref("");
+const errorMessage = ref("");
+
+const resetForm = () => {
+  jobPositionValue.value = "";
+  employerValue.value = "";
+  descriptionValue.value = "";
+  startDateValue.value = "";
+  endDateValue.value = "";
+  errorMessage.value = "";
+  isJobValid.value = false;
+};
+
+onMounted(() => {
+  userStore.fillJobs();
+});
+
 
 const selectedPeriod = ref(["Start Date", "End Date"]);
 const years = ref([2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]);
@@ -39,28 +57,14 @@ const isAddJobFormShow = ref(false);
 const isShowBaseJob = ref(true);
 const selectedJobEdit = ref("");
 const editJobID = ref();
-
-const isFormShow = ref(false);
-const formTitle = ref("");
 const addJobForm = ref();
-const isJobValid = ref(false);
-
-const jobPositionValue = ref("");
 const isJobPositionValid = ref();
-const employerValue = ref("");
 const isEmployerValid = ref();
-
 const startDateLabel = ref("Start Date");
-const startDateValue = ref();
 const isStartDateValid = ref(false);
 const endDateLabel = ref("End Date");
-const endDateValue = ref();
 const isEndDateValid = ref(false);
-
-const descriptionValue = ref("");
 const isDescriptonValid = ref();
-
-const errorMessage = ref('');
 
 const baseButtonHandler = () => {
   if (jobs.value.length > 0) {
@@ -170,7 +174,7 @@ const showHideForm = (arg, cvID, jobID) => {
 
 };
 
-const editJob = (arg, cvID, jobID) => {
+const editJobCard = (arg, cvID, jobID) => {
   for (let i = 0; i < jobs.value.length; i++) {
     const selectedJob = jobs.value[i];
 
@@ -196,8 +200,6 @@ const editJob = (arg, cvID, jobID) => {
 
 const onSubmit = async (arg) => {
 
-  console.log("onSubmit called with arg:", arg);
-
   if (isShowPrimaryBtn.value || isJobValid.value || jobs.value.length > 0) {
     const sendData = {
       position: jobPositionValue.value,
@@ -207,20 +209,15 @@ const onSubmit = async (arg) => {
       description: descriptionValue.value,
     };
 
-    console.log("sendData:", sendData);
-
     addJobForm.value.reset();
 
-    jobPositionValue.value = "";
-    employerValue.value = "";
-    descriptionValue.value = "";
-    endDateLabel.value = "Select Date";
-    startDateLabel.value = "Select Date";
-
     if (arg === "Add Job") {
-
       try {
-        await addJob(sendData);
+        const response = await addJob(sendData);
+        userStore.jobs = response;
+
+        resetForm();
+
       } catch (error) {
         console.error("Add Job failed:", error);
       }
@@ -232,7 +229,7 @@ const onSubmit = async (arg) => {
     }
 
     if (arg === "Edit Job") {
-      fillJob(sendData, editJobID.value);
+      editJobCard(sendData, editJobID.value);
       isAddJobFormShow.value = false;
       isShowBaseJob.value = true;
       isFormShow.value = false;
