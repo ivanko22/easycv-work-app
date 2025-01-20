@@ -2,9 +2,9 @@
 import { storeToRefs } from "pinia";
 import { useUserData } from "@/helpers/user";
 import { dateFormatation, formatMonth } from "@/helpers/dateFormat";
-import { ref, provide, computed, onMounted } from "vue";
+import { ref, provide, computed, onMounted, toRaw } from "vue";
 import router from "@/router";
-import { addJob } from "@/services/jobs";
+import { addJob, updateJob, removeJob } from "@/services/jobs";
 
 import BaseInput from "@/components/inputs/BaseInput.vue";
 import BaseDropdown from "@/components/dropdown/BaseDropdown.vue";
@@ -18,6 +18,9 @@ const props = defineProps<{
 
 const userStore = useUserData();
 const { jobs, mainCVid, showCTAbtn } = storeToRefs(userStore);
+const selectedJob = ref("");
+const selectedJobID = ref("");
+
 const isShowPrimaryBtn = showCTAbtn;
 const isFormShow = ref(false);
 const formTitle = ref("");
@@ -42,7 +45,6 @@ const resetForm = () => {
 onMounted(() => {
   userStore.fillJobs();
 });
-
 
 const selectedPeriod = ref(["Start Date", "End Date"]);
 const years = ref([2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]);
@@ -76,6 +78,8 @@ const onChildValidation = (isValueValid, label, inputValue) => {
   if (label === "position") {
     isJobPositionValid.value = isValueValid;
     jobPositionValue.value = inputValue;
+
+    console.log('jobPositionValue.value', jobPositionValue.value, isValueValid);
   }
   else if(label === "employer") {
     isEmployerValid.value = isValueValid;
@@ -117,35 +121,68 @@ const compareDates = () => {
   }
 }
 
-const childDate = (date, label, isDateValid, dropdownLabel) => {
-  if (label === "startDate" && isDateValid) {
+const childDate = (date, label, isDateValid, dropdownValue) => {
+    if (label === "startDate") {
     isStartDateValid.value = isDateValid;
-    startDateLabel.value = dropdownLabel;
+    startDateLabel.value = dropdownValue;
     startDateValue.value = date;
 
     compareDates()
   } 
   
-  else if (label === "endDate" && isDateValid) {
+    else if (label === "endDate") {
     isEndDateValid.value = isDateValid;
-    endDateLabel.value = dropdownLabel;
+    endDateLabel.value = dropdownValue;
     endDateValue.value = date;
 
     compareDates()
   }
 };
 
-const showHideForm = (arg, cvID, jobID) => {
+const getJobByID = (jobID) => {
+  const jobsArray = toRaw(jobs.value);
+
+  const targetJob = jobsArray.find((job) => job.id === jobID);
+    if (targetJob.id === jobID) {
+
+      jobPositionValue.value = targetJob.position;
+      employerValue.value = targetJob.employer;
+      descriptionValue.value = targetJob.description;
+
+      startDateLabel.value =
+        formatMonth(new Date(targetJob.startDate).getMonth()) +
+        " " +
+        new Date(targetJob.startDate).getFullYear();
+
+      endDateLabel.value =
+        formatMonth(new Date(targetJob.endDate).getMonth()) +
+        " " +
+        new Date(targetJob.endDate).getFullYear();
+
+      selectedJobID.value = jobID;
+
+      selectedJob.value = targetJob;
+
+      return
+    } else {
+      console.log(`Job with ID ${jobID} not found`);
+  }
+};
+
+const showHideForm = async (arg) => {
+
+  console.log('showHideForm', arg);
+
   isJobEdit.value = false;
 
-  if (arg === "Edit Job") {
+  if (arg.arg === "Edit Job") {
     isJobEdit.value = true;
     isAddJobFormShow.value = false;
     formTitle.value = "Edit Job";
     isFormShow.value = true;
     isShowPrimaryBtn.value = false;
 
-    editJob(arg, cvID, jobID);
+    getJobByID(arg.jobID);
   }
 
   if (arg === "Add Job") {
@@ -168,34 +205,11 @@ const showHideForm = (arg, cvID, jobID) => {
     isShowPrimaryBtn.value = true;
   }
 
-  if (arg === "Remove Job") {
-    removeJob(arg, cvID, jobID)
+  if (arg.arg === "Remove Job") {
+    const response = await removeJob(arg.jobID);
+    userStore.jobs = response;
   }
 
-};
-
-const editJobCard = (arg, cvID, jobID) => {
-  for (let i = 0; i < jobs.value.length; i++) {
-    const selectedJob = jobs.value[i];
-
-    if (selectedJob._id === jobID) {
-      selectedJobEdit.value = selectedJob;
-      editJobID.value = jobID;
-      jobPositionValue.value = selectedJobEdit.value.position;
-      employerValue.value = selectedJobEdit.value.employer;
-      descriptionValue.value = selectedJobEdit.value.description;
-
-      startDateLabel.value =
-        formatMonth(new Date(selectedJobEdit.value.startDate).getMonth()) +
-        " " +
-        new Date(selectedJobEdit.value.startDate).getFullYear();
-
-      endDateLabel.value =
-        formatMonth(new Date(selectedJobEdit.value.endDate).getMonth()) +
-        " " +
-        new Date(selectedJobEdit.value.endDate).getFullYear();
-    }
-  }
 };
 
 const onSubmit = async (arg) => {
@@ -229,7 +243,17 @@ const onSubmit = async (arg) => {
     }
 
     if (arg === "Edit Job") {
-      editJobCard(sendData, editJobID.value);
+
+      try {
+        const response = await updateJob(sendData, selectedJobID.value);
+        userStore.jobs = response;
+
+        resetForm();
+
+      } catch (error) {
+        console.error("Update Job failed:", error);
+      }
+
       isAddJobFormShow.value = false;
       isShowBaseJob.value = true;
       isFormShow.value = false;
@@ -246,8 +270,7 @@ const onSubmit = async (arg) => {
     <BaseJob
       v-for="(job, index) in jobs"
       :cvJobEdit="props.isJobEdit"
-      :cvID="mainCVid"
-      :jobID="job._id"
+      :jobID="job.id"
       :jobTitle="job.position"
       :companyName="job.employer"
       :key="index"

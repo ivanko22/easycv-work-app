@@ -1,116 +1,122 @@
 <script setup lang="ts">
-import { defineProps, defineEmits, withDefaults, provide, inject, computed, ref } from 'vue'
-import BaseDropdownContent from '@/components/dropdown/BaseDropdownContent.vue'
-import BaseDropdownItem from '@/components/dropdown/BaseDropdownItem.vue'
-import CalendarDropdownContent from './CalendarDropdownContent.vue'
-import CalendarDropdownItem from '@/components/dropdown/CalendarDropdownItem.vue'
+  import { defineProps, defineEmits, withDefaults, provide, inject, computed, ref } from 'vue'
+  import BaseDropdownContent from '@/components/dropdown/BaseDropdownContent.vue'
+  import BaseDropdownItem from '@/components/dropdown/BaseDropdownItem.vue'
+  import CalendarDropdownContent from './CalendarDropdownContent.vue'
+  import CalendarDropdownItem from '@/components/dropdown/CalendarDropdownItem.vue'
 
-const props = withDefaults(
-  defineProps<{
-    label?: string;
-    dropdownType: string;
-    width: string;
-    years: [string, number];
-    error: string;
-  }>(),
-  {
-    label: 'Start Date'
-  }
-)
+  const props = withDefaults(
+    defineProps<{
+      label?: string;
+      dropdownType: string;
+      width: string;
+      years: [string, number];
+      error: string;
+    }>(),
+    {
+      label: 'Start Date'
+    }
+  )
 
-const isShowLabel = ref(false);
-const isDropdownOpen = ref(false);
-const dropdownLabel = ref();
-const isMonthsShow = ref(false);
-const selectedMonth = ref();
-const selectedPeriod = inject('selectedPeriod');
-const isYearsShow = ref(false);
-const selectedYear = ref(2000);
-const currentPeriod = ref();
-const isDateValid = ref(false);
-const errorMessage = ref('Required');
+  const isShowLabel = ref(false);
+  const isDropdownOpen = ref(false);
+  const dropdownLabel = ref();
+  const isMonthsShow = ref(false);
+  const selectedMonth = ref();
+  const selectedPeriod = inject('selectedPeriod');
+  const isYearsShow = ref(false);
+  const selectedYear = ref(2000);
+  const currentPeriod = ref();
+  const isDateValid = ref(false);
+  const errorMessage = ref('Required');
 
-const months = { id01: 'Jan', id02: 'Feb', id03: 'Mar', id04: 'Apr', id05: 'May', id06: 'June', id07: 'July', id08: 'Aug', id09: 'Sept', id10: 'Oct', id11: 'Nov', id12: 'Dec' }
+  console.log('base dropdow', props.label);
 
-const jobCategories = { id01: 'JavaScript', id02: 'Java', id03: '.NET', id04: 'Python', id05: 'PHP', id06: 'Node.js', id07: 'iOS', id08: 'Android', id09: 'C++', 
-  id10: 'Flutter', id11: 'Golang', id12: 'Ruby', id13: 'Scala', id14: 'Salesforce', id15: 'Rust',
-  id16: 'QA', id17: 'QA Automation', id18: 'Design', id19: 'Artist', id20: 'Project Manager', id21: 'Product Manager',
-  id22: 'Lead', id23: 'DevOps', id24: 'Business Analyst', id25: 'Data Science', id26: 'Data Analyst',
-  id27: 'Sysadmin', is28: 'Unity', id28: 'SQL', id29: 'Security', id30: 'Data Engineer', id31: 'Scrum Master'
-}
+  const months = { id01: 'Jan', id02: 'Feb', id03: 'Mar', id04: 'Apr', id05: 'May', id06: 'June', id07: 'July', id08: 'Aug', id09: 'Sept', id10: 'Oct', id11: 'Nov', id12: 'Dec' }
 
-const dateValidation = (date) => {
-  if (date.length === 10) {
-    isDateValid.value = true
-    isShowLabel.value = true
-  } else {
-    isDateValid.value = false
-  }
-}
-
-const openYearsOrMonthsDropdown = (selected) => {
-  if (selected[0] === 'monthDropdown') {
-    isMonthsShow.value = !isMonthsShow.value
-    isDropdownOpen.value = true
-    isYearsShow.value = false
+  const jobCategories = { id01: 'JavaScript', id02: 'Java', id03: '.NET', id04: 'Python', id05: 'PHP', id06: 'Node.js', id07: 'iOS', id08: 'Android', id09: 'C++', 
+    id10: 'Flutter', id11: 'Golang', id12: 'Ruby', id13: 'Scala', id14: 'Salesforce', id15: 'Rust',
+    id16: 'QA', id17: 'QA Automation', id18: 'Design', id19: 'Artist', id20: 'Project Manager', id21: 'Product Manager',
+    id22: 'Lead', id23: 'DevOps', id24: 'Business Analyst', id25: 'Data Science', id26: 'Data Analyst',
+    id27: 'Sysadmin', is28: 'Unity', id28: 'SQL', id29: 'Security', id30: 'Data Engineer', id31: 'Scrum Master'
   }
 
-  if (selected[0] === 'selectedMonth') {
-    selectedMonth.value = selected[1]
+  const dateValidation = (date) => {
+    if (date.length === 10) {
+      isDateValid.value = true
+      isShowLabel.value = false
+    } else {
+      isDateValid.value = false
+      isShowLabel.value = true
+    }
+  }
 
-    if (props.label === 'startDate') {
-      selectedPeriod.value[0] = selected[2].slice(2)
-      dropdownLabel.value = selected[1]
-    } 
-    
-    else if (props.label === 'endDate'){
-      selectedPeriod.value[1] = selected[2].slice(2)
-      dropdownLabel.value = selected[1]
+  const openYearsOrMonthsDropdown = (selected) => {
+
+    console.log('openYearsOrMonthsDropdown', selected)
+
+    if (selected[0] === 'monthDropdown') {
+      isMonthsShow.value = !isMonthsShow.value
+      isDropdownOpen.value = true
+      isYearsShow.value = false
     }
 
-    isMonthsShow.value = false
-    isYearsShow.value = true
-  }
+    if (selected[0] === 'selectedMonth') {
+      selectedMonth.value = selected[1]
 
-  if (selected[0] === 'selectedYear') {
-    selectedYear.value = selected[1]
+      if (props.label === 'startDate') {
+        selectedPeriod.value[0] = selected[2].slice(2)
+        dropdownLabel.value = selected[1]
+      } 
+      
+      else if (props.label === 'endDate'){
+        selectedPeriod.value[1] = selected[2].slice(2)
+        dropdownLabel.value = selected[1]
+      }
 
-    if (props.label === 'startDate') {
-      selectedPeriod.value[0] = selectedYear.value.toString() + '-' + selectedPeriod.value[0] + '-01'
-      currentPeriod.value = selectedPeriod.value[0]
-      dropdownLabel.value = dropdownLabel.value + ' ' + selectedYear.value.toString()
-
-      dateValidation(currentPeriod.value)
-    } 
-    
-    else if (props.label === 'endDate'){
-      selectedPeriod.value[1] = selectedYear.value.toString() + '-' + selectedPeriod.value[1] + '-01'
-      currentPeriod.value = selectedPeriod.value[1]
-      dropdownLabel.value = dropdownLabel.value + ' ' + selectedYear.value.toString()
-
-      dateValidation(currentPeriod.value)
+      isMonthsShow.value = false
+      isYearsShow.value = true
     }
 
-    isDropdownOpen.value = false
+    if (selected[0] === 'selectedYear') {
+      selectedYear.value = selected[1]
+
+      if (props.label === 'startDate') {
+        selectedPeriod.value[0] = selectedYear.value.toString() + '-' + selectedPeriod.value[0] + '-01'
+        currentPeriod.value = selectedPeriod.value[0]
+        dropdownLabel.value = dropdownLabel.value + ' ' + selectedYear.value.toString()
+
+        dateValidation(currentPeriod.value)
+      } 
+      
+      else if (props.label === 'endDate'){
+        selectedPeriod.value[1] = selectedYear.value.toString() + '-' + selectedPeriod.value[1] + '-01'
+        currentPeriod.value = selectedPeriod.value[1]
+        dropdownLabel.value = dropdownLabel.value + ' ' + selectedYear.value.toString()
+
+        dateValidation(currentPeriod.value)
+      }
+
+      isDropdownOpen.value = false
+    }
+
+    updateCurrentPeriod()
   }
 
-  updateCurrentPeriod()
-}
+  const emit = defineEmits<{
+    (e: 'update:currentPeriod', value: string, label: string, isDateValid: boolean, dropdownLabel: string): void;
+    (e: 'update:dropdownValue', value: string): void
+    }>()
 
-const emit = defineEmits<{
-  (e: 'update:currentPeriod', value: string, label: string, isDateValid: boolean, dropdownLabel: string): void;
-  (e: 'update:dropdownValue', value: string): void
-  }>()
+  const updateCurrentPeriod = () => {
+    emit('update:currentPeriod', currentPeriod.value, props.label, isDateValid.value, dropdownLabel.value)
+  }
 
-const updateCurrentPeriod = () => {
-  emit('update:currentPeriod', currentPeriod.value, props.label, isDateValid.value, dropdownLabel.value)
-}
-
-const updateDropdownValue = (value, type) => {
-  isDropdownOpen.value = false;
-  errorMessage.value = '';
-  emit('update:dropdownValue', value, type);
-}
+  const updateDropdownValue = (value, type) => {
+    isDropdownOpen.value = false;
+    errorMessage.value = '';
+    emit('update:dropdownValue', value, type);
+  }
 
 </script>
 

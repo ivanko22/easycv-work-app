@@ -4,7 +4,6 @@
   const props = defineProps<{
       type: string
       cvJobEdit: string,
-      cvID: string,
       jobID: string,
       jobTitle?: string,
       companyName?: string,
@@ -19,22 +18,22 @@
       isBaseJobOpen.value = !isBaseJobOpen.value
   }
 
-  const handleIconClick = (arg, cvID, jobID) => {
+  const handleIconClick = (arg, jobID) => {
     if (arg === 'remove') {
-      updateJobPosition('Remove Job', cvID, jobID)
+      updateJobPosition('Remove Job', jobID)
     }
     else if (arg === 'Edit Job') {
-      updateJobPosition('Edit Job', cvID, jobID)
+      updateJobPosition('Edit Job', jobID)
     }
   }
 
   const emit = defineEmits<{
     (e: 'update:jobsList', value: boolean): void;
-    (e: 'update:editJobPositon', value: string): void;
+    (e: 'update:editJobPositon', value: { arg: string; jobID: number }): void;
   }>()
 
-  const updateJobPosition = (arg, cvID, jobID) => {
-    emit('update:editJobPositon', arg, cvID, jobID);
+  const updateJobPosition = (arg, jobID) => {
+    emit('update:editJobPositon', { arg, jobID });
   }
 </script>
 
@@ -58,7 +57,7 @@
       <div class="iconsContainer">
         <svg
           v-if="isShowIcons"
-          @click="handleIconClick('remove', cvID, jobID)"
+          @click="handleIconClick('remove', jobID)"
           class="iconContainer"
           width="22"
           height="22"
@@ -75,7 +74,7 @@
 
         <svg
           v-if="isShowIcons"
-          @click="handleIconClick('Edit Job', cvID, jobID)"
+          @click="handleIconClick('Edit Job', jobID)"
           class="iconContainer"
           width="17"
           height="17"
@@ -116,7 +115,7 @@
   </div>
 
   <div v-if="cvJobEdit && type !== 'summary'" 
-    @click="handleIconClick('Edit Job', cvID, jobID)" 
+    @click="handleIconClick('Edit Job', jobID)" 
     class="jobContainerCv"
   >
       <div class="editIconContainer">
