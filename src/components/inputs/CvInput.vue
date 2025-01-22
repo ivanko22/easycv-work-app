@@ -2,7 +2,7 @@
 import { defineProps, withDefaults, ref, nextTick, computed, onMounted} from 'vue';
 import { useUserData } from "@/helpers/user";
 
-const { fillToken, fillConfig, fillMainCvId, fillMainCv, updateUser } = useUserData();
+const { fillToken, fillConfig, fillMainCvId, updateUser } = useUserData();
 
 fillToken();
 fillConfig();
@@ -45,7 +45,6 @@ onMounted(() => {
         }
         });
     }
-  
 });
 
 const handleInput = (arg) => {

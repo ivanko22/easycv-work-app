@@ -17,11 +17,18 @@ const props = defineProps<{
 }>()
 
 const userStore = useUserData();
-const { jobs, mainCVid, showCTAbtn } = storeToRefs(userStore);
+const { jobs, showCTAbtn } = storeToRefs(userStore);
 const selectedJob = ref("");
 const selectedJobID = ref("");
 
-const isShowPrimaryBtn = showCTAbtn;
+onMounted(() => {
+  userStore.fillJobs();
+});
+
+const isShowPrimaryBtn = computed(() => showCTAbtn.value);
+
+console.log('Jobs from step 2', jobs);
+
 const isFormShow = ref(false);
 const formTitle = ref("");
 const isJobValid = ref(false);
@@ -41,10 +48,6 @@ const resetForm = () => {
   errorMessage.value = "";
   isJobValid.value = false;
 };
-
-onMounted(() => {
-  userStore.fillJobs();
-});
 
 const selectedPeriod = ref(["Start Date", "End Date"]);
 const years = ref([2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]);
@@ -170,9 +173,6 @@ const getJobByID = (jobID) => {
 };
 
 const showHideForm = async (arg) => {
-
-  console.log('showHideForm', arg);
-
   isJobEdit.value = false;
 
   if (arg.arg === "Edit Job") {
@@ -213,7 +213,6 @@ const showHideForm = async (arg) => {
 };
 
 const onSubmit = async (arg) => {
-
   if (isShowPrimaryBtn.value || isJobValid.value || jobs.value.length > 0) {
     const sendData = {
       position: jobPositionValue.value,

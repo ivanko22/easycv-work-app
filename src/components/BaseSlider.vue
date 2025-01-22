@@ -57,110 +57,111 @@ const emitSliderValue = () => {
 </template>
 
 <style scoped lang="scss">
-.sliderContainer {
-  position: relative;
-  padding-left: 4px;
-  padding-right: 4px;
-  display: flex;
-  height: 50px;
-  flex-direction: column;
-  margin-top: 98px;
-}
-.slider {
-  -webkit-appearance: none; /* Override default CSS styles */
-  appearance: none;
-  width: 100%;
-  height: 5px;
-  outline: none;
-  opacity: 1;
-  -webkit-transition: 0.2s; /* 0.2 seconds transition on hover */
-  transition: opacity 0.2s;
-  background: #cae6ca;
-  border-radius: 4px;
-}
+  .sliderContainer {
+    position: relative;
+    padding-left: 4px;
+    padding-right: 4px;
+    display: flex;
+    height: 50px;
+    flex-direction: column;
+    margin-top: 98px;
+  }
+  .slider {
+    -webkit-appearance: none; /* Override default CSS styles */
+    appearance: none;
+    width: 100%;
+    height: 5px;
+    outline: none;
+    opacity: 1;
+    -webkit-transition: 0.2s; /* 0.2 seconds transition on hover */
+    transition: opacity 0.2s;
+    background: var(--primary);
+    border-radius: 4px;
+  }
 
-.slider:hover {
-  opacity: 1;
-  background: #bfe0c1;
-  cursor: pointer;
-}
+  .slider:hover {
+    opacity: 1;
+    background: var(--primary);
+    cursor: pointer;
+  }
 
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 30px;
-  height: 30px;
-  border-radius: 32px;
-  background: var(--primary);
-  cursor: pointer;
-}
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 32px;
+    background: var(--primary);
+    cursor: pointer;
+  }
 
-.slider::-webkit-slider-thumb:hover {
-  -webkit-appearance: none;
-  appearance: none;
-  background: var(--primary)Hover;
-  cursor: pointer;
-  box-shadow: 0px 0px 6px #4eab4f;
-}
+  .slider::-webkit-slider-thumb:hover {
+    box-shadow: 0px 0px 6px var(--primary);
+  }
 
-.slider::-webkit-slider-runnable-track {
-  z-index: 1;
-}
+  .slider::-moz-range-thumb {
+    width: 30px;
+    height: 30px;
+    border-radius: 32px;
+    cursor: pointer;
+  }
 
-.slider::-moz-range-thumb {
-  width: 30px;
-  height: 30px;
-  border-radius: 32px;
-  cursor: pointer;
-}
+  .slider::-webkit-slider-runnable-track {
+    z-index: 1;
+  }
 
-.filledSlider {
-  position: absolute;
-  display: flex;
-  justify-content: flex-end;
-  top: 2px;
-  left: 6px;
-  height: 5px;
-  width: v-bind(sliderTitlePosition);
-  background: var(--primary);
-  border-radius: 4px;
-}
+  .slider::-moz-range-thumb:hover {
+    background: var(--primary)Hover;
+    box-shadow: 0px 0px 6px var(--primary);
+  }
 
-.sliderThumbTitle {
-  position: absolute;
-  top: -4px;
-  z-index: 1;
-  left: v-bind(sliderTitlePosition);
-  width: 34px;
-  text-align: center;
-  font-weight: 600;
-  font-size: 14px;
-  color: var(--white);
-  pointer-events: none;
-}
-
-.sliderThumbTitleYears {
-  margin-top: 8px;
-  font-weight: 500;
-  font-size: 12px;
-  color: var(--grey);
-}
-
-.sliderLabel {
-  position: relative;
-  left: 10px;
-  bottom: 56px;
-  font-size: 14px;
-  color: var(--grey);
-  pointer-events: none;
-}
-.errorMessage{
+  .filledSlider {
     position: absolute;
-    right: 0px;
-    font-weight: 400;
+    display: flex;
+    justify-content: flex-end;
+    top: 2px;
+    left: 6px;
+    height: 5px;
+    width: v-bind(sliderTitlePosition);
+    background: var(--primary);
+    border-radius: 4px;
+  }
+
+  .sliderThumbTitle {
+    position: absolute;
+    top: -4px;
+    z-index: 1;
+    left: v-bind(sliderTitlePosition);
+    width: 34px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--white);
+    pointer-events: none;
+  }
+
+  .sliderThumbTitleYears {
+    margin-top: 8px;
+    font-weight: 500;
     font-size: 12px;
-    margin-top: 57px;
-    text-align: right;
-    color: var(--error);
-}
+    color: var(--grey);
+  }
+
+  .sliderLabel {
+    position: relative;
+    left: 10px;
+    bottom: 56px;
+    font-size: 14px;
+    color: var(--grey);
+    pointer-events: none;
+  }
+  .errorMessage{
+      position: absolute;
+      right: 0px;
+      font-weight: 400;
+      font-size: 12px;
+      margin-top: 57px;
+      text-align: right;
+      color: var(--error);
+  }
 </style>

@@ -11,16 +11,17 @@ import BaseSlider from "@/components/BaseSlider.vue";
 import Chips from "@/components/chips/BaseChips.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import router from "@/router";
+import { addCv } from "@/services/cv";
 
-const { fillToken, fillConfig, fillMainCvId, fillMainCv, editJob, addJob, removeJob, updateCv } =
-  useUserData();
+// const { fillToken, fillConfig, fillMainCvId, fillMainCv, editJob, removeJob, updateCv } =
+//   useUserData();
 
-fillToken();
-fillConfig();
-fillMainCvId();
-fillMainCv();
+// fillToken();
+// fillConfig();
+// fillMainCvId();
+// fillMainCv();
 
-const { mainCVid, mainCV, showCTAbtn, config } = storeToRefs(useUserData());
+// const { mainCVid, mainCV, showCTAbtn, config } = storeToRefs(useUserData());
 const isShowPrimaryBtn = ref(false);
 
 const isShowToaster = ref(false);
@@ -51,6 +52,7 @@ const handleDropdownInput = (value, type) => {
 
 const handleInput = (isValueValid, label, inputValue) => {
   if (label === 'Job Title') {
+    jobTitleValue.value = inputValue;
     console.log('inputValue', inputValue, isValueValid)
   }
 }
@@ -72,22 +74,26 @@ const handlePrimaryBtn = () => {
   }
 }
 
-const onSubmit = () => {
+const onSubmit = async () => {
   const sendData = {
-    cv: mainCVid.value,
-    jobTitle: jobTitleValue.value,
-    jobCategory: jobCategoryValue.value,
-    experience: yearsExperience.value,
+    job_title: jobTitleValue.value,
+    job_category: jobCategoryValue.value,
+    experience: parseInt(yearsExperience.value, 10),
     skills: skills.value,
     languages: [{
       language: "English", 
       level: englishLevelValue.value}]
   };
 
+  console.log('sendData from step 3', sendData);
+
   if (isShowPrimaryBtn.value) {
-    updateCv(sendData);
-    router.push('/dashboard');
-  }
+   const response = await addCv(sendData);
+
+   console.log('response of adding CV', response);
+
+   router.push('/dashboard');
+  };
 };
 
 </script>
@@ -172,23 +178,23 @@ const onSubmit = () => {
 </template>
 
 <style scoped lang="scss">
-.stepThreeForm {
-  display: flex;
-  justify-content: center;
-  flex-flow: column;
-  align-items: center;
-}
+  .stepThreeForm {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    align-items: center;
+  }
 
-.dropdownTitle {
-  font-weight: 500;
-}
+  .dropdownTitle {
+    font-weight: 500;
+  }
 
-.dropdownTitleInitial {
-  font-weight: 400;
-  color: var(--grey);
-}
+  .dropdownTitleInitial {
+    font-weight: 400;
+    color: var(--grey);
+  }
 
-.margin-top0{
-  margin-top: 0;
-}
+  .margin-top0{
+    margin-top: 0;
+  }
 </style>

@@ -7,16 +7,16 @@ import BaseToaster from "@/components/BaseToaster.vue";
 import BaseForm from "@/components/BaseForm.vue";
 import BaseWizzard from "@/components/wizzard/BaseWizzard.vue";
 
-const { fillToken, fillConfig, fillMainCvId, fillMainCv } = useUserData();
+// const { fillToken, fillConfig, fillMainCvId, fillMainCv } = useUserData();
 
-fillToken();
-fillConfig();
-fillMainCvId();
-fillMainCv();
+// fillToken();
+// fillConfig();
+// fillMainCvId();
+// fillMainCv();
 
-const { mainCV } = storeToRefs(useUserData());
+// const { mainCV } = storeToRefs(useUserData());
 
-const jobs = mainCV;
+// const jobs = mainCV;
 const isShowToaster = ref(false);
 const toasterType = ref();
 const toasterMessage = ref();

@@ -3,6 +3,8 @@ import axios from "axios";
 import router from "@/router";
 import { ref } from 'vue';
 import { getJobs } from "@/services/jobs";
+import { getCv } from "@/services/cv.js";
+
 
 export const useUserData = defineStore("userStore", {
   state: () => ({
@@ -94,19 +96,34 @@ export const useUserData = defineStore("userStore", {
       });
     },
 
-    fillMainCv() {
-      axios.get("/api/cv", this.config, this.mainCVid).then((response) => {
-        this.mainCV = response.data[0];
-        this.jobs = response.data[0].workHistory;
-        this.profileImage = `${'http://localhost:8000/api'+response.data[0].profileImage}`;
+    // fillMainCv() {
+    //   axios.get("/api/cv", this.config, this.mainCVid).then((response) => {
+    //     this.mainCV = response.data[0];
+    //     this.jobs = response.data[0].workHistory;
+    //     this.profileImage = `${'http://localhost:8000/api'+response.data[0].profileImage}`;
 
-        if (this.jobs.length > 0) {
-          this.showCTAbtn = true;
-        }else{
-          this.showCTAbtn = false;
-        }
+    //     if (this.jobs.length > 0) {
+    //       this.showCTAbtn = true;
+    //     }else{
+    //       this.showCTAbtn = false;
+    //     }
 
-      });
+    //   });
+    // },
+
+    fillCv: async function () {
+      console.log('Fetching main CV...');
+      try {
+        const response = await getCv();
+        console.log('response fill main CV', response);
+
+        this.mainCV = response;
+        // this.profileImage = `${'http://localhost:8000/api'+response.data[0].profileImage}`;
+
+        console.log('Main CV fetched successfully:', this.mainCV);
+      } catch (err) {
+        console.error('Error fetching main CV:', err);
+      }
     },
 
     fillJobs: async function () {
@@ -115,8 +132,17 @@ export const useUserData = defineStore("userStore", {
         const response = await getJobs();
 
         console.log('response fill jobs', response);
-
         this.jobs = response;
+
+        if (this.jobs.length > 0) {
+          console.log('this.jobs.length', this.jobs.length);
+
+          this.showCTAbtn = true;
+          console.log('this.showCTAbtn', this.showCTAbtn);
+          
+        }else{
+          this.showCTAbtn = false;
+        }
         console.log('Jobs fetched successfully:', this.jobs);
       } catch (err) {
         console.error('Error fetching jobs:', err);
@@ -143,6 +169,7 @@ export const useUserData = defineStore("userStore", {
       }
     },
     
+    // remove
     updateUser(param, data) {
       this.userSocial[param].link = data;
 

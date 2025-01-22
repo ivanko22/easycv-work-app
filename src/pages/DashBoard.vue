@@ -2,7 +2,7 @@
 import router from "@/router";
 import { storeToRefs } from "pinia";
 import { useUserData } from "@/helpers/user";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, watchEffect, toRaw, computed } from "vue";
 import axios from 'axios';
 import HeaderMain from "@/components/HeaderMain.vue";
 import BaseToaster from "@/components/BaseToaster.vue";
@@ -12,35 +12,55 @@ import BaseForm from "@/components/BaseForm.vue";
 import BaseJob from "@/components/BaseJob.vue";
 import myUpload from 'vue-image-crop-upload';
 
-// const urlBackend = import.meta.env.VITE_BACKEND_API_URL;
+const userStore = useUserData();
+const { mainCV, user, profileImage, jobs } = storeToRefs(userStore);
+
 const cvSummary = ref('');
 const isShowGhost = ref(false);
 const workHistory = ref([]);
 
-const { mainCV, user, profileImage, jobs, mainCVid } = storeToRefs(
-  useUserData()
-);
+const skills = ref([]);
+const languages = ref([]);
 
-const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillUserSocial, addAva } = useUserData();
+onMounted(async () => {
+  // console.log("Calling fillJobs in Dashboard...");
+  await userStore.fillJobs(); // Explicitly call the method
+  await userStore.fillCv();
+  await userStore.fillUserSocial();
+  
+  // console.log("Jobs after fillJobs in Dashboard:", toRaw(jobs.value));
+  // console.log("MainCV after fillCv in Dashboard:", mainCV.value[0].languages);
 
-const userStore = useUserData();
+  for (let index = 0; index < mainCV.value[0].skills.length; index++) {
+    const skill = mainCV.value[0].skills[index];
+    skills.value.push(skill);
+  }
 
-const userSocials = computed(() => {
-  return userStore.getUserSocial;
+  languages.value.push(mainCV.value[0].languages[0]);
+  // console.log('languages.value', languages.value);
+
 });
 
-onMounted(() => {
-  for (let index = 0; index < mainCV.value.workHistory.length; index++) {
-    const employer = mainCV.value.workHistory[index].employer;
-    workHistory.value.push(employer);
-  }
-})
+// const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillUserSocial, addAva } = useUserData();
 
-fillToken();
-fillConfig();
-fillMainCvId();
-fillMainCv();
-fillUserSocial();
+// const userSocials = computed(() => {
+//   return userStore.getUserSocial;
+// });
+
+// console.log('From Dashboard mainCV, user, profileImage, jobs, mainCVid', mainCV.value, user.value, profileImage.value, jobs.value, mainCVid.value);
+
+// onMounted(() => {
+//   for (let index = 0; index < mainCV.value.workHistory.length; index++) {
+//     const employer = mainCV.value.workHistory[index].employer;
+//     workHistory.value.push(employer);
+//   }
+// })
+
+// fillToken();
+// fillConfig();
+// fillMainCvId();
+// fillMainCv();
+// fillUserSocial();
 
 const avaData = ref(
   {
@@ -123,7 +143,7 @@ const generateText = async () => {
     }
 };
 
-generateText();
+// generateText();
 
 const isShowToaster = ref(false);
 const toasterType = ref();
@@ -215,7 +235,7 @@ const asyncFnAva = async (imgDataUrl) => {
               />
             </svg>
             <p class="initials">
-              {{ user.firstName[0] }}{{ user.lastName[0] }}
+              <!-- {{ user.firstName[0] }}{{ user.lastName[0] }} -->
             </p>
           </div>
         </div>
@@ -230,60 +250,75 @@ const asyncFnAva = async (imgDataUrl) => {
             <img class="editIcon" src="@/assets/svg/edit.svg" alt="edit">
           </div>
          
-          <CvInput 
+          <!-- <CvInput 
             :placeholder="'Add Your Phone'" 
             :label="'+ Add Phone'" 
             :type="'tel'"
             :param="0"
             :previous-value="userSocials[0].link"
-          />
+          /> -->
 
-          <p class="contact">{{ user.email }}</p>
+          <!-- <CvInput 
+            :placeholder="'Add Your Phone'" 
+            :label="'+ Add Phone'" 
+            :type="'tel'"
+            :param="0"
+            :previous-value="user.phone"
+          /> -->
 
-          <CvInput 
+          <!-- <p class="contact">{{ user.email }}</p> -->
+
+          <!-- <CvInput 
             :placeholder="'Add Location'" 
             :label="'+ Location'" 
             :type="'text'"
             :param="1"
             :previous-value="userSocials[1].link"
-          />
+          /> -->
 
-          <CvInput 
+          <!-- <CvInput 
             :placeholder="'Add Linkedin'" 
             :label="'+ Linkedin'" 
             :type="'url'"
             :param="2"
             :previous-value="userSocials[2].link"
-          />
+          /> -->
 
-          <CvInput 
+          <!-- <CvInput 
             :placeholder="'Add Github'" 
             :label="'+ Github'" 
             :type="'url'"
             :param="3"
             :previous-value="userSocials[3].link"
-          />
-
+          /> -->
+<!-- 
           <CvInput 
             :placeholder="'Add Other info'" 
             :label="'+ Other'" 
             :type="'text'"
             :param="4"
             :previous-value="userSocials[4].link"
-          />
+          /> -->
 
         </div>
           <div class="skillsContainer">
 
             <p class="skillsTitle">Skills</p>
+
             <div @click="router.push('/step-three')" class="skillsTagsContainer">
-              <p class="skill" v-for="skill in mainCV.skills"> {{ skill }},&nbsp;</p>
+
+              <p class="skill" v-for="(skill, index) in skills"> {{ skill }}, &nbsp;</p>
+
               <img class="editIcon" src="@/assets/svg/edit.svg" alt="edit">
             </div>
 
             <p class="skillsTitle">languages</p>
+            
             <div @click="router.push('/step-three')" class="skillsTagsContainer"> 
-              <p class="skill"> {{ mainCV.languages[0].language }} - {{ mainCV.languages[0].level }} </p>
+              <p class="skill" v-for="(language, index) in languages" :key="index">
+                {{ language.language }} - {{ language.level }}
+              </p>
+
               <img class="editIcon" src="@/assets/svg/edit.svg" alt="edit">
             </div>
 
