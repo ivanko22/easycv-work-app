@@ -1,6 +1,8 @@
 import apiClient from "./api";
 
 export async function signUp(firstName, lastName, email, password) {
+    console.log("Signing up...", firstName, lastName, email, password);
+
     try {
       const response = await apiClient.post("sign-up/", {
         first_name: firstName,
@@ -8,12 +10,18 @@ export async function signUp(firstName, lastName, email, password) {
         email,
         password,
       });
+      console.log("Full response:", response.data);
 
-      const { tokens } = response.data;
-      localStorage.setItem("accessToken", tokens.access);
-      localStorage.setItem("refreshToken", tokens.refresh);
+      const { tokens } = response.data || {};
+      if (tokens) {
+          localStorage.setItem("accessToken", tokens.access);
+          localStorage.setItem("refreshToken", tokens.refresh);
+      } else {
+          console.warn("Tokens not received in the response.");
+      }
 
-      return response.data;
+      console.log("Sign-up successful:", response.data);
+
     } catch (error) {
       console.error("Sign-up failed:", error.response?.data);
       throw error.response?.data || "An error occurred during sign-up.";

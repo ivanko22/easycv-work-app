@@ -11,56 +11,69 @@ import CvInput from "@/components/inputs/CvInput.vue";
 import BaseForm from "@/components/BaseForm.vue";
 import BaseJob from "@/components/BaseJob.vue";
 import myUpload from 'vue-image-crop-upload';
+import { addSocial } from "@/services/socials";
 
 const userStore = useUserData();
-const { mainCV, user, profileImage, jobs } = storeToRefs(userStore);
-
+const { mainCV, userSocial, user, profileImage, jobs } = storeToRefs(userStore);
 const cvSummary = ref('');
 const isShowGhost = ref(false);
 const workHistory = ref([]);
-
 const skills = ref([]);
 const languages = ref([]);
 
+const socials = ref();
+const phone = userSocial.value[0].link
+const linkedin = userSocial.value[2].link;
+
+// const socialData = {
+//   name: '+ Linkedin',
+//   link: 'https://www.linkedin.com/in/ivanko22'
+// };
+
+// const submitSocial = async (socialData) => {
+//   try {
+//     const response = await addSocial(socialData);
+
+//     console.log('response from submitSocial:', response);
+
+//     userStore.fillUserSocial();
+
+//   } catch (error) {
+//     console.error('Error in submitSocial:', error);
+//   }
+// };
+
 onMounted(async () => {
-  // console.log("Calling fillJobs in Dashboard...");
   await userStore.fillJobs(); // Explicitly call the method
   await userStore.fillCv();
   await userStore.fillUserSocial();
-  
-  // console.log("Jobs after fillJobs in Dashboard:", toRaw(jobs.value));
-  // console.log("MainCV after fillCv in Dashboard:", mainCV.value[0].languages);
+
+  socials.value = [...userStore.userSocial];
+
+  // skills.value = [...skills.value, mainCV.value[0].skills];
+
+  // skills.value = mainCV.value[0].skills.flat();
+
+  // console.log('socials from unmounted', socials.value.length);
+  // console.log('userSocials!!!!!!!!', socials.value[2].link);
 
   for (let index = 0; index < mainCV.value[0].skills.length; index++) {
     const skill = mainCV.value[0].skills[index];
     skills.value.push(skill);
   }
 
+  console.log('skills', skills.value);
+
   languages.value.push(mainCV.value[0].languages[0]);
-  // console.log('languages.value', languages.value);
 
 });
 
-// const { fillToken, fillConfig, fillMainCvId, fillMainCv, fillUserSocial, addAva } = useUserData();
+const userSocials = computed(() => {
+  return userStore.getUserSocial;
+});
 
-// const userSocials = computed(() => {
-//   return userStore.getUserSocial;
-// });
-
-// console.log('From Dashboard mainCV, user, profileImage, jobs, mainCVid', mainCV.value, user.value, profileImage.value, jobs.value, mainCVid.value);
-
-// onMounted(() => {
-//   for (let index = 0; index < mainCV.value.workHistory.length; index++) {
-//     const employer = mainCV.value.workHistory[index].employer;
-//     workHistory.value.push(employer);
-//   }
-// })
-
-// fillToken();
-// fillConfig();
-// fillMainCvId();
-// fillMainCv();
-// fillUserSocial();
+console.log('userSocial 111111111111', userSocials);
+console.log('skills 1', skills);
 
 const avaData = ref(
   {
@@ -250,13 +263,13 @@ const asyncFnAva = async (imgDataUrl) => {
             <img class="editIcon" src="@/assets/svg/edit.svg" alt="edit">
           </div>
          
-          <!-- <CvInput 
+          <CvInput 
             :placeholder="'Add Your Phone'" 
             :label="'+ Add Phone'" 
             :type="'tel'"
             :param="0"
-            :previous-value="userSocials[0].link"
-          /> -->
+            :previous-value="phone"
+          />
 
           <!-- <CvInput 
             :placeholder="'Add Your Phone'" 
@@ -276,12 +289,12 @@ const asyncFnAva = async (imgDataUrl) => {
             :previous-value="userSocials[1].link"
           /> -->
 
-          <!-- <CvInput 
-            :placeholder="'Add Linkedin'" 
-            :label="'+ Linkedin'" 
+          <!-- <CvInput
+            :placeholder="'Add Linkedin'"
+            :label="'+ Linkedin'"
             :type="'url'"
             :param="2"
-            :previous-value="userSocials[2].link"
+            :previous-value="socials?.value[2]?.link || ''"
           /> -->
 
           <!-- <CvInput 
@@ -302,13 +315,10 @@ const asyncFnAva = async (imgDataUrl) => {
 
         </div>
           <div class="skillsContainer">
-
             <p class="skillsTitle">Skills</p>
 
             <div @click="router.push('/step-three')" class="skillsTagsContainer">
-
-              <p class="skill" v-for="(skill, index) in skills"> {{ skill }}, &nbsp;</p>
-
+              <p class="skill" v-for="(skill, index) in skills" :key="index"> {{ skill }}, &nbsp;</p>
               <img class="editIcon" src="@/assets/svg/edit.svg" alt="edit">
             </div>
 

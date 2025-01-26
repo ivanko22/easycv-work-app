@@ -4,10 +4,10 @@ import { useUserData } from "@/helpers/user";
 
 const { fillToken, fillConfig, fillMainCvId, updateUser } = useUserData();
 
-fillToken();
-fillConfig();
-fillMainCvId();
-fillMainCv();
+// fillToken();
+// fillConfig();
+// fillMainCvId();
+// fillMainCv();
 
 const props = withDefaults(
   defineProps<{

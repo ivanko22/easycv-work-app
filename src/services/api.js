@@ -11,7 +11,8 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
 
-  if (token) {
+  // Do not attach Authorization for unauthenticated routes
+  if (!["sign-up", "login"].some((url) => config.url.includes(url)) && token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;

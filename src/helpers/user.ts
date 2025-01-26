@@ -4,7 +4,7 @@ import router from "@/router";
 import { ref } from 'vue';
 import { getJobs } from "@/services/jobs";
 import { getCv } from "@/services/cv.js";
-
+import { getSocials } from "@/services/socials.js";
 
 export const useUserData = defineStore("userStore", {
   state: () => ({
@@ -79,37 +79,43 @@ export const useUserData = defineStore("userStore", {
       };
     },
 
-    fillMainCvId() {
-      console.log('this.config', this.config);
+    // fillMainCvId() {
+    //   console.log('this.config', this.config);
 
-      this.mainCvId = axios.get("/api/user", this.config).then((response) => {
-      this.mainCVid = response.data.cvs[0];
-      });
-    },
-
-    fillUserSocial() {
-      this.mainCvId = axios.get("/api/user", this.config).then((response) => {
-        if (response.data.socials.length === 6) {
-          this.userSocial = response.data.socials;
-        }
-        this.user = response.data;
-      });
-    },
-
-    // fillMainCv() {
-    //   axios.get("/api/cv", this.config, this.mainCVid).then((response) => {
-    //     this.mainCV = response.data[0];
-    //     this.jobs = response.data[0].workHistory;
-    //     this.profileImage = `${'http://localhost:8000/api'+response.data[0].profileImage}`;
-
-    //     if (this.jobs.length > 0) {
-    //       this.showCTAbtn = true;
-    //     }else{
-    //       this.showCTAbtn = false;
-    //     }
-
+    //   this.mainCvId = axios.get("/api/user", this.config).then((response) => {
+    //   this.mainCVid = response.data.cvs[0];
     //   });
     // },
+
+    fillUserSocial: async function() {
+      console.log('Fetching social...');
+
+      try {
+        const response = await getSocials();
+        console.log('response fill social', response);
+
+        this.userSocial = response;
+        console.log('Social fetched successfully:', this.userSocial);
+
+      } catch (err) {
+        console.error('Error fetching social:', err);
+      }
+    },
+
+    fillMainCv() {
+      axios.get("/api/cv", this.config, this.mainCVid).then((response) => {
+        this.mainCV = response.data[0];
+        this.jobs = response.data[0].workHistory;
+        this.profileImage = `${'http://localhost:8000/api'+response.data[0].profileImage}`;
+
+        if (this.jobs.length > 0) {
+          this.showCTAbtn = true;
+        }else{
+          this.showCTAbtn = false;
+        }
+
+      });
+    },
 
     fillCv: async function () {
       console.log('Fetching main CV...');
@@ -149,57 +155,70 @@ export const useUserData = defineStore("userStore", {
       }
     },    
 
-    editJob(data, jobID) {
-      axios
-        .put(`/api/cv/${this.mainCVid}/employment/${jobID}`, data, this.config)
-        .then((response) => {
-          if (typeof response.data !== "string") {
-            this.fillMainCv();
-          }
-        });
-    },
+    // editJob(data, jobID) {
+    //   axios
+    //     .put(`/api/cv/${this.mainCVid}/employment/${jobID}`, data, this.config)
+    //     .then((response) => {
+    //       if (typeof response.data !== "string") {
+    //         this.fillMainCv();
+    //       }
+    //     });
+    // },
 
-    async Job() {
-      console.log('Job');
-      try {
-        const response = await getJobs();
-        console.log('response', response.data);
-      } catch (err) {
-        console.error('Error fetching jobs:', err);
-      }
-    },
-    
-    // remove
-    updateUser(param, data) {
-      this.userSocial[param].link = data;
+    // async Job() {
+    //   console.log('Job');
+    //   try {
+    //     const response = await getJobs();
+    //     console.log('response', response.data);
+    //   } catch (err) {
+    //     console.error('Error fetching jobs:', err);
+    //   }
+    // },
 
-      const sendData = ref({
-        email: null,
-        firstName: null,
-        lastName: null,
-        languages: [{
-          language: null, 
-          level: null
-        }],
-        socials: [
-          this.userSocial[0],
-          this.userSocial[1],
-          this.userSocial[2],
-          this.userSocial[3],
-          this.userSocial[4],
-          this.userSocial[5],
-        ],
-        skills: null
-      });
+    // async updateUser() {
+
       
-      axios.put('api/user', sendData.value, this.config)
-      .then((response) => {
-        this.userSocial = response.data.socials;
+    // },
+    
+    // updateUser(param, data) {
+    //   this.userSocial[param].link = data;
 
-      }).catch((err) => {
-        console.log('err!!!!!!!!!', err)
-      })
-    },
+    //   const sendData = ref({
+    //     email: null,
+    //     firstName: null,
+    //     lastName: null,
+    //     languages: [{
+    //       language: null, 
+    //       level: null
+    //     }],
+    //     socials: [
+    //       this.userSocial[0],
+    //       this.userSocial[1],
+    //       this.userSocial[2],
+    //       this.userSocial[3],
+    //       this.userSocial[4],
+    //       this.userSocial[5],
+    //     ],
+    //     skills: null
+    //   });
+      
+    //   axios.put('api/user', sendData.value, this.config)
+    //   .then((response) => {
+    //     this.userSocial = response.data.socials;
+
+    //   }).catch((err) => {
+    //     console.log('err!!!!!!!!!', err)
+    //   })
+    // },
+      
+    //   axios.put('api/user', sendData.value, this.config)
+    //   .then((response) => {
+    //     this.userSocial = response.data.socials;
+
+    //   }).catch((err) => {
+    //     console.log('err!!!!!!!!!', err)
+    //   })
+    // },
 
     updateCv(dataSend) {
       axios.put('/api/cv', dataSend, this.config)

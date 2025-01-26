@@ -23,11 +23,11 @@ const selectedJobID = ref("");
 
 onMounted(() => {
   userStore.fillJobs();
+
+  console.log('showCTAbtn', showCTAbtn.value);
 });
 
 const isShowPrimaryBtn = computed(() => showCTAbtn.value);
-
-console.log('Jobs from step 2', jobs);
 
 const isFormShow = ref(false);
 const formTitle = ref("");
@@ -60,8 +60,6 @@ provide(
 const isJobEdit = ref(false);
 const isAddJobFormShow = ref(false);
 const isShowBaseJob = ref(true);
-const selectedJobEdit = ref("");
-const editJobID = ref();
 const addJobForm = ref();
 const isJobPositionValid = ref();
 const isEmployerValid = ref();
@@ -163,7 +161,6 @@ const getJobByID = (jobID) => {
         new Date(targetJob.endDate).getFullYear();
 
       selectedJobID.value = jobID;
-
       selectedJob.value = targetJob;
 
       return
@@ -371,7 +368,7 @@ const onSubmit = async (arg) => {
   <BaseButton
     v-if="!isJobEdit"
     label="Next"
-    :class="{ primaryBtn: isShowPrimaryBtn }"
+    :class="{ primaryBtn: jobs && jobs.length > 0 }"
     type="submit"
     @click="baseButtonHandler()"
   />

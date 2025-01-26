@@ -5,7 +5,7 @@ export async function addSocial(socialData) {
     console.log("Adding social...", socialData);
 
     try {
-        const response = await apiClient.post("social/", socialData);
+        const response = await apiClient.post("socials/", socialData);
 
         console.log("Social added successfully:", response.data);
 
@@ -14,6 +14,21 @@ export async function addSocial(socialData) {
     } catch (error) {
         console.error("Social add failed:", error.response?.data);
         throw error.response?.data || "An error occurred while adding the Social.";
+    }
+}
+
+export async function getSocials() {
+    // console.log("Getting socials...");
+
+    try {
+        const response = await apiClient.get("socials/");
+
+        // console.log("Socials", response.data);
+
+        return response.data;
+    } catch (error) {
+        console.error("Get socials failed:", error.response?.data);
+        throw error.response?.data || "An error occurred while getting socials.";
     }
 }
 
